@@ -1,0 +1,10 @@
+{
+    "www": {
+        "root": "/cmatrix.lite"
+    },
+    "project" : {
+        "name" : "Tilda",
+        "version" : "4.0",
+        "author" : "МОЗ"
+    }
+}
