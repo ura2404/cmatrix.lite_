@@ -1,3 +1,12 @@
+{#
+    blocks
+        -style
+        -js
+        -name
+        -nameTitle
+        -current
+        -actions
+#}
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -10,9 +19,9 @@
     </head>
     <body>
         <header class="bg-gray-500 text-white h-10 fixed top-0 left-0 right-0">
-            <div class="_container mx-auto flex h-full">
-                <a id="cm-logo" href="{{ home }}" class="_text-6xl w-11 flex-shrink-0 flex">
-                    <span class="m-auto">~</span>
+            <div class="container mx-auto flex h-full">
+                <a id="cm-logo" href="{{ url.home }}" class="cm-hover my-auto text-6xl _w-11 flex-shrink-0">
+                    <span class="_m-auto">~</span>
                     {# <i class="m-auto fas fa-at"></i> #}
                 </a>
                 
@@ -22,14 +31,20 @@
                 </div>
                 #}
                 
-                <div class="cm-name my-auto pl-1 pr-2 _font-bold text-2xl text-green-400 truncate _flex-none" title="{% block nameTitle %}{% endblock %}">{% block name %}{% endblock %}</div>
-                {% block current %}{% endblock %}
-                <div id="cm-actions" class="flex ml-auto">{% block actions %}{% endblock %}</div>
+                <div class="cm-name my-auto pl-1 pr-2 _font-bold text-2xl text-green-400 truncate _flex-none" title="{% block nameTitle %}{% endblock %}">{% block name %}Name{% endblock %}</div>
+                {% block current %}current{% endblock %}
+                <div id="cm-actions" class="flex ml-auto">{% block actions %}actions{% endblock %}</div>
                 
+                {% if session.enable %}
+                    <a id="cm-session" class="cm-hover flex ml-2 cursor-pointer" href="{{ url.login }}">
+                        <span class="cm-name my-auto mr-2">{{ session.name }}</span>
+                        <i class="text-3xl my-auto mr-2 fas fa-user-circle"></i>
+                    </a>
+                {% endif %}
             </div>
         </header>
         
-        <div class="pt-10 _pb-6 h-full w-full">
+        <div class="pt-10 pb-6 h-full w-full">
             {% block main %}{% endblock %}
         </div>
         

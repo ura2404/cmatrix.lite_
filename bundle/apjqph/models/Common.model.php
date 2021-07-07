@@ -5,8 +5,17 @@ use \Cmatrix as cm;
 class Common {
     public function getData(){
         return [
-            'home' => CM_WHOME,
-            'project' => $this->getMyProject()
+            'url'     => $this->getMyUrl(),
+            'project' => $this->getMyProject(),
+            'session' => $this->getMySession()
+        ];
+    }
+    
+    // --- --- --- --- ---
+    private function getMyUrl(){
+        return [
+            'home'  => CM_WHOME,
+            'login' => CM_WHOME .'/login'
         ];
     }
     
@@ -14,6 +23,16 @@ class Common {
     private function getMyProject(){
         $Config = cm\Hash::getFile(CM_TOP.'/config.json');
         return $Config->getValue('project');
+    }
+    
+    // --- --- --- --- ---
+    private function getMySession(){
+        $Config = cm\Hash::getFile(CM_TOP.'/config.json');
+        $Data = [
+            'enable' => $Config->getValue('session/enable'),
+            'name' => 'Гость'
+        ];
+        return $Data;
     }
 }
 ?>

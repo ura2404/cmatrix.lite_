@@ -2,39 +2,29 @@
 namespace Cmatrix;
 
 class App {
+    static $WEBPAGE;
+    
     static $PAGE;
     static $PARAMS;
 
     private $Twig;
 
     // --- --- --- --- ---
-    function __construct($pageName=null){
-        self::$PAGE = $pageName ? $pageName : $this->probePage();
-
-        $this->Twig = new \Twig_Environment(new \Twig_Loader_Filesystem(CM_ROOT.'/templates/'), [
-            'cache' => '/var/tmp',
-            'debug' => true,
-            'auto_reload' => true
-        ]);
+    function __construct(){
     }
 
     // --- --- --- --- ---
     function __get($name){
         switch($name){
-            case 'Html' : return $this->getMyHtml();
+            case 'Webpage' : return $this->getMyWebpage();
         }
     }
 
     // --- --- --- --- ---
-    private function probePage(){
-        if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200){
-            $Page = strAfter(trim(rtrim($_SERVER['REDIRECT_QUERY_STRING'],'/')),'cmp=');
-        }
-        else{
-            $Page = trim($_SERVER['REQUEST_URI'],'/');
-        }
+    private function getMyWebpage(){
+        if(self::$WEBPAGE) return self::$WEBPAGE;
         
-        return $Page == '' ? '/' : $Page;
+        return self::$WEBPAGE = Webpage::get();
     }
 
     // --- --- --- --- ---
@@ -86,8 +76,10 @@ class App {
     }
 
     // --- --- --- --- ---
-    static function get($pageName=null){
-        return new self($pageName);
+    // --- --- --- --- ---
+    // --- --- --- --- ---
+    static function instance(){
+        return new self();
     }
 }
 ?>
