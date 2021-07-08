@@ -1,4 +1,6 @@
 {#
+    Общая форма
+
     blocks
         -style
         -js
@@ -33,14 +35,7 @@
                 
                 <div class="cm-name my-auto pl-1 pr-2 _font-bold text-2xl text-green-400 truncate _flex-none" title="{% block nameTitle %}{% endblock %}">{% block name %}Name{% endblock %}</div>
                 {% block current %}current{% endblock %}
-                <div id="cm-actions" class="flex ml-auto">{% block actions %}actions{% endblock %}</div>
-                
-                {% if session.enable %}
-                    <a id="cm-session" class="cm-hover flex ml-2 cursor-pointer" href="{{ url.login }}">
-                        <span class="cm-name my-auto mr-2">{{ session.name }}</span>
-                        <i class="text-3xl my-auto mr-2 fas fa-user-circle"></i>
-                    </a>
-                {% endif %}
+                <div id="cm-actions" class="flex ml-auto">{% block actions %}{% endblock %}</div>
             </div>
         </header>
         

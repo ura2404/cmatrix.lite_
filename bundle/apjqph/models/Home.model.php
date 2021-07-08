@@ -1,7 +1,7 @@
 <?php
 namespace Cmatrix\Models;
 
-class Home extends Common {
+class Home extends Comlogin {
     public function getData(){
 
         return arrayMergeReplace(parent::getData(),[

@@ -7,7 +7,6 @@ class Common {
         return [
             'url'     => $this->getMyUrl(),
             'project' => $this->getMyProject(),
-            'session' => $this->getMySession()
         ];
     }
     
@@ -23,16 +22,6 @@ class Common {
     private function getMyProject(){
         $Config = cm\Hash::getFile(CM_TOP.'/config.json');
         return $Config->getValue('project');
-    }
-    
-    // --- --- --- --- ---
-    private function getMySession(){
-        $Config = cm\Hash::getFile(CM_TOP.'/config.json');
-        $Data = [
-            'enable' => $Config->getValue('session/enable'),
-            'name' => 'Гость'
-        ];
-        return $Data;
     }
 }
 ?>
