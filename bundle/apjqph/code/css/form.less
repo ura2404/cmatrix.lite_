@@ -1,0 +1,33 @@
+.cm-form-container {
+    &:not(.cm-opend) {
+        display: none;
+    }
+    
+    .cm-form {
+        box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        animation: window-login .15s ease-out forwards;
+        opacity: 0;
+    }
+}
+
+@keyframes window-login {
+      0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+button:focus, input:focus {
+    outline: 1px solid gray
+}
+
+input[required="required"] {
+    background-color : #ffffed;
+    
+    &.cm-invalid{
+        outline: 2px solid red;
+        background-color: #ffecec
+    }
+}
+
+/*input:invalid {
+    outline: 2px solid red;
+}*/

@@ -1,7 +1,10 @@
-import Session from './code/Session.class.js';
+import Session from './js/Session.class.js';
+import Form from './js/Form.class.js';
 
 const session = new Session($('#cm-session'));
 
 $(document).ready(function(){
-    session.init();
+    session.init({
+        form : new Form($('#cm-login'))
+    });
 });

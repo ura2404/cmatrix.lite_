@@ -13,14 +13,14 @@ export default class Window {
      */
     constructor($tag){
         this.$Tag = $tag;
-        this.Opts = {};
+        //this.Opts = {};
     }
     
     // --- --- --- --- ---
     init(opts){
         const Instance = this;
         
-        this.Opts = Object.assign({},opts);
+        //this.Opts = Object.assign({},opts);
         
         this.$Tag.find('.cm-a-close').on('click',function(e){
             Instance.hide();
@@ -32,9 +32,9 @@ export default class Window {
     show(){
         const Instance = this;
         
-        if(typeof this.Opts.onShow === 'function') this.Opts.onShow.call(this);
+        //if(typeof this.Opts.onShow === 'function') this.Opts.onShow.call(this);
         
-        this.$Tag.addClass('cm-opend');
+        this.$Tag.parent().addClass('cm-opend');
         
         $(document).on('keyup',function(e){
             if(e.keyCode == 27) Instance.hide();
@@ -45,7 +45,7 @@ export default class Window {
     hide(){
         const Instance = this;
         
-        this.$Tag.removeClass('cm-opend');
+        this.$Tag.parent().removeClass('cm-opend');
         $(document).off('keyup');
     }
 }

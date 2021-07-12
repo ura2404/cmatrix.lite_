@@ -2,7 +2,7 @@
  * Class Session
  */
 
-import Form from './Form.class.js';
+//import Form from './Form.class.js';
 
 export default class Session {
     
@@ -12,20 +12,20 @@ export default class Session {
      */
     constructor($tag){
         this.$Tag = $tag;
-        this.Form = new Form($($tag.attr('data-login-form'))).init({
-            /*onShow : function(){
-                this.$Tag.find('input:first').focus();
-            }*/
-        });
-        console.log(this.Form);
+        this.Form = undefined;
+        /*this.Form = new Form($($tag.attr('data-login'))).init();*/
     }
     
     // --- --- --- --- ---
-    init(){
+    init(opts){
         const Instance = this;
+        opts = opts || {};
+        
+        this.Form = opts.form || undefined;
         
         // click по копке сессии в header
-        this.$Tag.on('click',function(e){
+        if(this.Form) this.$Tag.on('click',function(e){
+            console.log(Instance.Form);
             e.preventDefault();
             Instance.Form.show();
         });

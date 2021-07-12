@@ -6,7 +6,8 @@ class Comlogin extends Common {
     public function getData(){
         
         return arrayMergeReplace(parent::getData(),[
-            'session' => $this->getMySession()
+            'session' => $this->getMySession(),
+            'url'     => $this->getMyUrl(),
         ]);
     }
     
@@ -18,6 +19,13 @@ class Comlogin extends Common {
             'user' => 'Гость'
         ];
         return $Data;
+    }
+    
+    // --- --- --- --- ---
+    private function getMyUrl(){
+        return [
+            'post'  => 'res/res/post.php',
+        ];
     }
 }
 ?>
