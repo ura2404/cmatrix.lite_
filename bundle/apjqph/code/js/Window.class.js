@@ -5,6 +5,8 @@
  *  - .cm-a-close - кнопка закрытия окна
  */
 
+import Esc from './Esc.class.js';
+
 export default class Window {
     
     // --- --- --- --- ---
@@ -13,14 +15,11 @@ export default class Window {
      */
     constructor($tag){
         this.$Tag = $tag;
-        //this.Opts = {};
     }
     
     // --- --- --- --- ---
     init(opts){
         const Instance = this;
-        
-        //this.Opts = Object.assign({},opts);
         
         this.$Tag.find('.cm-a-close').on('click',function(e){
             Instance.hide();
@@ -32,20 +31,25 @@ export default class Window {
     show(){
         const Instance = this;
         
+        Keyup.push(27,function(){Instance.hide()});
+        
         //if(typeof this.Opts.onShow === 'function') this.Opts.onShow.call(this);
         
         this.$Tag.parent().addClass('cm-opend');
         
+        /*
         $(document).on('keyup',function(e){
-            if(e.keyCode == 27) Instance.hide();
-        });
+            if(e.keyCode == 27){
+                const Inst = Window.INSTANCES.pop();
+                Inst.hide();
+            }
+        });*/
     }
     
     // --- --- --- --- ---
     hide(){
         const Instance = this;
-        
         this.$Tag.parent().removeClass('cm-opend');
-        $(document).off('keyup');
+        //$(document).off('keyup');
     }
 }

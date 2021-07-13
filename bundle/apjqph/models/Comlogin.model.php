@@ -16,7 +16,7 @@ class Comlogin extends Common {
         $Config = cm\Hash::getFile(CM_TOP.'/config.json');
         $Data = [
             'enable' => $Config->getValue('session/enable'),
-            'user' => 'Гость'
+            'user'   => 'Гость'
         ];
         return $Data;
     }
@@ -24,7 +24,7 @@ class Comlogin extends Common {
     // --- --- --- --- ---
     private function getMyUrl(){
         return [
-            'post'  => 'res/res/post.php',
+            'post' => 'res/res/post.php',
         ];
     }
 }

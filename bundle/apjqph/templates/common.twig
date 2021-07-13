@@ -16,6 +16,10 @@
         <link rel="stylesheet" type="text/css" href="res/tailwindcss.com/tailwind.min.css"/>
         <link rel="stylesheet" type="text/css" href="res/fontawesome.com/5.15.2/css/all.css"/>
         <link rel="stylesheet/less" type="text/css" href="res/res/common.less"/>
+        
+        <link rel="stylesheet/less" type="text/css" href="res/css/common.less"/>
+        <link rel="stylesheet/less" type="text/css" href="res/css/form.less"/>
+
         {% block style %}{% endblock style %}
         <script type="text/javascript" src="res/lesscss.org/3.7.1/less.min.js"></script>
     </head>
@@ -49,6 +53,18 @@
             </div>
         </footer>
         
+        <div class="cm-win-container z-100 flex flex-col">
+            <div id="cm-success" class="cm-win my-auto bg-green-400 bg-opacity-80 text-white p-5">
+                <div class="cm-text container mx-auto text-center"></div>
+            </div>
+        </div>
+        
+        <div class="cm-alert-container z-100 flex flex-col">
+            <div id="cm-error" class="cm-alert container m-auto bg-red-300 bg-opacity-80 text-white p-5">
+                <div class="cm-text container mx-auto text-center"></div>
+            </div>
+        </div>
+        
         {#
         <div id="cm-confirm" class="cm-wp fixed inset-0 _flex _hidden">
             <div class="w-screen h-screen opacity-0 duration-100 flex flex-col">
@@ -78,6 +94,7 @@
     </body>
 
     <script type="text/javascript" src="res/jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="res/jquery.com/jquery.md5.js"></script>
     <script type="text/javascript" src="res/vendor/jquery.js"></script>
     {#<script type="text/javascript" src="res/res/common.js"></script>#}
     {% block js %}{% endblock js %}

@@ -15,6 +15,11 @@ export default class Form extends Window {
      */
     constructor($tag){
         super($tag);
+        
+        this.Url       = undefined;
+        this.onSuccess = undefined;
+        this.onError   = undefined;
+        this.onSubmit  = undefined;
     }
     
     // --- --- --- --- ---
@@ -22,12 +27,21 @@ export default class Form extends Window {
         const Instance = this;
         super.init();
         
-        this.$Tag.on('submit',function(e){
-            e.preventDefault();
-            Instance.submit();
-        }).find('.cm-a-submit').on('click',function(e){
-            Instance.$Form.submit();
-        });
+        const Url = this.$Tag.attr('action');
+        const SubmitButton = this.$Tag.find('.cm-a-submit');
+        
+        if(Url && SubmitButton){
+            this.Url = Url;
+            
+            this.$Tag.on('submit',function(e){
+                e.preventDefault();
+                Instance.submit();
+            });
+            
+            SubmitButton.on('click',function(e){
+                Instance.$Tag.submit();
+            });
+        }
         
         return this;
     }
@@ -36,6 +50,8 @@ export default class Form extends Window {
     show(){
         const Instance = this;
         super.show();
+        
+        this.$Tag.find(':input').filter((index, element) =>$(element).is('input')).map((index, element) => $(element).val(''));
         
         this.$Tag.find('input:first').focus();
         
@@ -47,11 +63,32 @@ export default class Form extends Window {
         
         return this;
     }    
+    
+    // --- --- --- --- ---
+    required(){
+        return this.$Tag.find(':input').map(function(index, element){
+            if(!$(element).hasAttr('required')) return;
+            
+            $(element).removeClass('cm-invalid').next().text('');
+            if(! element.validity.valid) $(element).addClass('cm-invalid').next().text(element.validationMessage);
+            
+            return element.validity.valid;
+        }).get().every((current,index,array) => !!current);
+    }
 
     // --- --- --- --- ---
     submit(){
         console.log('submit');
         
-        const Url = this.$Tag.attr('action');
+        if(typeof this.onSubmit === 'function' && this.required()){
+            let Data = {};
+            this.$Tag.find(':input').filter((index, element) =>$(element).is('input')).map((index, element) => {
+                const Name = $(element).attr('name');
+                Data[Name] = Name === 'p' ? $.md5($(element).val()) : $(element).val();
+            });
+            
+            this.onSubmit(Data);
+        }
+        return this;
     }
 }

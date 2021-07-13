@@ -13,7 +13,7 @@
 
 {% block actions %}
     {% if session.enable %}
-        <a id="cm-session" class="cm-hover flex ml-2 cursor-pointer" href="{{ url.login }}">
+        <a id="cm-session" class="cm-hover flex ml-2 cursor-pointer" href="{{ url.login }}" onclick="event.preventDefault()">
             <span class="cm-name my-auto mr-2">{{ session.user }}</span>
             <i class="text-3xl my-auto mr-2 fas fa-user-circle"></i>
         </a>
@@ -21,16 +21,17 @@
 {% endblock %}
 
 {% block main %}
-    <div class="cm-form-container cm-noselect fixed top-0 bottom-0 left-0 right-0 bg-gray-200 bg-opacity-50 flex z-50">
-        <form id="cm-login" class="cm-form relative mx-auto my-auto flex flex-col pt-10 pb-3 px-6 sm:px-12 bg-blue-400 bg-opacity-90" method="post" action="{{ url.post }}">
+    {#<div class="cm-win-container cm-noselect fixed top-0 bottom-0 left-0 right-0 bg-gray-200 bg-opacity-50 flex z-50">#}
+    <div class="cm-win-container cm-noselect flex">
+        <form id="cm-login" class="cm-win relative mx-auto my-auto flex flex-col pt-10 pb-3 px-6 sm:px-12 bg-blue-400 bg-opacity-90" method="post" action="{{ url.post }}">
             <span class="cm-a-close cm-hover absolute p-3 top-0 right-0 cursor-pointer"><i class="text-white fas fa-times"></i></span>
             
-            <input class="px-3 py-1 w-52 sm:w-72" type="text" name="user" placeholder="Логин" required="required" maxlength="10"
+            <input class="px-3 py-1 w-52 sm:w-72" type="text" name="u" placeholder="Логин" required="required" maxlength="10"
                 {#oninvalid="this.setCustomValidity('обязательное поле')" oninput="this.setCustomValidity('')"#}
             />
             <span class="cm-err mb-3 h-4 text-red-600 text-sm"></span>
             
-            <input class="px-3 py-1 w-52 sm:w-72" type="password" name="pass" placeholder="Пароль" required="required"
+            <input class="px-3 py-1 w-52 sm:w-72" type="password" name="p" placeholder="Пароль" required="required"
                 {#oninvalid="this.setCustomValidity('обязательное поле')" oninput="this.setCustomValidity('')"#}
             />
             <span class="cm-err mb-2 h-4 text-red-600 text-sm"></span>
