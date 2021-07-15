@@ -15,11 +15,15 @@ export default class Window {
      */
     constructor($tag){
         this.$Tag = $tag;
+        
+        this.Timeout = 0;
     }
     
     // --- --- --- --- ---
     init(opts){
         const Instance = this;
+        
+        console.log(this.$Tag.find('.cm-a-close'));
         
         this.$Tag.find('.cm-a-close').on('click',function(e){
             Instance.hide();
@@ -31,25 +35,20 @@ export default class Window {
     show(){
         const Instance = this;
         
-        Keyup.push(27,function(){Instance.hide()});
-        
-        //if(typeof this.Opts.onShow === 'function') this.Opts.onShow.call(this);
-        
+        Esc.push(function(){ Instance.hide() });
         this.$Tag.parent().addClass('cm-opend');
         
-        /*
-        $(document).on('keyup',function(e){
-            if(e.keyCode == 27){
-                const Inst = Window.INSTANCES.pop();
-                Inst.hide();
-            }
-        });*/
+        if(this.Timeout) setTimeout(function(){
+            Instance.hide();
+        },this.Timeout);
     }
     
     // --- --- --- --- ---
     hide(){
+        console.log('hide');
+        
         const Instance = this;
         this.$Tag.parent().removeClass('cm-opend');
-        //$(document).off('keyup');
+        Esc.pop();
     }
 }

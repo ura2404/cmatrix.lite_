@@ -19,7 +19,7 @@ try{
     }
     
     echo \Cmatrix\Req::create([
-        'status' => 1,
+        'status' => -1,
         'message' => $Message
     ])->Json;
 }

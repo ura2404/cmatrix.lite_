@@ -4,53 +4,30 @@
 
 export default class Esc {
     
-    static INSTANCES = undefined;
-    
-    // --- --- --- --- ---
-    /**
-     * @param $tag - tag окна
-     */
-    constructor(key){
-        
-        /*
-        Keyup.INSTANCES[key] = Keyup.INSTANCES[key] || [];
-        
-        $(document).on('keyup',function(e){
-            if(e.keyCode == key){
-                const Inst = Window.INSTANCES.pop();
-                Inst.hide();
-            }
-        });
-        */
-    }
-    
+    static INSTANCES = [];
+
     // --- --- --- --- ---
     static event(e){
-        console.log(Esc.INSTANCES[e.keyCode]);
-        let _callback = 
+        if(e.keyCode !== 27) return;
         
-        
-        
-        console.log('event');
+        let _callback = Esc.INSTANCES[Esc.INSTANCES.length-1];
+        if(typeof _callback === 'function') _callback();
     }
     
     // --- --- --- --- ---
-    static push(key,callback){
-        if(!Esc.INSTANCES){
-            Esc.INSTANCES = {};
+    static push(callback){
+        if(!Esc.INSTANCES.length){
             $(document).on('keyup',function(e){
                 Esc.event(e);
             });
         }
         
-        if(!Esc.INSTANCES[key]) Esc.INSTANCES[key] = [];
-        Esc.INSTANCES[key].push(callback);
+        Esc.INSTANCES.push(callback);
     }
     
     // --- --- --- --- ---
     static pop(key){
-        let _callback = Esc.INSTANCES[key].pop();
-        if(!Esc.INSTANCES) $(document).off('keyup');
-        return _callback;
+        if(Esc.INSTANCES.length) Esc.INSTANCES.pop();
+        if(!Esc.INSTANCES.length) $(document).off('keyup');
     }
 }

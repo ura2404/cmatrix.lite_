@@ -4,8 +4,8 @@ import Alert from './js/Alert.class.js';
 import Esc from './js/Esc.class.js';
 
 const session = new Session($('#cm-session'));
-const success = new Alert($('#cm-success'));
-const error = new Alert($('#cm-error'));
+const success = new Alert($('#cm-success'),1000).init();
+const error = new Alert($('#cm-error')).init();
 
 //new Keyup();
 

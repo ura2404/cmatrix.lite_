@@ -9,9 +9,17 @@ export default class Alert extends Window{
     /**
      * @param $tag - tag контейфнера формы, tag фона на весь экран
      */
-    constructor($tag){
+    constructor($tag,timeout){
         super($tag);
         //this.$Tag = $tag;
+        
+        this.Timeout = timeout;
+    }
+    
+    // --- --- --- --- ---
+    init(message){
+        super.init();
+        return this;
     }
     
     // --- --- --- --- ---

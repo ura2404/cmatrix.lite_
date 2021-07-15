@@ -15,7 +15,7 @@ class Session {
     // --- --- --- --- ---
     function __get($name){
         switch($name){
-            case 'Message' : return $this->Message ? $this->Message : 'OK';
+            case 'Message' : return $this->Message ? $this->Message : 'OK цлуцлауцдлжцул уцдлаждцлйжуаждцлу аждцлу аэждлуцаждэлцуажд цжцлужалцжулаэжцдлуаждцу жцдула жцдлу аждц цужэдал жцдлу аждцлу ацулаждлуцй';
         }
     }
     
