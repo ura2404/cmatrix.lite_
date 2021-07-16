@@ -1,7 +1,7 @@
 <?php
 namespace Cmatrix;
 
-class Router {
+class Routers {
     static $ROUTERS = [];
 
     // --- --- --- --- ---

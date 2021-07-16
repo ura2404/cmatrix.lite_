@@ -1,7 +1,7 @@
 <?php
 namespace Cmatrix;
 
-class Controller {
+class Controllers {
     static $CONTROLLERS = [];
     
     // --- --- --- --- ---

@@ -1,8 +1,8 @@
 <?php
 header("Content-type: application/json");
 //header("Content-type: application/octet-stream");
-require_once('../defs.php');
-require_once('../common.php');
+require_once('../../../defs.php');
+require_once('../../../common.php');
 
 $Data = \Cmatrix\Req::get()->Array;
 
@@ -10,9 +10,10 @@ $Data = \Cmatrix\Req::get()->Array;
 $Messgae;
 try{
     switch($Data['m']){
-        case 'li' : $Message = \Cmatrix\Session::login($Data['u'],$Data['p'])->Message;
+        case 'li' : $Message = \Cmatrix\Session::instance()->login($Data['u'],$Data['p']);
                     break;
-        case 'lo' : $Message = \Cmatrix\Session::logout()->Message;
+            
+        case 'lo' : $Message = \Cmatrix\Session::instance()->logout();
                     break;
             
         default : throw new \Exception('Bad mode "' .$Data['m']. '"');

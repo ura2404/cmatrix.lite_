@@ -24,7 +24,7 @@ class Comlogin extends Common {
     // --- --- --- --- ---
     private function getMyUrl(){
         return [
-            'post' => 'res/res/post.php',
+            'post' => 'res/Cmatrix/post.php',
         ];
     }
 }

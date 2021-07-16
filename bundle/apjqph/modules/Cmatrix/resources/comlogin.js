@@ -7,8 +7,6 @@ const session = new Session($('#cm-session'));
 const success = new Alert($('#cm-success'),1000).init();
 const error = new Alert($('#cm-error')).init();
 
-//new Keyup();
-
 $(document).ready(function(){
     session.Form = new Form($('#cm-login'));
     session.onSuccess = _success;

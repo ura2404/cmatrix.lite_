@@ -1,25 +1,27 @@
 <?php
 require_once 'Twig/autoload.php';
-require_once CM_ROOT.'/code/php/utils.php';
+require_once CM_ROOT.'/modules/Cmatrix/code/utils.php';
 
 spl_autoload_register(function($className){
     if(class_exists($className)) return;
 
     $Arr = explode("\\",$className);
     
-    if($Arr[0] === 'Cmatrix'){
-        if($Arr[1] === 'Models') $Path = CM_ROOT .'/models/'. $Arr[2] .'.model.php';
-        else $Path = CM_ROOT .'/code/php/'. $Arr[1] .'.class.php';
-    }
-    elseif($Arr[0] === 'Vendor') {
+    $Path = CM_ROOT .'/modules/'. $Arr[0];
+    array_shift($Arr);
+    
+    if(!count($Arr)) return;
+    
+    if($Arr[0] === 'Models'){
         array_shift($Arr);
-        $Path = CM_ROOT .'/code/vendor/'. implode('/',$Arr) .'.php';
-        dump($Path);
+        $Path .= '/models/'. implode('/',$Arr) .'.model.php';
     }
-    else return;
-
+    else{
+        $Path .= '/code/'. implode('/',$Arr) .'.class.php';
+    }
+    
     if(file_exists($Path)) require_once($Path);
     else throw new \Exception('Class "'. $className .'" file not found.');
-
+    
 },true,true);
 ?>

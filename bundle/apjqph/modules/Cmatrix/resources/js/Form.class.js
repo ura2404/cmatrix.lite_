@@ -51,18 +51,24 @@ export default class Form extends Window {
         const Instance = this;
         super.show();
         
-        this.$Tag.find(':input').filter((index, element) =>$(element).is('input')).map((index, element) => $(element).val(''));
+        this.$Tag.find(':input').filter((index, element) =>$(element).is('input')).map((index, element) => $(element).removeClass('cm-invalid').next().text('').end().val(''));
         
         this.$Tag.find('input:first').focus();
         
-        $(document).on('keyup',function(e){
-            if(e.keyCode == 13 && $(e.target).is('input')){
-                Instance.$Tag.submit();
-            }
+        this.$Tag.find(':input').on('keyup',function(e){
+            if(e.keyCode == 13) Instance.$Tag.submit();
         });
-        
+
         return this;
     }    
+    
+    // --- --- --- --- ---
+    hide(){
+        const Instance = this;
+        super.hide();
+        
+        this.$Tag.find(':input').off('keyup');
+    }
     
     // --- --- --- --- ---
     required(){

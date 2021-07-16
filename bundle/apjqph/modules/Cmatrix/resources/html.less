@@ -73,8 +73,15 @@ button:focus, input:focus {
 }
 
 
-.cm-success {
+input[required="required"] {
+    background-color : #ffffde;
     
-    .cm-text {
+    &.cm-invalid{
+        outline: 2px solid red;
+        background-color: #ffecec
     }
 }
+
+/*input:invalid {
+    outline: 2px solid red;
+}*/

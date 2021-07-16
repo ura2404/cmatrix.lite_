@@ -2,22 +2,20 @@
 require_once '../defs.php';
 require_once '../common.php';
 
-\Cmatrix\Controller::add('twig',new \Twig_Environment(new \Twig_Loader_Filesystem(CM_ROOT.'/templates/'), [
-    'cache' => '/var/tmp',
-    'debug' => true,
-    'auto_reload' => true
-]));
+// --- --- --- --- ----
+\Cmatrix\Controllers::add('Twig',\Cmatrix\Controllers\Twig::get());
 
-\Cmatrix\Router::add('/',[
-    'template' => 'home',
-    'model' => 'home',
-    'controller' => 'twig'
+// --- --- --- --- ----
+\Cmatrix\Routers::add('/',[
+    'template' => '/Cmatrix/templates/home.twig',
+    'model' => new \Cmatrix\Models\Home,
+    'controller' => 'Twig'
 ]);
 
-\Cmatrix\Router::add('login',[
-    'template' => 'login',
-    'model' => 'login',
-    'controller' => 'twig'
+\Cmatrix\Routers::add('login',[
+    'template' => '/Cmatrix/templates/login',
+    'model' => new \Cmatrix\Models\Login,
+    'controller' => 'Twig'
 ]);
 
 echo \Cmatrix\App::instance()->Webpage->Html;

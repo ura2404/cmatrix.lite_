@@ -22,26 +22,24 @@ class Webpage {
     private function getMyHtml(){
         $_render = function($router){
             // 1. template
-            $Template = $router['template'].'.twig';
+            //$Template = $router['template'].'.twig';
+            $Template = $router['template'];
             
             // 2. model
             $Model = isset($router['model']) ? $router['model'] : [];
             if($Model instanceof \Closure) $Data = $Model();
-            else{
-                $ClassName = "\\Cmatrix\\Models\\".ucfirst($Model);
-                $Data = (new $ClassName())->getData();
-            }
-            
+            elseif(!is_array($Model)) $Data = $Model->getData();
+
             // 3. controller
-            $Controller = Controller::get($router['controller']);
+            $Controller = Controllers::get($router['controller']);
             
             return $Controller->render($Template,!$Data ? [] : $Data);
         };
         
-        $Router = Router::get($this->Name);
+        $Router = Routers::get($this->Name);
         if($Router) return $_render($Router);
         else{
-            $Router = Router::get('404');
+            $Router = Routers::get('404');
             if($Router) return $_render($Router);
             else die('Router for page '.$this->Name.' is not exists');
         }
