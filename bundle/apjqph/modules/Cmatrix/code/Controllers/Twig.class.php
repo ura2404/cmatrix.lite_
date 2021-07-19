@@ -1,6 +1,8 @@
 <?php
 namespace Cmatrix\Controllers;
 
+require_once 'Twig/autoload.php';
+
 class Twig {
     
     private $Twig;

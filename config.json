@@ -11,9 +11,9 @@
         "enable" : true,
         "host" : "localhost",
         "port" : 5432,
-        "name" : "",
-        "user" : "",
-        "pass" : ""
+        "name" : "ru.cmatrix.lite",
+        "user" : "cmatrix",
+        "pass" : "cmatrix2000##"
     },
     "session" : {
         "enable" : true

@@ -1,5 +1,5 @@
 {
-    "code" : "cmCore/Sysuser",
+    "code" : "/Cmatrix/Sysuser",
     "name": {
         "_def" : "Пользователь"
     },
@@ -104,7 +104,7 @@
             "length": 32,
             "nn": true,
             "index": null,
-            "default": "cmCore/Sysuser",
+            "default": "/Cmatrix/Sysuser",
             "register" : null,
             "info": null,
             "association": null

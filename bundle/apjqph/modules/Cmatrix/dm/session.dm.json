@@ -124,7 +124,7 @@
             "length": 32,
             "nn": true,
             "index": null,
-            "default": "cmCore/Session",
+            "default": "/Cmatrix/Session",
             "register" : null,
             "info": null,
             "association": null

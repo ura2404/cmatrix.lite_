@@ -27,18 +27,24 @@ class Session {
     // --- --- --- --- ---
     // --- --- --- --- ---
     public function login($user,$pass){
-        if($this->isDb){
-            $Ob = Db\Session::get([
-                'user' => $user,
-                'pass' => $pass
-            ]);
-            
-            return $Ob->isNew ? 'Неверная комбинация имени и пароля' : 'OK';
+        try{
+            if($this->isDb){
+                if(Db\Sysuser::get([
+                    'user' => $user,
+                    'pass' => $pass
+                ])->isNew) throw new \Exception('Неверная комбинация имени и пароля');
+                
+                Db\Session::touch();
+            }
         }
+        catch(\Throwable $e){
+            return $e->getMessage();
+        }
+        
     }
 
     // --- --- --- --- ---
-    public function logout(){
+    public function log(){
     }
     
     // --- --- --- --- ---
