@@ -1,5 +1,5 @@
 <?php
-namespace Cmatrix\Db;
+namespace Cmatrix\Dm;
 use \Cmatrix as cm;
 
 class Entity extends cm\Db{

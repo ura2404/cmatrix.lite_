@@ -33,7 +33,7 @@ spl_autoload_register(function($className){
         array_shift($Arr);
         $Path .= '/models/'. implode('/',$Arr) .'.model.php';
     }
-    elseif($Arr[0] === 'Dm'){
+    elseif($Arr[0] === 'Dm' && count($Arr)>1){
         array_shift($Arr);
         $Path .= '/dm/'. implode('/',$Arr) .'.dm.php';
     }

@@ -2,7 +2,7 @@
 namespace Cmatrix;
 
 class Session {
-    private $isDb;
+    private $PIsDb = null;
     
     // --- --- --- --- ---
     function __construct(){
@@ -12,6 +12,7 @@ class Session {
     // --- --- --- --- ---
     function __get($name){
         switch($name){
+            case 'IsDb' : return $this->getMyIsDb();
         }
     }
 
@@ -19,8 +20,27 @@ class Session {
     // --- --- --- --- ---
     // --- --- --- --- ---
     protected function getMyIsDb(){
+        if($this->PIsDb !== null) return $this->PIsDb;
         $Config = Hash::getFile(CM_TOP.'/config.json');
-        return $Config->getValue('db/enable');
+        return $this->PIsDb = $Config->getValue('db/enable');
+    }
+
+    // --- --- --- --- ---
+    protected function dbLogin($user,$pass){
+        if((new Dm\Sysuser([
+            'user' => $user,
+            'pass' => $pass
+        ]))->isNew) throw new \Exception('Неверная комбинация имени и пароля.');
+        
+        $this->touch();
+    }
+
+    // --- --- --- --- ---
+    protected function dbLogout(){
+    }
+
+    // --- --- --- --- ---
+    protected function touch(){
     }
     
     // --- --- --- --- ---
@@ -28,23 +48,23 @@ class Session {
     // --- --- --- --- ---
     public function login($user,$pass){
         try{
-            if($this->isDb){
-                if(Db\Sysuser::get([
-                    'user' => $user,
-                    'pass' => $pass
-                ])->isNew) throw new \Exception('Неверная комбинация имени и пароля');
-                
-                Db\Session::touch();
-            }
+            if($this->IsDb) $this->dbLogin($user,$pass);
+            else throw new \Exception('Система авторизации неактивна.');
         }
         catch(\Throwable $e){
             return $e->getMessage();
         }
-        
     }
 
     // --- --- --- --- ---
-    public function log(){
+    public function logout(){
+        try{
+            if($this->isDb) $this->dbLogout();
+            else throw new \Exception('Система авторизации неактивна.');
+        }
+        catch(\Throwable $e){
+            return $e->getMessage();
+        }
     }
     
     // --- --- --- --- ---
