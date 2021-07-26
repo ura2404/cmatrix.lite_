@@ -2,7 +2,7 @@
 namespace Cmatrix;
 
 class Db {
-    private $Dm = null;
+    private $P_Dm = null;
     
     // --- --- --- --- ---
     function __construct($id=null){
@@ -20,7 +20,7 @@ class Db {
     
     // --- --- --- --- ---
     protected function prepare(){
-        $Props = Dm::get($this->Url)->Props;
+        $Props = $this->Dm->Props;
     }
     
     // --- --- --- --- ---
@@ -35,8 +35,8 @@ class Db {
 
     // --- --- --- --- ---
     protected function getMyDm(){
-        if($this->Dm !== null) return $this->Dm;
-        else return $this->Dm = Dm::get($this->Url);
+        if($this->P_Dm !== null) return $this->P_Dm;
+        else return $this->P_Dm = Dm::instance($this->Url);
     }    
 }
 ?>

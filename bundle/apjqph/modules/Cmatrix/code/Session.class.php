@@ -2,7 +2,7 @@
 namespace Cmatrix;
 
 class Session {
-    private $PIsDb = null;
+    private $P_IsDb = null;
     
     // --- --- --- --- ---
     function __construct(){
@@ -20,9 +20,9 @@ class Session {
     // --- --- --- --- ---
     // --- --- --- --- ---
     protected function getMyIsDb(){
-        if($this->PIsDb !== null) return $this->PIsDb;
+        if($this->P_IsDb !== null) return $this->P_IsDb;
         $Config = Hash::getFile(CM_TOP.'/config.json');
-        return $this->PIsDb = $Config->getValue('db/enable');
+        return $this->P_IsDb = $Config->getValue('db/enable');
     }
 
     // --- --- --- --- ---
