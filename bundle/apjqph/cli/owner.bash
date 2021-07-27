@@ -7,6 +7,9 @@ cd ../..
 
 chmod 770 $FOLDER
 
+echo $FOLDER
+exit
+
 #echo -e 'Mode for executable files.'
 #find $FOLDER -type f \( -path "$FOLDER/cli/*" -and -not -path '*/\.ht*' -and \( -name "*.php" -or -name "*.sh" -or -name "*.bash" \) \) -exec chmod 770 {} \;
 

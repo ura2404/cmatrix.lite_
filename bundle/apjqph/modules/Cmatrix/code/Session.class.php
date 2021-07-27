@@ -2,29 +2,19 @@
 namespace Cmatrix;
 
 class Session {
-    private $P_IsDb = null;
     
     // --- --- --- --- ---
     function __construct(){
-        $this->isDb = $this->getMyIsDb();
     }
 
     // --- --- --- --- ---
     function __get($name){
         switch($name){
-            case 'IsDb' : return $this->getMyIsDb();
         }
     }
 
     // --- --- --- --- ---
     // --- --- --- --- ---
-    // --- --- --- --- ---
-    protected function getMyIsDb(){
-        if($this->P_IsDb !== null) return $this->P_IsDb;
-        $Config = Hash::getFile(CM_TOP.'/config.json');
-        return $this->P_IsDb = $Config->getValue('db/enable');
-    }
-
     // --- --- --- --- ---
     protected function dbLogin($user,$pass){
         if((new Dm\Sysuser([
@@ -48,7 +38,7 @@ class Session {
     // --- --- --- --- ---
     public function login($user,$pass){
         try{
-            if($this->IsDb) $this->dbLogin($user,$pass);
+            if(App::instance()->isDb) $this->dbLogin($user,$pass);
             else throw new \Exception('Система авторизации неактивна.');
         }
         catch(\Throwable $e){
@@ -59,7 +49,7 @@ class Session {
     // --- --- --- --- ---
     public function logout(){
         try{
-            if($this->isDb) $this->dbLogout();
+            if(App::instance()->isDb) $this->dbLogout();
             else throw new \Exception('Система авторизации неактивна.');
         }
         catch(\Throwable $e){

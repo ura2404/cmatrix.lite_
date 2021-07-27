@@ -6,7 +6,7 @@
     "baloon": {
         "_def": "Пользователь системы"
     },
-    "parent": "cmCore/Entity",
+    "parent": "/Cmatrix/Entity",
     "info" : null,
     "uniques": [
         "code",

@@ -12,7 +12,7 @@ class Controllers {
     // --- --- --- --- ---
     // --- --- --- --- ---
     public function addController($name,$ob){
-        if(array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller '.$name.' allready exists');
+        if(array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller '.$name.' allready exists.');
         
         self::$CONTROLLERS[$name] = $ob;
         return $this;
@@ -20,7 +20,7 @@ class Controllers {
     
     // --- --- --- --- ---
     public function getController($name){
-        if(!array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller '.$name.' is not exists');
+        if(!array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller '.$name.' is not exists.');
         return self::$CONTROLLERS[$name];
     }
     

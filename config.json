@@ -1,19 +1,21 @@
 {
     "project" : {
-        "name" : "Tilda",
-        "version" : "4.0",
-        "author" : "МОЗ"
+        "name" : "Cmatrix Lite",
+        "version" : "1.0",
+        "author" : "ura@itx.ru"
     },
     "www": {
         "root": "/cmatrix.lite"
     },
     "db" : {
         "enable" : true,
+        "type" : "pgsql",
         "host" : "localhost",
         "port" : 5432,
         "name" : "ru.cmatrix.lite",
         "user" : "cmatrix",
-        "pass" : "cmatrix2000##"
+        "pass"  : "cmatrix2000##",
+        "_prefix" : "cm_"
     },
     "session" : {
         "enable" : true

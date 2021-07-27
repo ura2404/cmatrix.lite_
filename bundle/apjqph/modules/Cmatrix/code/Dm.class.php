@@ -2,47 +2,41 @@
 namespace Cmatrix;
 
 class Dm {
-    private $Url;
-    
-    private $P_Path = null;
-    private $P_Props = null;
+    private $P_Dm = null;
     
     // --- --- --- --- ---
-    function __construct($url){
-        $this->Url = $url;
+    function __construct($id=null){
+        $this->prepare();
     }
     
     // --- --- --- --- ---
     function __get($name){
         switch($name){
-            case 'Props' : return $this->getMyProps();
-            case 'OwnProps' : return $this->getMyOwnProps();
-            case 'Json'  : return $this->getMyJson();
-            case 'Path'  : return $this->getMyPath();
+            case 'IsNew' : return $this->getMyIsNew();
+            case 'Url'   : return $this->getMyUrl();
+            case 'Dm'    : return $this->getMyDm();
         }
     }
     
     // --- --- --- --- ---
-    protected function getMyPath(){
-        if($this->P_Path !== null) return $this->P_Path;
+    protected function prepare(){
+        dump($this->Dm->Props);
     }
     
     // --- --- --- --- ---
-    protected function getMyProps(){
-        if($this->P_Props !== null) return $this->P_Props;
+    protected function getMyIsNew(){
         
     }
 
     // --- --- --- --- ---
-    protected function getMyOwnProps(){
-        
+    protected function getMyUrl(){
+        return '/'. implode('/',(explode('\Dm\\',get_class($this))));
     }
-    
+
     // --- --- --- --- ---
-    // --- --- --- --- ---
-    // --- --- --- --- ---
-    static function instance($url){
-        return new self($url);
-    }
+    protected function getMyDm(){
+        if($this->P_Dm !== null) return $this->P_Dm;
+        else return $this->P_Dm = Datamodel::instance($this->Url);
+    }    
 }
 ?>

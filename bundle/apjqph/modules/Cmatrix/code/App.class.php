@@ -2,6 +2,8 @@
 namespace Cmatrix;
 
 class App {
+    private $P_IsDb = null;
+    
     static $WEBPAGE;
     
     static $PAGE;
@@ -17,9 +19,18 @@ class App {
     function __get($name){
         switch($name){
             case 'Webpage' : return $this->getMyWebpage();
+            
+            case 'isDb' : return $this->getMyIsDb();
         }
     }
 
+    // --- --- --- --- ---
+    protected function getMyIsDb(){
+        if($this->P_IsDb !== null) return $this->P_IsDb;
+        $Config = Hash::getFile(CM_TOP.'/config.json');
+        return $this->P_IsDb = $Config->getValue('db/enable');
+    }
+    
     // --- --- --- --- ---
     private function getMyWebpage(){
         if(self::$WEBPAGE) return self::$WEBPAGE;
