@@ -58,7 +58,7 @@ $_help = function($text){
 };
 
 // --- --- --- --- --- --- --- ---
-$_script = function($target,$url) use($_provider,$_help){
+$_script = function($target,$url) use($_help){
     if(!$target) $_help('Не указана цель');    
     if(!$url) $_help('Не указан url');    
     
@@ -70,8 +70,8 @@ $_script = function($target,$url) use($_provider,$_help){
     switch($target){
         case 'dm' : return \Cmatrix\Structure\Datamodel::instance($url,$Provider)->Script;
         
-        case 'datamodel' : return \cmKernel\Structure\Datamodel::get($url)->getScript($Provider,false);
-        case 'datasource' : return \cmKernel\Structure\Datasource::get($url)->getScript($Provider,true);
+        //case 'datamodel' : return \cmKernel\Structure\Datamodel::get($url)->getScript($Provider,false);
+        //case 'datasource' : return \cmKernel\Structure\Datasource::get($url)->getScript($Provider,true);
         default : $_help('Неверная цель');
     }
     /*
