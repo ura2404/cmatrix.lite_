@@ -9,6 +9,13 @@ class Provider {
     ];
     
     // --- --- --- --- ---
+    function __get($name){
+        switch($name){
+            case 'Type' : return $this->getType();
+        }
+    }
+    
+    // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
     public function getScript($provider,$isFormat=false){
@@ -18,7 +25,7 @@ class Provider {
     // --- --- --- --- ---
     // --- --- --- --- ---
     static function instance($name){
-        if(!in_array($name,array_keys(self::$PROVIDERS))) throw new \Exception('Wrong provider " .$name. "');
+        if(!in_array($name,array_keys(self::$PROVIDERS))) throw new \Exception('Wrong provider "' .$name. '"');
         $Cl = self::$PROVIDERS[$name];
         return new $Cl();
     }

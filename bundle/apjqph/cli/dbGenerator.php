@@ -68,7 +68,7 @@ $_script = function($target,$url) use($_help){
     $Provider = $Provider ? $Provider : \Cmatrix\Hash::getFile(CM_TOP.'/config.json')->getValue('db/type');
     
     switch($target){
-        case 'dm' : return \Cmatrix\Structure\Datamodel::instance($url,$Provider)->Script;
+        case 'dm' : return \Cmatrix\Structure::instance($url,$Provider)->Script;
         
         //case 'datamodel' : return \cmKernel\Structure\Datamodel::get($url)->getScript($Provider,false);
         //case 'datasource' : return \cmKernel\Structure\Datasource::get($url)->getScript($Provider,true);
