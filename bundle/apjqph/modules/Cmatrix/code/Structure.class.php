@@ -1,5 +1,6 @@
 <?php
 namespace Cmatrix;
+use \Cmatrix as cm;
 
 class Structure{
     static $INSTANCES = [];

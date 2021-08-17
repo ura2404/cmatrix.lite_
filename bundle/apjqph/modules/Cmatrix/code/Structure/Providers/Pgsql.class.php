@@ -163,21 +163,24 @@ class Pgsql extends st\Provider{
         $Table = st\Table::instance($this);
         
         // подготовка массива групп индексных свойств
-        $_src = function() use($isUnique){
+        $_indexes = function() use($isUnique){
             if($isUnique) return $this->Datamodel->Uniques;
             
             $Indexes = $this->Datamodel->Indexes;
+            /*
             // добавить ссылочные поля
             $Association = $this->Datamodel->Association;
             if(count($Association)) foreach($Association as $ass) $Indexes[] = [$ass];
             //dump($Indexes);die();
-            
+            */
             return $Indexes;
         };
         
         // формирование условий для групповой индексации свойств
         // нюанс для pgsql связан с некорректоной индексации null полей, особенно в связке с не null полями.
         $_inherit = function($props){
+            //dump($props);
+            
             // --- 1. кол-во свойств
             $N = count($props);
             
@@ -185,7 +188,7 @@ class Pgsql extends st\Provider{
             // кол-во всех вариантов - это 2 в степени, равном кол-ву свойств
             $Ret = [];
             for($i=1; $i<pow(2,$N); $i++){
-                // --- 2.1. получить бинарную строку, кодирующую
+                // --- 2.1. получить бинарную строку
                 //    например: 0010110 - нужно построить условие для свойств с индексами 2,3,5
                 
                 //   здесь форматирование строки для дополнения лидирующих нулей: %'.05s
@@ -193,9 +196,42 @@ class Pgsql extends st\Provider{
                 //     - 5  - общая длина 5 символов
                 //     - s  - вовод строчных символов
                 $S = str_split(sprintf("%'.0".$N."s",decbin($i)));
-                dump(sprintf("%'.0".$N."s",decbin($i)));
+                //dump(sprintf("%'.0".$N."s",decbin($i)));
+                //dump($S);
+                
+                // --- 2.2. пометить неиспользуемые варианты (nn=true) и 
+                //    например: строка 01, это значить, что обработать нужно свойство с индексом 1,
+                //              но свойство с индексом 0 имеет свойство nn=true, что не даёт возможность его игнорировать,
+                //              таким образом это вариант не долен быть учтён
+                $Variants = array_map(function($val,$ind) use($props){
+                    if($val === '0' && $props[$ind]['nn']) return -1;
+                    return $val;
+                },$S,array_keys($S));
+                
+                // --- 2.3. нужно удалить неиспользуемые варианты (-1)
+                $Fl = array_reduce($Variants,function($carry, $item){
+                    $carry = $carry && ($item == -1 ? false : true);
+                    return $carry;
+                },true);
+                
+                if(!$Fl) continue;
+                
+                // --- 2.3. Создание массива условий
+                $Props = [];
+                $Rules = [];
+                $Arr = array_map(function($var,$index) use($props,&$Props,&$Rules){
+                    if($props[$index]['nn'] || (!$props[$index]['nn'] && $var == '1')) $Props[] = $props[$index]['code'];
+                    
+                    if(!$props[$index]['nn'] && $var == '0') $Rules[] = $props[$index]['code'] .' IS NULL';
+                    if(!$props[$index]['nn'] && $var == '1') $Rules[] = $props[$index]['code'] .' IS NOT NULL';
+                },$Variants,array_keys($Variants));
+                
+                $Ret[] = [
+                    'props' => $Props,
+                    'rules' => $Rules
+                ];
             }
-            
+            return $Ret;
         };
         
     /*  
@@ -248,10 +284,14 @@ class Pgsql extends st\Provider{
         //dump($Ret);
         return $Ret;
     */
-      $Arr = array_map(function($group) use($isUnique,$Table,$_inherit){
+    
+        //
+        $Arr = array_map(function($group) use($isUnique,$Table,$_inherit){
             $Arr = array_map(function($val) use($isUnique,$Table,$_inherit){
             },$_inherit($group));
-        },$_src());
+        },$_indexes());
+        
+        dump($Arr);
     }
     
 /*

@@ -8,7 +8,8 @@
     },
     "parent": "/Cmatrix/Entity",
     "info" : null,
-    "indexes" : [["ip4"]],
+    "indexes" : null,
+    "_indexes" : [["ip4"]],
     "uniques": [["ts,ip4,ip4x,proxy,agent"]],
     "props": {
         "id" : {

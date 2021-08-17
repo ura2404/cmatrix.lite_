@@ -35,6 +35,9 @@ class Pgsql extends cm\Db\Provider implements cm\Db\iProvider{
     }
     
     // --- --- --- --- ---
+    /**
+     * @return string - символ коментирования sql строки
+     */
     public function getCommSymbol(){
         return '-- ';
     }

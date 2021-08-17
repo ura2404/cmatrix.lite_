@@ -6,11 +6,11 @@ use \Cmatrix\Structure as st;
 class Table {
     static $INSTANCES = [];
     
-    protected $Datamodel;
+    protected $Provider;
     
     // --- --- --- --- ---
-    function __construct(iProvider $datamodel){
-        $this->Datamodel = $datamodel;
+    function __construct(iProvider $provider){
+        $this->Provider = $provider;
     }
     
     // --- --- --- --- ---
@@ -22,8 +22,9 @@ class Table {
     
     // --- --- --- --- ---
     private function getMyName(){
-        $Datamodel = $this->Datamodel->Datamodel;
-        return $this->Datamodel->Prefix . str_replace('/','_',ltrim($Datamodel->Json['code'],'/'));
+        $Datamodel = $this->Provider->Datamodel;
+        $Prefix = $this->Provider->Prefix;
+        return $Prefix . str_replace('/','_',ltrim($Datamodel->Json['code'],'/'));
     }
     
     // --- --- --- --- ---
@@ -32,10 +33,10 @@ class Table {
     /**
      * @param Datamodel $datamodel
      */
-    static function instance(iProvider $datamodel){
-        $Key = md5($datamodel->Datamodel->Url);
+    static function instance(iProvider $provider){
+        $Key = md5($provider->Datamodel->Url);
         if(isset(self::$INSTANCES[$Key])) return self::$INSTANCES[$Key];
-        return self::$INSTANCES[$Key]= new self($datamodel);
+        return self::$INSTANCES[$Key]= new self($provider);
     }
 }
 ?>

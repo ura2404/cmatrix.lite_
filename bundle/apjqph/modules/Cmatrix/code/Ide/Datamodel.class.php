@@ -2,6 +2,9 @@
 namespace Cmatrix\Ide;
 use \Cmatrix as cm;
 
+/**
+ * Получени любой инофрмации о datamodel
+ */
 class Datamodel {
     private $P_Url = null;
     private $P_Path = null;
