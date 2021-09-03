@@ -39,7 +39,7 @@ class App {
     }
 
     // --- --- --- --- ---
-    private function getMyHtml(){
+    private function getMyHtml____(){
         try{
             $_render = function($router){
                 if(!$router) throw new \Exception('router is not defined');
@@ -69,7 +69,7 @@ class App {
             
             foreach(\Cmatrix\Router::$ROUTERS as $router){
                 $Match = $router['match'];
-                if(strlen($Match)>2 && $Match{0} == '/' && $Match{strlen($Match)-1} == '/') $Router = $_match($router);
+                if(strlen($Match)>2 && $Match[0] == '/' && $Match[strlen($Match)-1] == '/') $Router = $_match($router);
                 else $Router = $_simple($router);
                 
                 if($Router) break;

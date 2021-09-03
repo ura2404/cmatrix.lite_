@@ -23,10 +23,13 @@ spl_autoload_register(function($className){
     if(class_exists($className)) return;
 
     $Arr = explode("\\",$className);
-    
+
     $Path = CM_ROOT .'/modules/'. $Arr[0];
+
+    // если не класс модуля
+    if(!file_exists($Path)) return;
+
     array_shift($Arr);
-    
     if(!count($Arr)) return;
     
     if($Arr[0] === 'Models'){

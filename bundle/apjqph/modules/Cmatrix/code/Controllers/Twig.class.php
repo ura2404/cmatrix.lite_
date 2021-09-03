@@ -9,7 +9,7 @@ class Twig {
     
      // --- --- --- --- ---
     function __construct(){
-        $this->Twig = new \Twig_Environment($this->getMyLoader(),[
+        $this->Twig = new \Twig\Environment($this->getMyLoader(),[
             'cache' => '/var/tmp',
             'debug' => true,
             'auto_reload' => true

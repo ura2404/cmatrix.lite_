@@ -43,7 +43,7 @@ class Routers {
         
         $Router = null;
         foreach(self::$ROUTERS as $match=>$router){
-            if(strlen($match)>2 && $match{0} == '/' && $match{strlen($Match)-1} == '/') $Router = $_match($match,$router);
+            if(strlen($match)>2 && $match[0] == '/' && $match[strlen($Match)-1] == '/') $Router = $_match($match,$router);
             else $Router = $_simple($match,$router);
             
             if($Router) break;
