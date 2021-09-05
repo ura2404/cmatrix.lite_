@@ -3,12 +3,12 @@ namespace Cmatrix\Structure;
 use \Cmatrix as cm;
 
 class Provider implements iProvider{
-    static $INSTANCES = [];
+    /*static $INSTANCES = [];
     
     static $PROVIDERS = [
         'mysql' => '\Cmatrix\Structure\Providers\Mysql',
         'pgsql' => '\Cmatrix\Structure\Providers\Pgsql'
-    ];
+    ];*/
     
     // --- --- --- --- ---
     // --- --- --- --- ---
@@ -17,7 +17,7 @@ class Provider implements iProvider{
      * @param string | \Cmatrix\Datamodel $datamodel - 
      * @param string | cm\Db\Provider $provider - 
      */
-    static function instance($datamodel,$provider){
+    /*static function instance($datamodel,$provider){
         $Datamodel = $datamodel instanceof cm\Ide\Datamodel ? $datamodel :  cm\Ide\Datamodel::instance($datamodel);
         $Provider = $provider instanceof cm\Db\iProvider ? $provider : cm\Db\Provider::instance($provider);
         
@@ -28,8 +28,16 @@ class Provider implements iProvider{
         
         $Cl = self::$PROVIDERS[$Provider->Type];
         return self::$INSTANCES[$Key] = new $Cl($Datamodel,$Provider);
-    }
+    }*/
 }
+
+
+
+
+
+
+
+
 
 class Datamodel22 {
     

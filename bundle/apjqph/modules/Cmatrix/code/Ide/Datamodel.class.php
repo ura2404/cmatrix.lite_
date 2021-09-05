@@ -49,7 +49,7 @@ class Datamodel {
     // --- --- --- --- ---
     protected function getMyUrl(){
         if($this->P_Url !== null) return $this->P_Url;
-        return '/'. implode('/',(explode('\Dm\\',get_class($this))));
+        return '/'. implode('/',explode('\Dm\\',get_class($this)));
     }
     
     // --- --- --- --- ---

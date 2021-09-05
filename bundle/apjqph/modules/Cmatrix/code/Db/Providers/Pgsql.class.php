@@ -11,6 +11,14 @@ class Pgsql extends cm\Db\Provider implements cm\Db\iProvider{
     
     // --- --- --- --- ---
     // --- --- --- --- ---
+    // --- --- --- --- ---
+    /**
+     * @return string - тип провайдера
+     */
+    public function getType(){
+        return 'pgsql';
+    }
+    
     // --- --- --- --- --- --- --- ---
     /**
      * @retrun string - трансформированное имя
@@ -21,17 +29,12 @@ class Pgsql extends cm\Db\Provider implements cm\Db\iProvider{
         return $name;
         
         // 2.
-        return 'cm'.md5($name);
+        //return 'cm'.md5($name);
         
         // 3.
         //$Prefix = \Cmatrix\Db\Kernel::get()->CurConfig->getValue('prefix',null);
         //$Prefix = $Prefix ? $Prefix : 'cm';
         //return $Prefix .'_'. md5($name);
-    }
-    
-    // --- --- --- --- ---
-    public function getType(){
-        return 'pgsql';
     }
     
     // --- --- --- --- ---
