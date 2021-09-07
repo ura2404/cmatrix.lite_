@@ -3,7 +3,7 @@ namespace Cmatrix\Structure;
 use \Cmatrix as cm;
 use \Cmatrix\Structure as st;
 
-class Pk {
+class Fk {
     static $INSTANCES = [];
     
     protected $Datamodel;
@@ -27,7 +27,7 @@ class Pk {
         $Provider = $this->Datamodel->Provider;
         return $Provider->transName(
             strtolower(
-                Table::instance($this->Datamodel)->Name .'__pk__'. implode('_',
+                Table::instance($this->Datamodel)->Name .'__fk__'. implode('_',
                     array_map(
                         function($prop){ return Prop::instance($this->Datamodel,$prop)->Name; }
                     ,$this->Props)

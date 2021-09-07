@@ -21,7 +21,7 @@ class Sequence {
             case 'Name' : return $this->getMyName();
         }
     }
-    
+
     // --- --- --- --- ---
     private function getMyName(){
         $Provider = $this->Datamodel->Provider;
