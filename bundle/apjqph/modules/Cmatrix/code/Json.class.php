@@ -85,6 +85,7 @@ class Json {
      */
     static function getFile($path){
         if(!file_exists($path)) throw new \Exception('Wrong json file');
+        
         $Arr = json_decode(file_get_contents($path),true);
         return new self($Arr);
     }

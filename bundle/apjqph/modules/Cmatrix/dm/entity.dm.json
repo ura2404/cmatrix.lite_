@@ -6,8 +6,7 @@
     "baloon": null,
     "parent" : null,
     "info": null,
-    "_indexes" : [["status","hid","deleted","hidden"]],
-    "indexes" : [["status","hidden"]],
+    "indexes" : null,
     "uniques": [[ "hid" ]],
     "props" : {
         "id" : {

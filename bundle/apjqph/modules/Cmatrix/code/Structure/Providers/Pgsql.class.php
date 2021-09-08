@@ -3,7 +3,7 @@ namespace Cmatrix\Structure\Providers;
 use \Cmatrix as cm;
 use \Cmatrix\Structure as st;
 
-class Pgsql extends st\Provider{
+class Pgsql extends st\Provider implements st\iProvider{
     private $Datamodel;
     private $Provider;
     private $Prefix;
@@ -62,18 +62,17 @@ class Pgsql extends st\Provider{
 		$Queries['main'][] = $this->sqlCreateGrants();
 		$Queries['main'][] = "";
 		
-/*        
         $Queries['init'][] = $Comm . '--- init --- dm::' .$Url. ' -----------------';
-		$Queries['init'][] = $provider->sqlCreateInit($this);
+		$Queries['init'][] = $this->sqlCreateInit();
 		$Queries['init'][] = "";
 		
-*/        
         $Queries['fk'][] = $Comm . '--- fk --- dm::' .$Url. ' -------------------';
 		$Queries['fk'][] = $this->sqlCreateFks($this);
 		$Queries['fk'][] = "";
+		
         //dump($Queries);
         
-        //return $Queries;
+        return $Queries;
         //return implode("\n",array2line($Queries))."\n";
         //return implode("\n",array2line($Queries));
         
@@ -93,20 +92,16 @@ class Pgsql extends st\Provider{
      */
     
     private function sqlSequences(){
-        $Arr = array_map(function($prop){
-            $Arr = [];
-            
-			$Name = st\Sequence::instance($this,$prop['code'])->Name;
-			
-			$Arr[] = 'DROP SEQUENCE IF EXISTS '. $Name .' CASCADE;';
-			$Arr[] = 'CREATE SEQUENCE '. $Name .';';
-			
-			return $Arr;
-			return implode("\n", $Arr);
-        },array_filter($this->Datamodel->Props,function($prop){
+        $PropCodes = array_keys(array_filter($this->Datamodel->Props,function($prop){
             return $prop['default'] === '::counter::';
         }));
-        return $Arr;
+        
+        return array_map(function($code){
+            $SeqName = $this->sqlSeqName($code);
+			$Arr[] = 'DROP SEQUENCE IF EXISTS '. $SeqName .' CASCADE;';
+			$Arr[] = 'CREATE SEQUENCE '. $SeqName .';';
+			return $Arr;
+        },$PropCodes);
     }
 
     // --- --- --- --- ---
@@ -114,24 +109,34 @@ class Pgsql extends st\Provider{
      * @return array - массив sql кода для создания Table
      */
     private function sqlTable(){
-        $Arr = [];
-        $Table = st\Table::instance($this);
-        
-        $Arr[] = 'DROP TABLE IF EXISTS '. $Table->Name .' CASCADE;';
-        $Arr[] = 'CREATE TABLE '. $Table->Name .'(';
-        $Arr = array_merge($Arr,array_map(function($propName){
+        $_prop = function($index,$prop){
+            $PropName = $this->sqlPropName($prop['code']);
+            $PropType = $this->Provider->getPropType($prop);
+            
             $Arr = [];
-            $Prop = st\Prop::instance($this,$propName);
-            
-            $Arr[] = $Prop->Name;
-            $Arr[] = $Prop->Type;
-            $Arr[] = $Prop->Default;
-            $Arr[] = $Prop->NotNull;
-            
-            return implode(" ",array_filter($Arr,function($value){ return !!$value;}));
-        },array_keys($this->Datamodel->Props)));
-        $Arr[] = $this->Parent ? ') INHERITS ('. $this->Parent->TableName .');' : ');';
+            $Arr[] = ($index ? ',' : null).$this->sqlPropName($prop['code']);
+            $Arr[] = $this->Provider->getPropType($prop);
+            $Arr[] = $prop['default'] ? $this->Provider->getPropDef($prop,$this) : null;
+            $Arr[] = $prop['nn'] === true ? $this->Provider->getSqlNotNull() : null;
+            return implode(' ',array_filter($Arr,function($value){ return !!$value; }));
+        };
         
+        $_inherits = function(){
+            if($this->Datamodel->Parent){
+                $ParentProvider = st\Provider::instance($this->Datamodel->Parent->Url,$this->Provider);
+                $ParentTableName = $ParentProvider->sqlTableName();
+                return ') INHERITS (' .$ParentTableName. ');';
+            }
+            else return ');';
+        };
+        
+        $TableName = $this->sqlTableName();
+        
+        $Arr = [];
+        $Arr[] = 'DROP TABLE IF EXISTS '. $TableName .' CASCADE;';
+        $Arr[] = 'CREATE TABLE '. $TableName .'(';
+        $Arr[] = array_map(function($index,$prop) use($_prop){ return $_prop($index,$prop); },range(0, count($this->Datamodel->Props)-1),$this->Datamodel->Props);
+        $Arr[] = $_inherits();
         return $Arr;
     }    
 
@@ -140,20 +145,16 @@ class Pgsql extends st\Provider{
      * @return array - массив sql кода для создания PrimaryKeys
      */
     private function sqlCreatePks(){
-        $Props = array_keys(array_filter($this->Datamodel->Props,function($prop){
+        $PropCodes = array_keys(array_filter($this->Datamodel->Props,function($prop){
             return !!$prop['pk'];
         }));
         
-        if(!count($Props)) return;
-        
-        $Table = st\Table::instance($this);
-		$Pk = st\Pk::instance($this,$Props);
-        //dump($Pk);
+        $TableName = $this->sqlTableName();
+        $PkName = $this->sqlPkName($PropCodes);
         
         $Arr = [];
-        $Arr[] = 'ALTER TABLE ' .$Table->Name. ' DROP CONSTRAINT IF EXISTS ' .$Pk->Name. ' CASCADE;';
-        $Arr[] = 'ALTER TABLE ' .$Table->Name. ' ADD CONSTRAINT ' .$Pk->Name. ' PRIMARY KEY (' .implode(',',$Props). ');';
-        
+        $Arr[] = 'ALTER TABLE ' .$TableName. ' DROP CONSTRAINT IF EXISTS ' .$PkName. ' CASCADE;';
+        $Arr[] = 'ALTER TABLE ' .$TableName. ' ADD CONSTRAINT ' .$PkName. ' PRIMARY KEY (' .implode(',',$PropCodes). ');';
         return $Arr;
     }
     
@@ -164,8 +165,6 @@ class Pgsql extends st\Provider{
 
     // --- --- --- --- ---
     private function sqlCreateIndexes($isUnique=false){
-        $Table = st\Table::instance($this);
-        
         // подготовка массива групп индексных свойств
         $_indexes = function() use($isUnique){
             if($isUnique) return $this->Datamodel->Uniques;
@@ -238,18 +237,20 @@ class Pgsql extends st\Provider{
             }
             return $Ret;
         };
-
+        
         // --- --- --- ---
-        $Arr = array_map(function($group) use($isUnique,$Table,$_inherit){
-            return array_map(function($val) use($isUnique,$Table,$_inherit){
+        $TableName = $this->sqlTableName();
+        
+        $Arr = array_map(function($group) use($isUnique,$TableName,$_inherit){
+            return array_map(function($val) use($isUnique,$TableName,$_inherit){
                 $Props = $val['props'];
                 $Rules = $val['rules'];
                 
-                $Index = st\Index::instance($this,$Props,$isUnique);
-
+                $IndexName = $this->sqlIndexName($Props,$isUnique);
+                
                 $Arr = [];
-                $Arr[] = 'DROP INDEX IF EXISTS ' .$Index->Name. ' CASCADE;';
-                $Arr[] = 'CREATE' .($isUnique ? ' UNIQUE ' : ' '). 'INDEX ' .$Index->Name. ' ON ' .$Table->Name. ' USING btree (' .implode(',',$Props). ')' .
+                $Arr[] = 'DROP INDEX IF EXISTS ' .$IndexName. ' CASCADE;';
+                $Arr[] = 'CREATE' .($isUnique ? ' UNIQUE ' : ' '). 'INDEX ' .$IndexName. ' ON ' .$TableName. ' USING btree (' .implode(',',$Props). ')' .
                     (count($Rules) ? ' WHERE ' .implode(' AND ', $Rules) : null). ';';
                 return $Arr;
             },$_inherit($group));
@@ -260,80 +261,158 @@ class Pgsql extends st\Provider{
     
     // --- --- --- --- ---
     private function sqlCreateGrants(){
-        $Table = st\Table::instance($this);
+        $TableName = $this->sqlTableName();
         
 		return [
-			'GRANT SELECT ON '. $Table->Name .' TO PUBLIC;',
-			'GRANT REFERENCES ON '. $Table->Name .' TO PUBLIC;'
+			'GRANT SELECT ON '. $TableName .' TO PUBLIC;',
+			'GRANT REFERENCES ON '. $TableName .' TO PUBLIC;'
 		];
+    }
+
+    // --- --- --- --- ---
+    private function sqlCreateFks(){
+        $PropCodes = array_keys(array_filter($this->Datamodel->Props,function($prop){
+            return !!$prop['association'];
+        }));
+        if(!count($PropCodes)) return;
+        
+        $TableName = $this->sqlTablename();
+        
+        $_to = function($propCode){
+            $Prop = $this->Datamodel->getProp($propCode);
+            $DstEntity = $Prop['association']['entity'];
+            $DstPropCode = $Prop['association']['prop'];
+            
+            $DstProvider = st\Provider::instance($DstEntity,$this->Provider);
+            $DstTableName = $DstProvider->sqlTableName();
+            $DstPropName = $DstProvider->sqlPropName($DstPropCode);
+            
+            return $DstTableName .'(' . $DstPropName .')';
+        };
+        
+		return array_map(function($propCode) use($TableName,$_to){
+            $PropName = $this->sqlPropName($propCode);
+            $FkName = $this->sqlFkName($propCode);
+            
+            $Arr = [];
+            $Arr[] = 'ALTER TABLE ' .$TableName. ' DROP CONSTRAINT IF EXISTS ' .$FkName. ' CASCADE;';
+            $Arr[] = 'ALTER TABLE '. $TableName .' ADD CONSTRAINT '. $FkName .' FOREIGN KEY ('. $PropName .') REFERENCES '. $_to($propCode) .';';
+            return $Arr;
+        },$PropCodes);
     }
     
     // --- --- --- --- ---
-    private function sqlCreateFks(){
-        $Props = array_keys(array_filter($this->Datamodel->Props,function($prop){
-            return !!$prop['association'];
-        }));
+    private function sqlCreateInit(){
+        $TableName = $this->sqlTablename();
+        $Init = $this->Datamodel->Json['init'];
         
-        if(!count($Props)) return;
+        if(!is_array($Init)) return;
         
-        //
-        $_to = function(){
+        return array_map(function($init) use($TableName){
+            $Props = array_map(function($propCode){ return $this->Datamodel->getProp($propCode); },array_keys($init));
+            $PropCodes = array_map(function($prop){ return $prop['code']; },$Props);
+            $PropTypes = array_map(function($prop){ return $prop['type']; },$Props);
+            $Values = array_values($init);
             
+			$PropCodes[] = 'session_id';
+			$PropTypes[] = '::id::';
+			$Values[] = '1';
+			
+			$Values = array_map(function($type,$value){
+                return $this->Provider->sqlValue($type,$value);
+			},$PropTypes,$Values);
+            
+			return 'INSERT INTO '. $TableName .'('. implode(',',$PropCodes) .') VALUES('. implode(',',$Values) .');';
+        },$Init);
+    }
+    
+    // --- --- --- --- ---
+    // --- --- --- --- ---
+    // --- --- --- --- ---
+    /**
+     * @return string - sql name of table
+     */
+    public function sqlSeqName($propCode){
+        $TableName = $this->sqlTableName();
+        $PropName = $this->sqlPropName($propCode);
+        
+        return $this->Provider->transName(strtolower($TableName .'__seq__'. $PropName));
+    }
+    
+    // --- --- --- --- ---
+    /**
+     * @return string - sql name of table
+     */
+    public function sqlTableName(){
+        return $this->Prefix . str_replace('/','_',ltrim($this->Datamodel->Json['code'],'/'));
+    }
+
+    // --- --- --- --- ---
+    /**
+     * @return string - sql name of field
+     */
+    public function sqlPropName($propCode){
+        return $this->Datamodel->getProp($propCode)['code'];
+    }
+    
+    // --- --- --- --- ---
+    /**
+     * @return string - sql type of field
+     */
+    public function sqlPropType($propCode){
+        $Type = $prop['type'];
+        
+        if($Type === '::id::')       return 'BIGINT';
+        elseif($Type === '::ip::')   return 'VARCHAR(45)'; // 15 - ipv4, 45 - ipv6
+        elseif($Type === '::hid::')  return 'VARCHAR(32)';
+        elseif($Type === '::pass::') return 'VARCHAR(255)';
+        elseif($Type === 'string')   return 'VARCHAR' .(isset($prop['length']) ? '('. $prop['length'] .')' : null);
+        else return strtoupper($Type);
+        
+    }
+    // --- --- --- --- ---
+    /**
+     * @return string - sql name of primary key
+     */
+    public function sqlPkName(array $propCodes){
+        $TableName = $this->sqlTableName();
+        
+        $_name = function() use($propCodes){
+            return implode('_',array_map(function($code){
+                return $this->sqlPropName($code);
+            },$propCodes));
         };
         
-        $Table = st\Table::instance($this);
-		$Fk = st\Fk::instance($this,$Props);
-		
-		$Arr = array_map(function($prop) use($Table){
-            $Arr = [];
-    		$Arr[] = 'ALTER TABLE '. $Table->Name .' ADD CONSTRAINT '. $FkName .' FOREIGN KEY ('. $FieldName .') REFERENCES '. $_to($prop) .';';
-		    
-		},$Props);
+        return $this->Provider->transName(strtolower($TableName .'__pk__'. $_name()));
+    }
+    
+    // --- --- --- --- ---
+    /**
+     * @return string - sql name of foreign key
+     */
+    public function sqlFkName($propCode){
+        $TableName = $this->sqlTableName();
+        $PropName = $this->sqlPropName($propCode);
         
-        dump($Arr);
+        return $this->Provider->transName(strtolower($TableName .'__fk__'. $PropName));
+    }
+    
+    // --- --- --- --- ---
+    /**
+     * @return string - sql name of index key
+     */
+    public function sqlIndexName(array $propCodes,$isUnique){
+        $TableName = $this->sqlTableName();
         
-        
-        //==============================
-        return ;
-        $PkProps = array_keys(array_filter($this->Datamodel->Props,function($prop){
-            return !!$prop['pk'];
-        }));
-        
-        if(!count($PkProps)) return;
-        
-        $Table = st\Table::instance($this);
-		$Pk = st\Pk::instance($this,$PkProps);
-        //dump($Pk);
-        
-        $Arr = [];
-        $Arr[] = 'ALTER TABLE ' .$Table->Name. ' DROP CONSTRAINT IF EXISTS ' .$Pk->Name. ' CASCADE;';
-        $Arr[] = 'ALTER TABLE ' .$Table->Name. ' ADD CONSTRAINT ' .$Pk->Name. ' PRIMARY KEY (' .implode(',',$PkProps). ');';
-        
-        return $Arr;
-          //=============
-        return;
-        $Arr= [];
-        $TableName = $this->Datamodel->Tablename; 
-        $Props = $this->Datamodel->Props;
-        
-        $_to = function($prop){
-            $Url  = $prop['association']['entity'];
-            $Prop = $prop['association']['prop'];
-            $Datamodel = kernel\Structure\Datamodel::get($Url);
-            $Tablename = $Datamodel->Tablename;
-            $FieldName = $Datamodel->getProp($Prop)['code'];
-            return $Tablename .'(' . $FieldName .')';
+        $_name = function() use($propCodes){
+            return implode('_',array_map(function($code){
+                return $this->sqlPropName($code);
+            },$propCodes));
         };
         
-		foreach($Props as $code=>$prop){
-			if(!$prop['association']) continue;
-			$FieldName = $prop['code'];
-            //$FkName = strtolower($TableName .'_fk_'. $FieldName);
-            $FkName = strtolower($TableName .'_fk_'. md5($FieldName));
-			$Arr[] = 'ALTER TABLE '. $TableName .' ADD CONSTRAINT '. $FkName .' FOREIGN KEY ('. $FieldName .') REFERENCES '. $_to($prop) .';';
-		}
-		
-		return $Arr;
+        $pref = $isUnique ? 'uniq' : 'index';
+        
+        return $this->Provider->transName(strtolower($TableName .'__'. $pref .'__'. $_name()));
     }
 }
 ?>

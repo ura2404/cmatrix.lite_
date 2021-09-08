@@ -65,7 +65,7 @@ class Datamodel {
     protected function getMyPath(){
         if($this->P_Path !== null) return $this->P_Path;
         $Arr = explode('/',ltrim($this->Url,'/'));
-        return CM_ROOT.'/modules/'.$Arr[0].'/dm/'.lcfirst($Arr[1]).'.dm.json';
+        return $this->P_Path = CM_ROOT.'/modules/'.$Arr[0].'/dm/'.lcfirst($Arr[1]).'.dm.json';
     }
     
     // --- --- --- --- ---

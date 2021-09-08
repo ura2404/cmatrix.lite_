@@ -8,9 +8,8 @@
     },
     "parent": "/Cmatrix/Entity",
     "info" : null,
-    "indexes" : null,
-    "_indexes" : [["ip4"]],
-    "uniques": [["ts,ip4,ip4x,proxy,agent"]],
+    "indexes": null,
+    "uniques": [["ip4","ip4x"]],
     "props": {
         "id" : {
             "code": "id",
@@ -118,7 +117,7 @@
             "register" : null,
             "info": null,
             "association": {
-                "entity" : "cmCore/Sysuser",
+                "entity" : "/Cmatrix/Sysuser",
                 "prop" : "id"
             }
         },

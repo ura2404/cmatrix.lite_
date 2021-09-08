@@ -58,6 +58,19 @@ class Pgsql extends cm\Db\Provider implements cm\Db\iProvider{
     }
 
     // --- --- --- --- ---
+    public function getPropDef($prop,\Cmatrix\Structure\iProvider $provider){
+        $Type = $prop['type'];
+        $Def = $prop['default'];
+        
+        if($Def === '::counter::') $Def = 'raw::' . $this->getSqlNextSequence($provider->sqlSeqName($prop['code']));
+        elseif($Def === '::now::') $Def = 'raw::' . $this->getSqlNow();
+        elseif($Def === '::hid::') $Def = 'raw::' . $this->getSqlHid();
+        
+        $Def = $this->sqlValue($Type,$Def);
+        return $Def ? 'DEFAULT ' . $Def : null;
+    }
+    
+    // --- --- --- --- ---
     public function getSqlNextSequence($seqName){
         return "nextval('". $seqName ."')";
     }
@@ -77,7 +90,17 @@ class Pgsql extends cm\Db\Provider implements cm\Db\iProvider{
         return 'NOT NULL';
     }
 
-    // --- --- --- --- --- --- --- ---
+    // --- --- --- --- ---
+    public function getSqlFkDrop(){
+        
+    }
+    
+    // --- --- --- --- ---
+    public function getSqlFkCreate(){
+        
+    }
+
+    // --- --- --- --- ---
     /**
      * Функция sqlValue
      * Для формирования sql представления значения для подстановки в запросы

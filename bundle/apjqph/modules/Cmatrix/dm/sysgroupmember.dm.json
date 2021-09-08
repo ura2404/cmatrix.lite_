@@ -1,10 +1,10 @@
 {
-    "code" : "/Cmatrix/Sysrole",
+    "code" : "/Cmatrix/Sysgroupmember",
     "name": {
-        "_def" : "Роль"
+        "_def" : "Участник группы"
     },
     "baloon": {
-        "_def": "Системная роль"
+        "_def": "Участник системная группы"
     },
     "parent": "/Cmatrix/Entity",
     "info" : null,
@@ -38,7 +38,7 @@
             "pk" : null,
             "nn": true,
             "index": null,
-            "default": "/Cmatrix/Sysrole",
+            "default": "/Cmatrix/Sysgroupmember",
             "register" : null,
             "info": null,
             "association": null

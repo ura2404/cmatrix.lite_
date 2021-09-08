@@ -18,8 +18,8 @@ class Provider {
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
-    public function getScript($provider,$isFormat=false){
-    }
+    /*public function getScript($provider,$isFormat=false){
+    }*/
     
     // --- --- --- --- ---
     // --- --- --- --- ---

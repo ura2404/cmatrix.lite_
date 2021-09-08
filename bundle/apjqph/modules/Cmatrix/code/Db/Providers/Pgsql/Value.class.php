@@ -30,8 +30,6 @@ class Value{
     
     // --- --- --- --- ---
     private function getMySqlValue(){
-        if(!$this->Value) return null;
-        
         switch($this->Type){
             case 'bool' :
                 return $this->getBoolValue();
@@ -59,10 +57,12 @@ class Value{
     
     // --- --- --- --- ---
     private function getBoolValue(){
-        if(!self::isBool($this->Value)) throw new \Exception('Invalid boolean value ['.$this->Value.'].');
+        if(self::isBool($this->Value) === false) throw new \Exception('Invalid boolean value ['.$this->Value.'].');
         
         $ValType = gettype($this->Value);
-        if($ValType === 'boolean'){
+        
+        if($ValType === 'NULL') $Value = 'null';
+        elseif($ValType === 'boolean'){
             if($this->Value === true) $Value = 'true';
             elseif($this->Value === false) $Value = 'false';
             elseif($this->Value === null) $Value = 'null';
@@ -113,7 +113,9 @@ class Value{
     // --- --- --- --- --- --- --- ---
     static function isBool($value){
         $ValType = gettype($value);
-        if($ValType === 'boolean'){
+        
+        if($ValType === 'NULL') return true;    // gettype(null) = 'NULL';
+        elseif($ValType === 'boolean'){
             if($value === true || $value === false || $value === null) return true;
         }
         elseif($ValType === 'string'){
