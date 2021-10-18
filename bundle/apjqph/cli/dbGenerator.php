@@ -13,6 +13,9 @@
 require_once '../defs.php';
 require_once "../common.php";
 
+// для отмены дублирования вывода exceptions
+ini_set('display_errors',0);
+
 //\cmKernel\Kernel::reg();
 
 // --- --- --- --- --- --- --- ---
@@ -38,20 +41,26 @@ $_help = function($text){
         -provider - mysql, pgsql, default - pgsql
         -url    - url проекта или сущности, например "/Cmatrix" или "/Cmatrix/Session", 
         
-    Режим:
+    Mode (режим):
         -script - вывод SQL-скриптов
         -check - проверка соответствия объектов DB их описаниям;
         -create - создания в DB таблицы сущности;
         -fkcreate - создания внешних ключей в DB для таблицы сущности;
         -update - обновление в DB таблицы сущности;
         -init - наполнение в DB таблицы сущности начальными данными.
-    Цель:
+    Target (цель):
+        -all - 
         -dm - 
         -ds - 
     
-    Провайдер:
+    Provider (провайдер):
         -mysql
         -pgsql
+        
+    Url
+        -all - 
+        -module url - url моуля, например /Cmatrix
+        -entity url - url сущности, например /CmatrixSession/Sysuser
 ';
 	echo PHP_EOL;
 	die();
@@ -62,13 +71,14 @@ $_script = function($target,$url) use($_help){
     if(!$target) $_help('Не указана цель');    
     if(!$url) $_help('Не указан url');    
     
-    $Provider = strAfter($target,'/');
+    $ProviderName = strAfter($target,'/');
     $Target = strBefore($target,'/');
     
-    $Provider = $Provider ? $Provider : \Cmatrix\Hash::getFile(CM_TOP.'/config.json')->getValue('db/type');
+    $ProviderName = $ProviderName ? $ProviderName : \Cmatrix\Hash::getFile(CM_TOP.'/config.json')->getValue('db/type');
     
     switch($target){
-        case 'dm' : return \Cmatrix\Structure::instance($url,$Provider)->Script;
+        //case 'dm' : return \Cmatrix\Structure::instance($url,$Provider)->Script;
+        case 'dm' : return \CmatrixDb\Structure\Datamodel::instance($url,$ProviderName)->SqlInitScript;
         
         //case 'datamodel' : return \cmKernel\Structure\Datamodel::get($url)->getScript($Provider,false);
         //case 'datasource' : return \cmKernel\Structure\Datasource::get($url)->getScript($Provider,true);

@@ -1,96 +1,68 @@
 <?php
 namespace Cmatrix;
+use \CmatrixCore as co;
 
 class App {
-    private $P_IsDb = null;
+    static $INSTANCES = [];
+    static $C;
+    static $BUF = [];
     
-    static $WEBPAGE;
-    
-    static $PAGE;
-    static $PARAMS;
-
-    private $Twig;
-
     // --- --- --- --- ---
     function __construct(){
+        if(!self::$C){
+            self::$C = true;
+            
+            // 1. Если есть DB, то активировать сессии
+            if($this->isDb) co\Session::instance(); 
+        }
     }
 
     // --- --- --- --- ---
     function __get($name){
         switch($name){
-            case 'Webpage' : return $this->getMyWebpage();
-            
-            case 'isDb' : return $this->getMyIsDb();
+            case 'isDb'  : return $this->getMyIsDb();
+            case 'isWeb' : return $this->getMyIsWeb();
+            case 'Sapi'  : return $this->getMySapi();
         }
     }
 
     // --- --- --- --- ---
     protected function getMyIsDb(){
-        if($this->P_IsDb !== null) return $this->P_IsDb;
+        if(isset(self::$BUF['db'])) return self::$BUF['db'];
         $Config = Hash::getFile(CM_TOP.'/config.json');
-        return $this->P_IsDb = $Config->getValue('db/enable');
-    }
-    
-    // --- --- --- --- ---
-    private function getMyWebpage(){
-        if(self::$WEBPAGE) return self::$WEBPAGE;
-        
-        return self::$WEBPAGE = Webpage::get();
+        return self::$BUF['db'] = $Config->getValue('db/enable');
     }
 
     // --- --- --- --- ---
-    private function getMyHtml____(){
-        try{
-            $_render = function($router){
-                if(!$router) throw new \Exception('router is not defined');
-                
-                $Template = $router['template'].'.twig';
-                $Model = isset($router['model']) ? $router['model'] : [];
-                if($Model instanceof \Closure) $Data = $Model();
-                else{
-                    $ClassName = "\\Cmatrix\\Models\\".ucfirst($Model);
-                    $Data = (new $ClassName())->getData();
-                }
-                
-                return $this->Twig->render($Template,!$Data ? [] : $Data);
-            };
-            
-            $_simple = function($router){
-                //dump($router,'simple');
-                if(self::$PAGE !== $router['match']) return;
-                return $router;
-            };
-            
-            $_match =  function($router){
-                //dump($router,'match');
-                if(!preg_match($router['match'],self::$PAGE)) return;
-                return $router;
-            };
-            
-            foreach(\Cmatrix\Router::$ROUTERS as $router){
-                $Match = $router['match'];
-                if(strlen($Match)>2 && $Match[0] == '/' && $Match[strlen($Match)-1] == '/') $Router = $_match($router);
-                else $Router = $_simple($router);
-                
-                if($Router) break;
-            }
-            
-            if($Router) return $_render($Router);
-            else if(isset(\Cmatrix\Router::$ROUTERS['404'])) $_render(\Cmatrix\Router::$ROUTERS['404']);
-            else die('Router for page '.self::$PAGE.' is not exists');
-        }
-        //catch(\Exception $e)
-        catch(\Throwable2 $e){
-            dump($e->getMessage());
-            dump($e->getTrace());
-        }
+    protected function getMyIsWeb(){
+        if(isset(self::$BUF['web'])) return self::$BUF['web'];
+        $Config = Hash::getFile(CM_TOP.'/config.json');
+        return self::$BUF['web'] = $Config->getValue('www/root');
+    }
+    
+    // --- --- --- --- ---
+    protected function getMySapi(){
+        if(isset(self::$BUF['sapi'])) return self::$BUF['sapi'];
+        
+        $_sapi = function(){
+            $sapi = php_sapi_name();
+            if($sapi=='cli') return 'CLI';
+            elseif(substr($sapi,0,3)=='cgi') return 'CGI';
+            elseif(substr($sapi,0,6)=='apache') return 'APACHE';
+            else return $sapi;
+        };
+        
+        return self::$BUF['sapi'] = $_sapi();
     }
 
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
     static function instance(){
-        return new self();
+        $Key = md5('current');
+        if(isset(self::$INSTANCES[$Key])) return self::$INSTANCES[$Key];
+        
+        return self::$INSTANCES[$Key] = new self;
     }
 }
 ?>

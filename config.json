@@ -1,5 +1,6 @@
 {
     "project" : {
+        "code" : "cmatrix",
         "name" : "Cmatrix Lite",
         "version" : "1.0",
         "author" : "ura@itx.ru"
@@ -10,11 +11,12 @@
     "db" : {
         "enable" : true,
         "type" : "pgsql",
+        "driver" : "pdo",
         "host" : "localhost",
-        "port" : 5432,
-        "name" : "ru.cmatrix.lite",
+        "port" : 5433,
+        "name" : "cmatrix",
         "user" : "cmatrix",
-        "pass"  : "cmatrix2000##",
+        "pass"  : "cmatrix2000",
         "_prefix" : "cm_"
     },
     "session" : {

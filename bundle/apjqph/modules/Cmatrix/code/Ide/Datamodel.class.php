@@ -1,11 +1,12 @@
 <?php
 namespace Cmatrix\Ide;
 use \Cmatrix as cm;
+use \Cmatrix\Exception as ex;
 
 /**
  * Получени любой инофрмации о datamodel
  */
-class Datamodel {
+class Datamodel implements iDatamodel{
     private $P_Url = null;
     private $P_Path = null;
     private $P_Json = null;
@@ -32,7 +33,7 @@ class Datamodel {
             case 'Indexes'    : return $this->getMyIndexes();
             case 'OwnAssociation' : return $this->getMyOwnAssociation();
             case 'Association' : return $this->getMyAssociation();
-            
+            default : throw new ex\Property($this,$name);
         }
     }
     

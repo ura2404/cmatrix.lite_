@@ -39,7 +39,7 @@ class Module {
         return array_map(function($value){
             return $Url = $this->Url. '/' .strBefore($value,'.dm.php');
         },array_filter(scandir($Root),function($value){
-            return $value !== '.' && $value !== '..' && strpos($value,'.dm.php');
+            return $value !== '.' && $value !== '..' && strpos($value,'.dm.php') && $value[0]!=='_';
         }));
     }
     

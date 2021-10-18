@@ -1,0 +1,45 @@
+{#
+    Общая форма с логинкой
+#}
+{% extends "/CmatrixWeb/templates/common.twig" %}
+
+{% block style %}
+    {{ parent() }}
+    <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/comlogin.less"/>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type="module" src="res/CmatrixWeb/comlogin.js"></script>
+{% endblock %}
+
+{% block actions %}
+    {% if session.enable %}
+        <a id="cm-session" class="cm-hover flex ml-2 cursor-pointer" href="{{ url.login }}" onclick="event.preventDefault()">
+            <span class="cm-name my-auto mr-2">{{ session.user }}</span>
+            <i class="text-3xl my-auto mr-2 fas fa-user-circle"></i>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    {#<div class="cm-win-container cm-noselect fixed top-0 bottom-0 left-0 right-0 bg-gray-200 bg-opacity-50 flex z-50">#}
+    <div class="cm-win-container cm-noselect flex">
+        <form id="cm-login" class="cm-win relative mx-auto my-auto flex flex-col pt-10 pb-3 px-8 sm:px-12 bg-blue-400 bg-opacity-90" method="post" action="{{ url.post }}">
+            <span class="cm-a-close cm-hover absolute p-3 top-0 right-0 cursor-pointer"><i class="text-white fas fa-times"></i></span>
+            <span class="text-white font-bold absolute top-0 mt-4 text-xl">Представтесь, пожалуйста</span>
+            
+            <input class="px-3 py-1 w-52 sm:w-72 mt-11 sm:mt-5" type="text" name="u" placeholder="Логин" required="required" maxlength="10"
+                {#oninvalid="this.setCustomValidity('обязательное поле')" oninput="this.setCustomValidity('')"#}
+            />
+            <span class="cm-err mb-3 h-4 text-red-600 text-sm"></span>
+            
+            <input class="px-3 py-1 w-52 sm:w-72" type="password" name="p" placeholder="Пароль" required="required"
+                {#oninvalid="this.setCustomValidity('обязательное поле')" oninput="this.setCustomValidity('')"#}
+            />
+            <span class="cm-err mb-2 h-4 text-red-600 text-sm"></span>
+            
+            <button type="button" class="cm-a-submit mb-2 cm-hover mt-1 w-20 mx-auto px-3 py-1.5 text-white bg-blue-500">Войти</button>
+        </from>
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{
+    "code" : "/CmatrixCore/Sysrole",
+    "name": {
+        "_def" : "Роль"
+    },
+    "baloon": {
+        "_def": "Системная роль"
+    },
+    "parent": "/CmatrixCore/Entity",
+    "info" : null,
+    "indexes": null,
+    "uniques": null,
+    "props": {
+        "id" : {
+            "code": "id",
+            "name": {
+                "_def": "ID"
+            },
+            "label": null,
+            "baloon": null,
+            "type": "::id::",
+            "length": null,
+            "pk" : true,
+            "nn": true,
+            "index": null,
+            "default": "::counter::",
+            "register" : null,
+            "info": null,
+            "association": null
+        },
+        "systype" : {
+            "code": "systype",
+            "name": null,
+            "label": null,
+            "baloon": null,
+            "type": "string",
+            "length": 32,
+            "pk" : null,
+            "nn": true,
+            "index": null,
+            "default": "/CmatrixCore/Sysrole",
+            "register" : null,
+            "info": null,
+            "association": null
+        }
+    }
+}
