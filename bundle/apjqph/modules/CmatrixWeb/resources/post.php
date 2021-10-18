@@ -15,7 +15,7 @@ try{
                     $Message = 'Вы успешно зарегистрированы.';
                     break;
             
-        case 'lo' : $Message = \CmatrixCore\Session::instance()->logout();
+        case 'lo' : \CmatrixCore\Session::instance()->logout();
                     $Message = 'Ваш сеанс успешно завершён.';
                     break;
             
@@ -29,6 +29,8 @@ try{
 }
 
 catch(\Throwable $e){
+    dump($e);
+    
     echo \CmatrixWeb\Request::create([
         'status' => -1,
         'message' => $e->getMessage()

@@ -88,7 +88,7 @@ export default class Form extends Window {
 
     // --- --- --- --- ---
     submit(){
-        console.log('submit');
+        //console.log('submit');
         
         if(typeof this.onSubmit === 'function' && this.required()){
             let Data = {};

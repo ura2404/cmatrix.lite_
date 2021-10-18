@@ -23,7 +23,7 @@ export default class Window {
     init(opts){
         const Instance = this;
         
-        console.log(this.$Tag.find('.cm-a-close'));
+        //console.log(this.$Tag.find('.cm-a-close'));
         
         this.$Tag.find('.cm-a-close').on('click',function(e){
             Instance.hide();
@@ -36,8 +36,10 @@ export default class Window {
         const Instance = this;
         
         Esc.push(function(){ Instance.hide() });
-        this.$Tag.parent().addClass('cm-opend');
         
+        this.$Tag.parent().removeClass('cm-behind').delay(1000).queue(function(){ $(this).addClass('cm-opend'); $(this).dequeue(); })
+        
+        // если обозначет timeout, то закрыть отреагировать на это
         if(this.Timeout) setTimeout(function(){
             Instance.hide();
         },this.Timeout);
@@ -45,7 +47,7 @@ export default class Window {
     
     // --- --- --- --- ---
     hide(){
-        console.log('hide');
+        //console.log('hide');
         
         const Instance = this;
         this.$Tag.parent().removeClass('cm-opend');

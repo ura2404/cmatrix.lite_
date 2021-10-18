@@ -40,10 +40,12 @@ export default class Session {
     
     // --- --- --- --- ---
     login(data){
+        const Mode = this.Form.$Tag.hasClass('cm-login') ? 'li' : 'lo';
+        
         new Ajax({
             url : this.Form.Url
         },this.onSuccess,this.onError).commitJson(Object.assign({
-            m: 'li' // mode - login
+            m: Mode
         },data));
     }
     

@@ -13,12 +13,14 @@ class Comlogin extends Common {
     // --- --- --- --- ---
     private function getMySession(){
         $Config = cm\Hash::getFile(CM_TOP.'/config.json');
+        
         $Session = \CmatrixCore\Session::instance()->Session;
         $Sysuser = \CmatrixCore\Session::instance()->Sysuser;
         
         $Data = [
             'enable' => $Config->getValue('session/enable'),
-            'user'   => $Sysuser->Data['name'],
+            'user' => array_intersect_key($Sysuser->Data,array_flip(['code','name'])),
+            'hid' => $Session->Data['hid']
         ];
         return $Data;
     }

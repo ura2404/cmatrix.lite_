@@ -16,9 +16,9 @@ $(document).ready(function(){
 
 // --- --- --- --- ---
 const _success = function(data){
-    //console.log('login success',data);
+    console.log('login success',data);
     success.show(data.message);
-    window.location.reload();
+    setTimeout(() => window.location.reload(),2000);
 };
 
 // --- --- --- --- ---
