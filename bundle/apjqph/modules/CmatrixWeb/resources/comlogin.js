@@ -18,11 +18,11 @@ $(document).ready(function(){
 const _success = function(data){
     console.log('login success',data);
     success.show(data.message);
-    setTimeout(() => window.location.reload(),2000);
+    setTimeout(() => window.location.reload(),1500);
 };
 
 // --- --- --- --- ---
 const _error = function(data){
-    //console.log('login error',data);
+    console.log('login error',data);
     error.show(data.message);
 };

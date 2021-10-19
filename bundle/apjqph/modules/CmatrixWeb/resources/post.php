@@ -14,11 +14,11 @@ try{
         case 'li' : \CmatrixCore\Session::instance()->login($Data['u'],$Data['p']);
                     $Message = 'Вы успешно зарегистрированы.';
                     break;
-            
+                    
         case 'lo' : \CmatrixCore\Session::instance()->logout();
                     $Message = 'Ваш сеанс успешно завершён.';
                     break;
-            
+                    
         default : throw new \Exception('Bad mode "' .$Data['m']. '"');
     }
     
@@ -29,8 +29,6 @@ try{
 }
 
 catch(\Throwable $e){
-    dump($e);
-    
     echo \CmatrixWeb\Request::create([
         'status' => -1,
         'message' => $e->getMessage()

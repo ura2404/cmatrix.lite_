@@ -50,7 +50,7 @@ class Session {
                 }
                 
                 db\Obbject::instance('/CmatrixCore/Session')->create(array_merge($Ident,['hid'=>$this->Hid]));
-
+                
                 $this->setCookie($this->Hid);
             }
             // какая-то старая сессия
@@ -59,18 +59,18 @@ class Session {
                 
                 $Ident = $this->getIdent($this->Hid);
                 
-                $Session = db\Obbject::instance('/CmatrixCore/Session')->active(true)->get($Ident);
+                $Session = db\Obbject::instance('/CmatrixCore/Session')/*->active(true)*/->get($Ident);
                 if($Session->IsEmpty){
                     // если в БД нет этой сессии, то это или сессия закрыта, или какой-то сбой, обновить сессию
                     $this->unsetCookie($this->Hid);
                 }
                 else{
                     $this->Session = $Session;
-                    $this->Sysuser = db\Obbject::instance('/CmatrixCore/Sysuser')->get($Session->Data['sysuser_id']);
+                    $this->Sysuser = db\Obbject::instance('/CmatrixCore/Sysuser')->get($Session->sysuser_id);
                 }
             }
         }
-
+        
         $this->touch();
     }
     
@@ -138,8 +138,7 @@ class Session {
         if(cm\App::instance()->Sapi === 'CLI'){
         }
         else{
-            $this->Session->history(false)->update(['sysuser_id'=>$User->Data['id']]);
-            //$Ob = db\Obbject::instance('/CmatrixCore/Session')->get($Ident);
+            $this->Session->history(true)->value('sysuser_id',$User->Data['id'])->update();
         }
         
         //$this->touch();
@@ -147,7 +146,10 @@ class Session {
 
     // --- --- --- --- ---
     protected function dbLogout(){
-        $this->unsetCookie();
+        $Guest = db\Obbject::instance('/CmatrixCore/Sysuser')->get(['code' => 'guest']);
+        if($Guest->IsEmpty) throw new cm\Exception('Не возможно закрыть сессию.');
+        
+        $this->Session->history(true)->update([ 'sysuser_id' => $Guest->id ]);
     }
 
     // --- --- --- --- ---

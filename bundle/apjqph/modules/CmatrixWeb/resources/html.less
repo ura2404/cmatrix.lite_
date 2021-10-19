@@ -37,9 +37,13 @@ button:focus, input:focus {
         //display: none;
     }
     
+    &.cm-behind {
+        z-index : -100;
+    }
+    
     &:not(.cm-opend) {
         opacity: 0;
-        z-index : -100;
+        //z-index : -100;
     }
     
     .cm-win {
@@ -54,6 +58,7 @@ button:focus, input:focus {
     100% { opacity: 1; }
 }
 
+/*
 .cm-alert-container {
     position: fixed;
     top: 0;
@@ -78,6 +83,7 @@ button:focus, input:focus {
         
     }
 }
+*/
 
 @keyframes alert-show {
       0% { opacity: 0; }

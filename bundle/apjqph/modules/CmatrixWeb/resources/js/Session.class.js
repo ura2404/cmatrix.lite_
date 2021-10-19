@@ -25,7 +25,7 @@ export default class Session {
         if(this.Form){
             this.Form.onSubmit = data => Instance.login(data);
             if(this.onSuccess) this.Form.onSuccess = this.onSuccess;
-            if(this.onError) this.Form.onError = this.onError;
+            if(this.onError)   this.Form.onError   = this.onError;
             this.Form.init();
             
             // click по копке сессии в header

@@ -29,7 +29,7 @@ class Value{
             case 'Query' : return $this->getMySqlQuery();
         }
     }
-    
+
     // --- --- --- --- ---
     private function getMySqlQuery(){
         $ValType = gettype($this->Value);
@@ -76,9 +76,9 @@ class Value{
             $Value = strtolower($val);
         }
         elseif($ValType === 'integer'){
-            if($this->Value === 1) return 'true';
-            if($this->Value === -1) return 'false';
-            if($this->Value === 0) return 'null';
+            if($this->Value === 1) $Value = 'true';
+            if($this->Value === -1) $Value = 'false';
+            if($this->Value === 0) $Value = 'null';
         }
         
         return strtoupper($Value);
@@ -86,18 +86,35 @@ class Value{
     
     // --- --- --- --- ---
     private function getTsValue(){
-        if(!self::isTs($this->Value)) throw new \Exception('Invalid timestamp value ['.$this->Value.'].');
-        return $this->Value;
+        if($this->Value === null){
+            if($this->Prop['nn']) throw new \Exception('Invalid nullable value of prop "'.$this->Prop['code'] .'".');
+            return 'NULL';
+        }
+        
+        if(strtolower($this->Value) === 'now' || strtolower($this->Value) === 'curent_timestamp') return 'current_timestamp';
+        
+        elseif(!self::isTs($this->Value)) throw new \Exception('Invalid timestamp value "'.$this->Value.'" of prop "'.$this->Prop['code'].'".');
+        return "'".$this->Value."'";
     }
     
     // --- --- --- --- ---
     private function getIntegerValue(){
-        if(!self::isInteger($this->Value)) throw new \Exception('Invalid integer value ['.$this->Value.'].');
+        if($this->Value === null){
+            if($this->Prop['nn']) throw new \Exception('Invalid nullable value of prop "'.$this->Prop['code'] .'".');
+            return 'NULL';
+        }
+        
+        if(!self::isInteger($this->Value)) throw new \Exception('Invalid integer value "'.$this->Value.'" of prop "'.$this->Prop['code'].'".');
         return intval($this->Value);
     }
     
     // --- --- --- --- ---
     private function getRealValue(){
+        if($this->Value === null){
+            if($this->Prop['nn']) throw new \Exception('Invalid nullable value of prop "'.$this->Prop['code'] .'".');
+            return 'NULL';
+        }
+        
         if(is_float($value) || is_integer($value)) return true;
         elseif(is_string($value) && is_numeric($value)) return true;
         return false;
@@ -105,6 +122,11 @@ class Value{
     
     // --- --- --- --- ---
     private function getStringValue(){
+        if($this->Value === null){
+            if($this->Prop['nn']) throw new \Exception('Invalid nullable value of prop "'.$this->Prop['code'] .'".');
+            return 'NULL';
+        }
+        
         if($this->isBool($this->Value)) return $this->getBoolValue();
         
         return "'" .str_replace("'","''",$this->Value). "'";
@@ -137,9 +159,11 @@ class Value{
     }
     
     // --- --- --- --- --- --- --- ---
+    /**
+     * обязательно отбросить хвост микросекунд после точки
+     */
     static function isTs($value){
-        if(strtolower($value) === 'curent_timestamp') return true;
-        else return preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]$/',$value) ? true : false;
+        return preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]$/',strBefore($value,'.')) ? true : false;
     }
     
     // --- --- --- --- --- --- --- ---

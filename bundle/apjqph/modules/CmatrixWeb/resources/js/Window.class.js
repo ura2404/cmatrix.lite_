@@ -37,7 +37,7 @@ export default class Window {
         
         Esc.push(function(){ Instance.hide() });
         
-        this.$Tag.parent().removeClass('cm-behind').delay(1000).queue(function(){ $(this).addClass('cm-opend'); $(this).dequeue(); })
+        this.$Tag.parent().removeClass('cm-behind').delay(100).queue(function(){ $(this).addClass('cm-opend'); $(this).dequeue(); });
         
         // если обозначет timeout, то закрыть отреагировать на это
         if(this.Timeout) setTimeout(function(){
@@ -50,7 +50,7 @@ export default class Window {
         //console.log('hide');
         
         const Instance = this;
-        this.$Tag.parent().removeClass('cm-opend');
+        this.$Tag.parent().removeClass('cm-opend').delay(100).queue(function(){ $(this).addClass('cm-behind'); $(this).dequeue(); });
         Esc.pop();
     }
 }

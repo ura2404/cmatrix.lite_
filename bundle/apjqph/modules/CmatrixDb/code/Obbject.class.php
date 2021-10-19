@@ -2,6 +2,7 @@
 namespace CmatrixDb;
 use \Cmatrix as cm;
 use \Cmatrix\Exception as ex;
+use \CmatrixCore as core;
 
 class Obbject{
     private $Datamodel;
@@ -31,14 +32,24 @@ class Obbject{
     // --- --- --- --- ---
     function __get($name){
         switch($name){
+            case 'Id' : return $this->Data['id'];
             case 'IsEmpty' : return $this->getMyIsEmpty();
+            case 'IsChanged' : return $this->getMyIsChanged();
             case 'Data' : return $this->Data;
-            default : throw new ex\Property($this,$name);
+            default : 
+                if(!array_key_exists($name,$this->Data)) throw new ex\Property($this,$name);
+                return $this->Data[$name];
         }
     }
 
     // --- --- --- --- ---
     function __set($name,$value){
+        if(!array_key_exists($name,$this->Data)) throw new ex\Property($this,$name);
+        
+        if(isset($this->Changed[$name]) && ($this->Changed[$name] == $this->Data[$name])) return;
+        
+        $this->Changed[$name] = $this->Data[$name];
+        $this->Data[$name] = $value;
     }
     
     // --- --- --- --- ---
@@ -53,6 +64,8 @@ class Obbject{
     // --- --- --- --- ---
     private function flush(){
         $this->Queries = [];
+        $this->History = true;
+        $this->Active  = true;
         return $this;
     }
     
@@ -60,12 +73,33 @@ class Obbject{
     private function getMyIsEmpty(){
         return !count(array_filter($this->Data,function($value){ return !!$value; }));
     }
+
+    // --- --- --- --- ---
+    private function getMyIsChanged(){
+        return !!count($this->Changed);
+    }
     
     // --- --- --- --- ---
-    private function setValues($data){
+    private function values($data){
         array_map(function($code,$value){
-            $this->$code = $value;
+            $this->value($code,$value);
         },array_keys($data),array_values($data));
+    }
+    
+    // --- --- --- --- ---
+    /**
+     * @return array массив данных без указанных свойств
+     */
+    private function getData(...$params){
+        return array_diff_key($this->Data,array_flip($params));
+    }
+
+    // --- --- --- --- ---
+    /**
+     * @return array - массив изменённых данных
+     */
+    private function getChanged(){
+        return array_intersect_key($this->Data,$this->Changed);
     }
     
     // --- --- --- --- ---
@@ -90,8 +124,18 @@ class Obbject{
     }
     
     // --- --- --- --- ---
+    public function value($code,$value){
+        $this->$code = $value;
+        return $this;
+    }
+    
+    // --- --- --- --- ---
     public function create(array $data=null){
-        $this->Queries[] = Cql::insert($this->Datamodel)->values($data)->value('active',$this->Active)->Query;
+        if($data) $this->values($data);
+        
+        if(!$this->IsChanged) return;
+        
+        $this->Queries[] = Cql::insert($this->Datamodel)->values($this->getChanged())->Query;
         //dump($this->Queries);die();
         
         $Res = $this->Connect->exec($this->Queries);
@@ -119,17 +163,38 @@ class Obbject{
     }
 
     // --- --- --- --- ---
-    public function copy(array $data){
+    public function copy(){
+        if(!$this->Id) throw new ex('Невозможно скопировать несуществующую сущность.');
         return $this->flush();
     }
 
     // --- --- --- --- ---
-    public function update(array $data){
+    public function update(){
+        if(!$this->Id) throw new ex('Невозможно обновить несуществующую сущность.');
+        if(!$this->IsChanged) return;
+        
         if($this->History){
-            $this->Queries[] = Cql::update($this->Datamodel)->rule('id',$this->Data['id'])->value('active',null)->value('deleted',true)->Query;
+            $this->Queries[] = Cql::insert($this->Datamodel)
+                ->values($this->getData('id'))
+                ->value('active',null)
+                ->value('hidden',null)
+                ->value('deleted',null)
+                ->Query;
+                
+            $this->Queries[] = Cql::update($this->Datamodel)
+                ->rule('id',$this->Id)
+                ->values($this->getChanged())
+                ->value('session_upd_id',core\Session::instance()->Session->id)
+                ->value('ts_upd','now')
+                ->Query;
         }
         else{
-            $this->Queries[] = Cql::update($this->Datamodel)->rule('id',$this->Data['id'])->values($data)->Query;
+            $this->Queries[] = Cql::update($this->Datamodel)
+                ->rule('id',$this->Id)
+                ->values($this->getChanged())
+                ->value('session_upd_id',core\Session::instance()->Session->id)
+                ->value('ts_upd','now')
+                ->Query;
         }
         //dump($this->Queries);die();
         
@@ -155,6 +220,10 @@ class Obbject{
         return $this->flush();
     }
 
+    // --- --- --- --- ---
+    public function commit(){
+        
+    }
     
     // --- --- --- --- ---
     // --- --- --- --- ---
