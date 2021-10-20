@@ -36,6 +36,7 @@ class Obbject{
             case 'IsEmpty' : return $this->getMyIsEmpty();
             case 'IsChanged' : return $this->getMyIsChanged();
             case 'Data' : return $this->Data;
+            case 'PrevData' : return $this->getPrevData();
             default : 
                 if(!array_key_exists($name,$this->Data)) throw new ex\Property($this,$name);
                 return $this->Data[$name];
@@ -46,10 +47,15 @@ class Obbject{
     function __set($name,$value){
         if(!array_key_exists($name,$this->Data)) throw new ex\Property($this,$name);
         
-        if(isset($this->Changed[$name]) && ($this->Changed[$name] == $this->Data[$name])) return;
+        // запоминает только первое изменение
+        if(!isset($this->Changed[$name])) {
+            $this->Changed[$name] = $this->Data[$name];
+            $this->Data[$name] = $value;
+        }
+        elseif(isset($this->Changed[$name]) && ($this->Changed[$name] != $this->Data[$name])){
+            $this->Data[$name] = $value;
+        }
         
-        $this->Changed[$name] = $this->Data[$name];
-        $this->Data[$name] = $value;
     }
     
     // --- --- --- --- ---
@@ -88,6 +94,14 @@ class Obbject{
     
     // --- --- --- --- ---
     /**
+     * @return array - массив изменённых данных
+     */
+    private function getChanged(){
+        return array_intersect_key($this->Data,$this->Changed);
+    }
+
+    // --- --- --- --- ---
+    /**
      * @return array массив данных без указанных свойств
      */
     private function getData(...$params){
@@ -95,11 +109,9 @@ class Obbject{
     }
 
     // --- --- --- --- ---
-    /**
-     * @return array - массив изменённых данных
-     */
-    private function getChanged(){
-        return array_intersect_key($this->Data,$this->Changed);
+    private function getPrevData(...$params){
+        $Data = $this->getData(...$params);
+        return array_merge($Data,$this->Changed);
     }
     
     // --- --- --- --- ---
@@ -150,10 +162,10 @@ class Obbject{
             if(is_array($id)) $ob->rules($id);
             else $ob->rule('id',$id);
         })->rule('active',$this->Active)->Query;
-        //dump($this->Queries);die();
+        dump($this->Queries);//die();
         
         $Res = $this->Connect->query($this->Queries);
-        //dump($Res);
+        dump($Res);//die();
         
         if($Res) array_map(function($code,$value){
             $this->Data[$code] = $value;
@@ -175,7 +187,7 @@ class Obbject{
         
         if($this->History){
             $this->Queries[] = Cql::insert($this->Datamodel)
-                ->values($this->getData('id'))
+                ->values($this->getPrevData('id'))
                 ->value('active',null)
                 ->value('hidden',null)
                 ->value('deleted',null)
@@ -196,6 +208,7 @@ class Obbject{
                 ->value('ts_upd','now')
                 ->Query;
         }
+        
         //dump($this->Queries);die();
         
         $Res = $this->Connect->exec($this->Queries);

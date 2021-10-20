@@ -138,7 +138,7 @@ class Session {
         if(cm\App::instance()->Sapi === 'CLI'){
         }
         else{
-            $this->Session->history(true)->value('sysuser_id',$User->Data['id'])->update();
+            $this->Session->history(true)->value('sysuser_id',$User->id)->value('sysuser_id',1)->update();
         }
         
         //$this->touch();
@@ -149,7 +149,11 @@ class Session {
         $Guest = db\Obbject::instance('/CmatrixCore/Sysuser')->get(['code' => 'guest']);
         if($Guest->IsEmpty) throw new cm\Exception('Не возможно закрыть сессию.');
         
-        $this->Session->history(true)->update([ 'sysuser_id' => $Guest->id ]);
+        if(cm\App::instance()->Sapi === 'CLI'){
+        }
+        else{
+            $this->Session->history(true)->update([ 'sysuser_id' => $Guest->id ]);
+        }
     }
 
     // --- --- --- --- ---
