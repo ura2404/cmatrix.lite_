@@ -6,12 +6,17 @@ import Esc from './js/Esc.class.js';
 const session = new Session($('#cm-session'));
 const success = new Alert($('#cm-success'),2000).init();
 const error = new Alert($('#cm-error')).init();
+const loginForm = new Form($('#cm-login'));
 
 $(document).ready(function(){
-    session.Form = new Form($('#cm-login'));
-    session.onSuccess = _success;
-    session.onError = _error;
-    session.init();
+    loginForm.onSuccess = _success;
+    loginForm.onError = _error;
+    loginForm.init();
+    
+    //session.LoginForm = new Form($('#cm-login'));
+    //session.onSuccess = _success;
+    //session.onError = _error;
+    //session.init();
 });
 
 // --- --- --- --- ---

@@ -11,6 +11,7 @@ class Cql{
     private $Queries = [];
     private $Tables  = [];
     private $Props   = [];
+    private $Agg     = [];
     private $Rules   = [];
     private $Values  = [];
 
@@ -50,6 +51,16 @@ class Cql{
     
     // --- --- --- --- ---
     private function getMySelectQuery(){
+        $_props = function(){
+            $_agg = function($code){
+                return $this->StructureProvider->ConnectProvider->getSqlAgg($code);
+            };
+            
+            return array_map(function($prop) use($_agg){
+                return is_array($prop) ? $_agg($prop[0]) .' AS '. $prop[1] : $_agg($prop);
+            },$this->Props);
+        };
+        
         $_rules = function(){
             $Props = $this->Datamodel->Props;
             $Arr = array_map(function($code,$value) use($Props){
@@ -59,28 +70,21 @@ class Cql{
             return 'WHERE '. implode(' AND ',$Arr);
         };
         
-        
         $Queries = [];
-        
-        $Query = 'SELECT ';
-        $Query .= $this->Props ? implode(',',$this->Props) : '*';
-        $Queries[] = $Query;
-        
-        $Query = 'FROM '. $this->StructureProvider->sqlTableName();
-        $Queries[] = $Query;        
+        $Queries[] = 'SELECT ' . ($this->Props ? implode(',',$_props()) : '*');
+        $Queries[] = 'FROM '. $this->StructureProvider->sqlTableName();
         
         $Query = $this->Rules ? $_rules() : null;
         $Queries[] = $Query;        
         
         $Queries = array_filter($Queries,function($value){ return !!$value; });
+        //dump($Queries);die();
         
-        return implode(' ',$Queries) .';';
+        return implode(' ',$Queries);
     }
     
     // --- --- --- --- ---
     private function getMyInsertQuery(){
-        $Queries = [];
-        
         $_props = function(){
             return array_map(function($value){
                 return $value;
@@ -93,24 +97,17 @@ class Cql{
             },array_keys($this->Values),array_values($this->Values));
         };
         
-        $Query = 'INSERT INTO ' . $this->StructureProvider->sqlTableName();
-        $Queries[] = $Query;
+        $Queries = [];
+        $Queries[] = 'INSERT INTO ' . $this->StructureProvider->sqlTableName();
+        $Queries[] = '(' . implode(',',$_props()) . ')';
+        $Queries[] = 'VALUES (' . implode(',',$_values()) . ')';
         
-        $Query = '(' . implode(',',$_props()) . ')';
-        $Queries[] = $Query;
-        
-        
-        $Query = 'VALUES (' . implode(',',$_values()) . ')';
-        $Queries[] = $Query;
-        
-        return implode(' ',$Queries) .';';
+        return implode(' ',$Queries);
     }
 
     // --- --- --- --- ---
     private function getMyUpdateQuery(){
         if(!$this->Rules) return;
-        
-        $Queries = [];
         
         $_values = function(){
             return array_map(function($code,$value){
@@ -124,20 +121,13 @@ class Cql{
             },array_keys($this->Rules),array_values($this->Rules));
         };
         
-        $Query = 'UPDATE ' . $this->StructureProvider->sqlTableName();
-        $Queries[] = $Query;
+        $Queries = [];
+        $Queries[] = 'UPDATE ' . $this->StructureProvider->sqlTableName();
         
-        if($this->Values){
-            $Query = 'SET ' . implode(',',$_values());
-            $Queries[] = $Query;
-        }
+        if($this->Values) $Queries[] = 'SET ' . implode(',',$_values());
+        if($this->Rules) $Queries[] = 'WHERE ' . implode(',',$_rules());
         
-        if($this->Rules){
-            $Query = 'WHERE ' . implode(',',$_rules());
-            $Queries[] = $Query;
-        }
-        
-        return implode(' ',$Queries) .';';
+        return implode(' ',$Queries);
     }
     
     // --- --- --- --- ---
@@ -152,14 +142,15 @@ class Cql{
         };
         
         $Queries = [];
-        
-        $Query = 'DELETE FROM ' . $this->StructureProvider->sqlTableName();
-        $Queries[] = $Query;
-        
-        $Query = 'WHERE ' . implode(' AND ',$_rules());
-        $Queries[] = $Query;
+        $Queries[] = 'DELETE FROM ' . $this->StructureProvider->sqlTableName();
+        $Queries[] = 'WHERE ' . implode(' AND ',$_rules());
         
         return implode(' ',$Queries) .';';
+    }
+    
+    private function checkProp($code){
+        if(is_array($code)) $this->Datamodel->getProp($code[0]);
+        elseif(strpos($code,'::')!==false) $this->Datamodel->getProp(strAfter($code,'::'));
     }
     
     // --- --- --- --- ---
@@ -171,8 +162,14 @@ class Cql{
     }
     
     // --- --- --- --- ---
+    /**
+     * @param string|array $code
+     *     -'id'
+     *     -'max::id' - с агрегатной функцией
+     *     -['max::id','max_value'] - с алиасом
+     */
     public function prop($code){
-        $this->Datamodel->getProp($code);
+        $this->checkProp($code);
         $this->Props[] = $code;
         return $this;
     }
@@ -181,13 +178,16 @@ class Cql{
     public function props(array $props){
         if(!$props) return $this;
         
-        $this->Props = array_merge($this->Props,$props);
+        array_map(function($code){
+            $this->prop($code);
+        },$props);
+        
         return $this;
     }
     
     // --- --- --- --- ---
     public function value($code,$value){
-        $this->Datamodel->getProp($code);
+        $this->checkProp($code);
         $this->Values[$code] = $value;
         return $this;
     }
@@ -196,14 +196,16 @@ class Cql{
     public function values(array $values=null){
         if(!$values) return $this;
 
-        $this->Values = array_merge($this->Values,$values);
-        
+        array_map(function($code,$value){
+            $this->value($code,$value);
+        },array_keys($values),array_values($values));
+
         return $this;
     }
     
     // --- --- --- --- ---
     public function rule($code,$value){
-        $this->Datamodel->getProp($code);
+        $this->checkProp($code);
         $this->Rules[$code] = $value;
         return $this;
     }
@@ -211,8 +213,10 @@ class Cql{
     // --- --- --- --- ---
     public function rules(array $rules=null){
         if(!$rules) return $this;
-
-        $this->Rules = array_merge($this->Rules,$rules);
+        
+        array_map(function($code,$value){
+            $this->rule($code,$value);
+        },array_keys($rules),array_values($rules));
         
         return $this;
     }

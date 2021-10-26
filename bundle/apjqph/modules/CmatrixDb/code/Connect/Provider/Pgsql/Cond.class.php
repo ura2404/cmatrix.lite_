@@ -42,6 +42,8 @@ class Cond{
                 else return $this->Cond;
                 
             case '!=' : 
+                if(!$this->IsSelect) return $this->Cond;
+                
                 if(strStart($this->Value,'(') && strEnd($this->Value,')')) return ' NOT IN ';
                 elseif(Value::isBool($this->Value)) return ' IS NOT ';
                 else return $this->Cond;

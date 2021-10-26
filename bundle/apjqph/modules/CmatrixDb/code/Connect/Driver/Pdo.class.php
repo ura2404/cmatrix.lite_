@@ -38,8 +38,9 @@ class Pdo extends db\Connect\Driver implements db\Connect\iDriver{
     // --- --- --- --- ---
     private function prepareQuery($query){
         $Query = is_array($query) ? array2line($query) : [$query];
-        $Query = implode("\n",$Query);
-        $Query = preg_replace("#( |\s) *#i"," ",$Query);
+        $Query = implode(";\n",$Query).';';
+        //$Query = preg_replace("#( |\s) *#i"," ",$Query);
+        $Query = preg_replace("#( |\r) *#i"," ",$Query);
         return $Query;
     }
     
@@ -69,6 +70,8 @@ class Pdo extends db\Connect\Driver implements db\Connect\iDriver{
     // --- --- --- --- ---
     public function exec($query){
         $Query = $this->prepareQuery($query);
+        //dump(explode("\n",$Query));die();
+        
 		if(!strlen($Query)) return;
 			
         $this->Dbh->beginTransaction();

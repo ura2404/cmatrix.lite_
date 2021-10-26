@@ -148,9 +148,10 @@ class Obbject{
         if(!$this->IsChanged) return;
         
         $this->Queries[] = Cql::insert($this->Datamodel)->values($this->getChanged())->Query;
-        //dump($this->Queries);die();
+        $this->Queries[] = Cql::update($this->Datamodel)->value('session_id',Cql::select($this->Datamodel)->prop('max::id'))->rule('id',Cql::select($this->Datamodel)->prop('max::id'))->Query;
+        //dump($this->Queries,'QUERIES');die();
         
-        $Res = $this->Connect->exec($this->Queries);
+        $Res = $this->Connect->exec($this->Queries); 
         //dump($Res);
         
         return $this->flush();
@@ -162,10 +163,10 @@ class Obbject{
             if(is_array($id)) $ob->rules($id);
             else $ob->rule('id',$id);
         })->rule('active',$this->Active)->Query;
-        dump($this->Queries);//die();
+        //dump($this->Queries,'SQL');//die();
         
         $Res = $this->Connect->query($this->Queries);
-        dump($Res);//die();
+        //dump($Res,'RES');//die();
         
         if($Res) array_map(function($code,$value){
             $this->Data[$code] = $value;

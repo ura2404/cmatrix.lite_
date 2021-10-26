@@ -32,9 +32,11 @@ class Value{
 
     // --- --- --- --- ---
     private function getMySqlQuery(){
+        if($this->Value instanceof \CmatrixDb\Cql) return '('.$this->Value->Query.')';
+        
         $ValType = gettype($this->Value);
         if($ValType === 'string' && strStart($this->Value,'raw::')) return strAfter($this->Value,'raw::');
-        
+
         switch($this->Prop['type']){
             case 'bool' :
                 return $this->getBoolValue();
@@ -151,9 +153,9 @@ class Value{
             $Value = strtolower($value);
             if($Value === 'true' || $Value === 'false' || $Value === 'null') return true;
         }
-        elseif($ValType === 'integer'){
+        /*elseif($ValType === 'integer'){
             if($value === 1 || $value === -1 || $value === 0) return true;
-        }
+        }*/
         
         return false;
     }

@@ -62,6 +62,18 @@ class Pgsql extends db\Connect\Provider implements db\Connect\iProvider{
         return 'NOT NULL';
     }
     
+
+    // --- --- --- --- ---
+    public function getSqlAgg($code){
+        if(strpos($code,'::') === false) return $code;
+        
+        $Agg = strBefore($code,'::');
+        switch($Agg){
+            case 'max' : return 'max(' .strAfter($code,'::'). ')';
+            default : throw new \Exception('Invalid agg function "' .$Agg.'".');
+        }
+    }
+
     // --- --- --- --- ---
     public function sqlPhrase(array $prop,$value,$cond='=',$isSelect=true){
         $Code  = $prop['code'];

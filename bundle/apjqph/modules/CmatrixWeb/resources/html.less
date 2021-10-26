@@ -17,6 +17,11 @@ html {
     }
 }
 
+.cm-behind {
+    z-index : -100;
+}
+
+
 button:focus, input:focus {
     outline: 1px solid gray
 }
@@ -37,9 +42,9 @@ button:focus, input:focus {
         //display: none;
     }
     
-    &.cm-behind {
+    /*&.cm-behind {
         z-index : -100;
-    }
+    }*/
     
     &:not(.cm-opend) {
         opacity: 0;

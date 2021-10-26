@@ -142,6 +142,7 @@
     "init" : [
         {
             "active" : null,
+            "deleted" : true,
             "status" : "C",
             "ip4" : "127.0.0.1",
             "sysuser_id" : 1,
@@ -150,6 +151,7 @@
         },
         {
             "active" : true,
+            "hidden" : true,
             "status" : "C",
             "ip4" : "127.0.0.1",
             "sysuser_id" : 1,
@@ -158,6 +160,7 @@
         },
         {
             "active" : true,
+            "hidden" : true,
             "status" : "C",
             "ip4" : "127.0.0.1",
             "sysuser_id" : 5,

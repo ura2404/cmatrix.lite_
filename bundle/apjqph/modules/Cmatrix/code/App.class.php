@@ -13,16 +13,17 @@ class App {
             self::$C = true;
             
             // 1. Если есть DB, то активировать сессии
-            if($this->isDb) co\Session::instance(); 
+            if($this->isDb && $this->isSession ) co\Session::instance(); 
         }
     }
 
     // --- --- --- --- ---
     function __get($name){
         switch($name){
-            case 'isDb'  : return $this->getMyIsDb();
+            case 'isDb' : return $this->getMyIsDb();
+            case 'isSession' : return $this->getMyIsSession();
             case 'isWeb' : return $this->getMyIsWeb();
-            case 'Sapi'  : return $this->getMySapi();
+            case 'Sapi' : return $this->getMySapi();
         }
     }
 
@@ -33,6 +34,13 @@ class App {
         return self::$BUF['db'] = $Config->getValue('db/enable');
     }
 
+    // --- --- --- --- ---
+    protected function getMyIsSession(){
+        if(isset(self::$BUF['session'])) return self::$BUF['session'];
+        $Config = Hash::getFile(CM_TOP.'/config.json');
+        return self::$BUF['session'] = $Config->getValue('session/enable');
+    }
+    
     // --- --- --- --- ---
     protected function getMyIsWeb(){
         if(isset(self::$BUF['web'])) return self::$BUF['web'];

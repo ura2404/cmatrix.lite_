@@ -13,7 +13,7 @@ export default class Session {
     constructor($tag){
         this.$Tag = $tag;
         
-        this.Form = undefined;
+        //this.LoginForm = undefined;
         this.onSuccess = undefined;
         this.onError = undefined;
     }
@@ -22,8 +22,8 @@ export default class Session {
     init(){
         const Instance = this;
         
-        if(this.Form){
-            this.Form.onSubmit = data => Instance.login(data);
+        if(this.LoginForm){
+            this.LoginForm.onSubmit = data => Instance.login(data);
             if(this.onSuccess) this.Form.onSuccess = this.onSuccess;
             if(this.onError)   this.Form.onError   = this.onError;
             this.Form.init();
@@ -31,7 +31,7 @@ export default class Session {
             // click по копке сессии в header
             this.$Tag.on('click',function(e){
                 e.preventDefault();
-                Instance.Form.show();
+                Instance.LoginForm.show();
             });
         }
         
