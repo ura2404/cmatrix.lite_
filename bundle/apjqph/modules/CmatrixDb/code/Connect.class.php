@@ -27,10 +27,13 @@ class Connect{
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
-    static function instance(array $config){
-        $Key = md5(serialize($config));
+    static function instance(array $config=null){
+        $Config = $config ? $config : cm\Hash::getFile(CM_TOP.'/config.json')->getValue('db');
+        if(!$Config) throw new ex('Connect config is not defined.');
+        
+        $Key = md5(serialize($Config));
         if(isset(self::$INSTANCES[$Key])) return self::$INSTANCES[$Key];
-        return self::$INSTANCES[$Key] = new self($config);
+        return self::$INSTANCES[$Key] = new self($Config);
     }
     
 }

@@ -2,7 +2,7 @@
  * Class Ajax
  */
  
-export default class Session {
+export default class Ajax {
     
     // --- --- --- --- ---
     /**

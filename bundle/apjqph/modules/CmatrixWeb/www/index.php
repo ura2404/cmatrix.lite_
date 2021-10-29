@@ -2,6 +2,8 @@
 require_once '../../../defs.php';
 require_once '../../../common.php';
 
+\Cmatrix\App::instance();
+
 // --- --- --- --- ----
 \CmatrixWeb\Controller::add('Twig',\CmatrixWeb\Controller\Twig::get());
 
@@ -18,8 +20,7 @@ require_once '../../../common.php';
     'controller' => 'Twig'
 ]);
 
-\Cmatrix\App::instance();
-
+// --- --- --- --- ----
 //echo \Cmatrix\App::instance()->Webpage->Html;
 echo \CmatrixWeb\Page::instance()->Html;
 

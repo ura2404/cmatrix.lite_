@@ -93,7 +93,7 @@ class Value{
             return 'NULL';
         }
         
-        if(strtolower($this->Value) === 'now' || strtolower($this->Value) === 'curent_timestamp') return 'current_timestamp';
+        if(strtolower($this->Value) === 'now' || strtolower($this->Value) === 'current_timestamp') return 'current_timestamp';
         
         elseif(!self::isTs($this->Value)) throw new \Exception('Invalid timestamp value "'.$this->Value.'" of prop "'.$this->Prop['code'].'".');
         return "'".$this->Value."'";

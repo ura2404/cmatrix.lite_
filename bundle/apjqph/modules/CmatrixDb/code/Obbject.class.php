@@ -193,7 +193,6 @@ class Obbject{
                 ->value('hidden',null)
                 ->value('deleted',null)
                 ->Query;
-                
             $this->Queries[] = Cql::update($this->Datamodel)
                 ->rule('id',$this->Id)
                 ->values($this->getChanged())
@@ -209,13 +208,12 @@ class Obbject{
                 ->value('ts_upd','now')
                 ->Query;
         }
-        
         //dump($this->Queries);die();
         
         $Res = $this->Connect->exec($this->Queries);
         //dump($Res);
         
-        return $this->flush();
+        //return $this->flush();
     }
     
     // --- --- --- --- ---

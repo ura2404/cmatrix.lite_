@@ -3,7 +3,7 @@
  */
 import Window from './Window.class.js';
 
-export default class Alert extends Window{
+export default class Alert extends Window {
     
     // --- --- --- --- ---
     /**

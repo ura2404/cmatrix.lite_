@@ -15,7 +15,7 @@
 
 {% block actions %}
     {% if session.enable %}
-        <a id="cm-session"
+        <a id="wi-session"
             class="cm-hover flex ml-2 cursor-pointer" 
             href="{{ url.login }}"
             onclick="event.preventDefault()"
@@ -23,20 +23,22 @@
         >
             <span class="cm-name my-auto mr-2">{{ session.user.name }}</span>
             <i class="text-3xl my-auto mr-2 fas fa-user-circle"></i>
-            {% if session.user.code != 'guest'%}<i class="my-auto mr-2 fas fa-caret-down"></i>{% endif %}
+            {% if session.user.code != 'guest'%}<i id="wi-s-caret" class="my-auto mr-2 fas fa-caret-left"></i>{% endif %}
         </a>
     {% endif %}
 {% endblock %}
 
 {% block popup %}
     {{ parent() }}
-    <div class="cm-win-container cm-behind cm-noselect flex z-40">
-        <form id="cm-login" type="cm-form" class="relative mx-auto my-auto flex flex-col pt-10 pb-3 px-8 sm:px-12 bg-blue-400 bg-opacity-90" method="post" action="{{ url.post }}">
-            <span class="cm-a-close cm-hover absolute p-3 top-0 right-0 cursor-pointer"><i class="text-white fas fa-times"></i></span>
-            
-            {# --- login form --- #}
-            {% if session.user.code == 'guest' %}
+    
+    {% if session.user.code == 'guest' %}
+        <div class="cm-back _cm-win-container cm-behind cm-noselect flex z-40 bg-gray-800 bg-opacity-50">
+            <form id="wi-login" class="relative rounded mx-auto my-auto flex flex-col pt-10 pb-3 px-8 sm:px-12 bg-blue-400 bg-opacity-90 shadow-2xl" method="post" action="{{ url.post }}">
+                <span class="cm-a-close cm-hover absolute p-3 top-0 right-0 cursor-pointer"><i class="text-white fas fa-times"></i></span>
+                
                 <span class="text-white font-bold absolute top-0 mt-4 text-xl">Представтесь, пожалуйста</span>
+                
+                <input name="m" type="hidden" value="li"/>
                 
                 <input class="px-3 py-1 w-52 sm:w-72 mt-11 sm:mt-5" type="text" name="u" placeholder="Логин" required="required" maxlength="10"
                     {#oninvalid="this.setCustomValidity('обязательное поле')" oninput="this.setCustomValidity('')"#}
@@ -48,18 +50,36 @@
                 />
                 <span class="cm-err mb-2 h-4 text-red-600 text-sm"></span>
                 
-                <button type="button" class="cm-a-submit mb-1 cm-hover mt-1 w-20 mx-auto px-3 py-1.5 text-white bg-blue-500">Войти</button>
-                
-            {# --- logout form --- #}
-            {% else %}
+                <button type="button" class="cm-a-submit rounded mb-1 cm-hover mt-1 w-20 mx-auto px-3 py-1.5 text-white bg-blue-500">Войти</button>
+            </from>
+        </div>
+    {% else %}
+        <div class="cm-back cm-menu-container cm-behind cm-noselect flex z-40">
+            <div class="container flex mx-auto">
+                <ul id="wi-s-menu" class="relative ml-auto mt-10 mb-auto bg-gray-200 cursor-pointer">
+                    {# <li class="p-2 hover:bg-gray-400"><span class="w-7 inline-block"></span>Text</li> #}
+                    <li class="p-2 hover:bg-gray-300"><i class="w-7 far fa-user"></i></span><a href="{{ url.profilу }}">Профиль</a></li>
+                    <li class="p-2 hover:bg-gray-300"><i class="w-7 far fa-gem"></i></span><a href="{{ url.session }}">Сессия</a></li>
+                    <li class="cm-h-devider text-gray-400"></li>
+                    <li class="p-2 hover:bg-gray-300"><i class="w-7 fas fa-desktop"></i></span><a href="{{ url.admin }}">Admin`ка</a></li>
+                    <li class="cm-h-devider text-gray-400"></li>
+                    <li class="wi-logout p-2 hover:bg-gray-300"><i class="w-7 fas fa-sign-out-alt"></i><span>Завершение сессии</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="cm-back cm-win-container cm-behind cm-noselect flex z-40 bg-gray-800 bg-opacity-50">
+            <form id="wi-logout" class="relative rounded-md mx-auto my-auto flex flex-col pt-10 pb-3 px-8 sm:px-12 bg-blue-400 bg-opacity-90" method="post" action="{{ url.post }}">
+                <input name="m" type="hidden" value="lo"/>
                 <span class="text-white _font-bold _absolute w-52 sm:w-72 _top-0 -mt-4 text-xl">Действительно завершить сессию?</span>
                 <div class="flex mt-5 mb-2">
-                    <button type="button" class="cm-a-submit cm-hover w-20 mx-auto px-3 py-1.5 text-white bg-blue-500">Да</button>
-                    <button type="button" class="cm-a-close cm-hover w-20 mx-auto px-3 py-1.5 text-white bg-red-500">Нет</button>
+                    <button type="button" class="cm-a-submit cm-hover rounded w-20 mx-auto px-3 py-1.5 text-white bg-blue-500">Да</button>
+                    <button type="button" class="cm-a-close cm-hover rounded w-20 mx-auto px-3 py-1.5 text-white bg-red-500">Нет</button>
                 </div>
-            {% endif %}
-        </from>
-    </div>
+            </form>
+        </div>
+    {% endif %}
+    
 {% endblock %}
 
 {% block main %}

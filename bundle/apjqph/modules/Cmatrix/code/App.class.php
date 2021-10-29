@@ -1,19 +1,24 @@
 <?php
 namespace Cmatrix;
 use \CmatrixCore as co;
+use \CmatrixDb as db;
+use \Cmatrix\Exception as ex;
 
 class App {
     static $INSTANCES = [];
     static $C;
     static $BUF = [];
+    static $CONNECT;
     
     // --- --- --- --- ---
     function __construct(){
         if(!self::$C){
             self::$C = true;
             
-            // 1. Если есть DB, то активировать сессии
-            if($this->isDb && $this->isSession ) co\Session::instance(); 
+            if($this->isDb){
+                self::$CONNECT = db\Connect::instance();
+                if($this->isSession ) co\Session::instance(); 
+            }
         }
     }
 
@@ -71,6 +76,12 @@ class App {
         if(isset(self::$INSTANCES[$Key])) return self::$INSTANCES[$Key];
         
         return self::$INSTANCES[$Key] = new self;
+    }
+    
+    // --- --- --- --- ---
+    static function connect(){
+        if(!self::$CONNECT) throw new \Exception('Not defined application connect.');
+        return self::$CONNECT;
     }
 }
 ?>

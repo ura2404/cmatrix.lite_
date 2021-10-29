@@ -15,6 +15,7 @@ class Session {
     // --- --- --- --- ---
     function __construct(){
         $this->check();
+        //$this->touch();
     }
 
     // --- --- --- --- ---
@@ -67,11 +68,15 @@ class Session {
                 else{
                     $this->Session = $Session;
                     $this->Sysuser = db\Obbject::instance('/CmatrixCore/Sysuser')->get($Session->sysuser_id);
+                    
+                    // --- touch
+                    // через \CmatrixDb нельзя, так как происходи зацикливание
+                    $Query = \CmatrixDb\Cql::update(\Cmatrix\Ide\Datamodel::instance('/CmatrixCore/Session'))->value('touch_ts','current_timestamp')->rule('id',$this->Session->id);
+                    cm\App::connect()->exec($Query);
+                    //$this->Session->value('touch_ts','current_timestamp')->update();
                 }
             }
         }
-        
-        $this->touch();
     }
     
     // --- --- --- --- ---
@@ -140,8 +145,6 @@ class Session {
         else{
             $this->Session->history(true)->value('sysuser_id',$User->id)->update();
         }
-        
-        //$this->touch();
     }
 
     // --- --- --- --- ---
@@ -158,6 +161,7 @@ class Session {
 
     // --- --- --- --- ---
     protected function touch(){
+        //$this->Session->history(true)->value('touch_ts','current_timestamp')->update();
     }
     
     // --- --- --- --- ---
