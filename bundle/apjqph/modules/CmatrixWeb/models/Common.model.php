@@ -1,8 +1,9 @@
 <?php
 namespace CmatrixWeb\Models;
 use \Cmatrix as cm;
+use \CmatrixWeb as web;
 
-class Common {
+class Common implements web\iModel {
     public function getData(){
         return [
             'url'     => $this->getMyUrl(),

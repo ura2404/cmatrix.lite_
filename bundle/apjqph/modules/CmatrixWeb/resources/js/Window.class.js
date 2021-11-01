@@ -51,9 +51,11 @@ export default class Window {
         Esc.push(function(){ Instance.hide() });
         
         this.$Back
-            .on('click',e => Instance.hide())
+            .on('click',() => Instance.hide())
             //.removeClass('cm-behind').delay(0).queue(function(){ $(this).addClass('cm-opend'); $(this).dequeue(); });
             .removeClass('cm-behind').addClass('cm-opend');
+        
+        this.$Tag.on('click',e => e.stopPropagation());
         
         // если обозначет timeout, то закрыть отреагировать на это
         if(this.Timeout) setTimeout(function(){

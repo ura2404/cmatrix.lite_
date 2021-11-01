@@ -3,11 +3,11 @@ namespace CmatrixWeb;
 use \Cmatrix\Exception as ex;
 
 class Page {
-    private $Name;
+    private $Url;
     
     // --- --- --- --- ---
-    function __construct($name=null){
-        $this->Name = $this->calculatePage($name);
+    function __construct($url=null){
+        $this->Url = $this->calculatePage($url);
     }
     
     // --- --- --- --- ---
@@ -15,6 +15,7 @@ class Page {
         switch($name){
             //case 'Name' : return $this->Pagename;
             case 'Html' : return $this->getMyHtml();
+            case 'Url' : return $this->Url;
             default : throw new ex\Property($this,$name);
         }
     }
@@ -27,6 +28,12 @@ class Page {
      */
     private function getMyHtml(){
         $_render = function($router){
+            $Template = $router['template'];
+            $Model = $router['model'];
+            $Controller = $router['controller'];
+            return $Controller->render($Template,$Model);
+            
+            /*
             // 1. template
             $Template = $router['template'];
             
@@ -36,43 +43,44 @@ class Page {
             elseif(!is_array($Model)) $Data = $Model->getData();
 
             // 3. controller
-            $Controller = Controller::get($router['controller']);
+            $Controller = $router['controller'];
             
             return $Controller->render($Template,!$Data ? [] : $Data);
+            */
         };
         
-        $Router = Router::get($this->Name);
+        $Router = Router::get($this->Url);
         if($Router) return $_render($Router);
         else{
             $Router = Router::get('404');
             if($Router) return $_render($Router);
-            else die('Router for page '.$this->Name.' is not exists');
+            else die('Router for page '.$this->Url.' is not exists');
         }
     }
     
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
-    private function calculatePage($name=null){
+    private function calculatePage($url=null){
         
-        $_name = function(){
+        $_url = function(){
             if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200){
-                $Page = strAfter(trim(rtrim($_SERVER['REDIRECT_QUERY_STRING'],'/')),'cmp=');
+                $Url = strAfter(trim(rtrim($_SERVER['REDIRECT_QUERY_STRING'],'/')),'cmp=');
             }
             else{
-                $Page = trim($_SERVER['REQUEST_URI'],'/');
+                $Url = trim($_SERVER['REQUEST_URI'],'/');
             }
-            return $Page == '' ? '/' : $Page;
+            return $Url == '' ? '/' : $Url;
         };
         
-        return $name ? $name : $_name();
+        return $url ? $url : $_url();
     }
     
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
-    static function instance($name=null){
-        return new self($name);
+    static function instance($url=null){
+        return new self($url);
     }
     
     // --- --- --- --- ---

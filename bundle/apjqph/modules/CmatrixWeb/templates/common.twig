@@ -11,10 +11,12 @@
 #}
 <html>
     <head>
+        <link rel="icon" href="{% block favicon %}res/CmatrixWeb/ico/honeycomb.ico{% endblock %}" type="image/x-icon"/> 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <title>{{ project.name }} v{{ project.version }}</title>
         <link rel="stylesheet" type="text/css" href="res/CmatrixWeb/vendor/tailwindcss.com/tailwind.min.css"/>
         <link rel="stylesheet" type="text/css" href="res/CmatrixWeb/vendor/fontawesome.com/5.15.2/css/all.css"/>
+        <link rel="stylesheet" type="text/css" href="res/CmatrixWeb/vendor/google.com/fonts/Arsenal/font.less"/>
         <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/html.less"/>
         {% block style %}
             <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/common.less"/>
@@ -59,7 +61,7 @@
             </div>
             
             <div class="cm-back cm-win-container cm-behind z-50 flex flex-col">
-                <div id="wi-error" class="cm-win my-auto bg-red-300 bg-opacity-90 text-white p-5">
+                <div id="wi-error" class="cm-win my-auto bg-red-300 bg-opacity-95 text-white p-5">
                     <div class="cm-text container mx-auto text-center"></div>
                     <div class="container mx-auto flex">
                         <button type="button" class="cm-a-close cm-hover focus:ring-4 focus:ring-green-400 focus:ring-opacity-50 rounded mx-auto mt-5 px-3 py-1.5 bg-red-400">Закрыть</button>
@@ -100,6 +102,6 @@
     <script type="text/javascript" src="res/CmatrixWeb/vendor/jquery.com/jquery.md5.js"></script>
     <script type="text/javascript" src="res/CmatrixWeb/vendor/jquery.js"></script>
     {% block js %}
-        {#<script type="text/javascript" src="res/Cmatrix/common.js"></script>#}
+        <script type="text/javascript" src="res/CmatrixWeb/common.js"></script>
     {% endblock js %}
 </html>

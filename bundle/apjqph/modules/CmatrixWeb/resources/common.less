@@ -1,8 +1,9 @@
 #cm-logo {
     
     //transition: .5s linear;    
-    transform-origin: 50% 53% 0;
-    animation: pulse-logo 4s ease infinite;
+    transform-origin: 50% 55% 0;
+    animation: pulse-logo 60s ease infinite;
+    //animation: pulse-logo1 4s ease infinite;
     
     span {
         //line-height: 1rem;
@@ -14,10 +15,6 @@
 }
 
 @keyframes pulse-logo {
-    50%    { transform: rotateZ(180deg); }
-}
-
-@keyframes pulse-logo1 {
      0%    { transform: scale(1); }
     10%    { transform: scale(1); }
     10.4%  { transform: scale(1.3); }
@@ -30,4 +27,8 @@
     83%    { transform: scale(1); }
     84%    { transform: rotateZ(180deg); }
     85%    { transform: rotateZ(0deg); }
+}
+
+@keyframes pulse-logo1 {
+    50%    { transform: rotateZ(180deg); }
 }

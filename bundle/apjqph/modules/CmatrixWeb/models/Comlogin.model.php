@@ -1,8 +1,9 @@
 <?php
 namespace CmatrixWeb\Models;
 use \Cmatrix as cm;
+use \CmatrixWeb as web;
 
-class Comlogin extends Common {
+class Comlogin extends Common implements web\iModel {
     public function getData(){
         return arrayMergeReplace(parent::getData(),[
             'session' => $this->getMySession(),
@@ -28,10 +29,10 @@ class Comlogin extends Common {
     // --- --- --- --- ---
     private function getMyUrl(){
         return [
-            'post' => 'res/CmatrixWeb/post.php',
-            'profile' => 'profile',
-            'session' => 'session',
-            'admin' => 'admin'
+            'post' => CM_WHOME.'/res/CmatrixWeb/post.php',
+            'profile' => CM_WHOME.'/profile',
+            'session' => CM_WHOME.'/session',
+            'admin' => CM_WHOME.'/admin'
         ];
     }
 }

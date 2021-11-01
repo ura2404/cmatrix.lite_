@@ -1,44 +1,68 @@
 <?php
 namespace CmatrixWeb;
+use \Cmatrix\Exception as ex;
 
 class Controller {
     static $CONTROLLERS = [];
+    private $Url;
     
     // --- --- --- --- ---
-    function __construct(){
+    function __construct($url){
+        $this->Url = $url;
+        $this->Path;
+    }
+    
+    // --- --- --- --- ---
+    function __get($name){
+        switch($name){
+            case 'Path' : return $this->getMyPath();
+            case 'Controller' : return $this->getMyController();
+            default : throw new ex\Property($this,$name);
+        }
     }
     
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
-    public function addController($name,$ob){
-        if(array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller '.$name.' allready exists.');
+    private function getMyPath(){
+        $Arr = explode('/',ltrim($this->Url,'/'));
+        $Module = array_shift($Arr);
+        $Path = '/' . $Module . '/controllers/' . implode('/',$Arr) . '.controller.php';
         
-        self::$CONTROLLERS[$name] = $ob;
-        return $this;
+        if(!file_exists(CM_ROOT.'/modules'.'/'.$Path)) throw new ex('Controller "' .$this->Url. '" is not defined.');
+        return $Path;
     }
     
     // --- --- --- --- ---
-    public function getController($name){
-        if(!array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller '.$name.' is not exists.');
-        return self::$CONTROLLERS[$name];
+    private function getMyController(){
+        $Arr = explode('/',ltrim($this->Url,'/'));
+        $Module = array_shift($Arr);
+        $Cl = '\\' . $Module . '\Controllers\\' . implode('\\',$Arr);
+        return new $Cl();
     }
     
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
-    static function instance(){
-        return new self();
+    
+    
+    // --- --- --- --- ---
+    // --- --- --- --- ---
+    // --- --- --- --- ---
+    static function instance($url){
+        return new self($url);
     }
     
     // --- --- --- --- ---
-    static function add($name,$ob){
-        return self::instance()->addController($name,$ob);
+    static function add($name,$url){
+        if(array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller "'.$name.'" allready exists.');
+        return self::$CONTROLLERS[$name] = self::instance($url)->Controller;
     }
     
     // --- --- --- --- ---
     static function get($name){
-        return self::instance()->getController($name);
+        if(!array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller "'.$name.'" is not exists.');
+        return self::$CONTROLLERS[$name];
     }
     
 }

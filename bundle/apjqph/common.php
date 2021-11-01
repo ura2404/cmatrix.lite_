@@ -36,6 +36,10 @@ spl_autoload_register(function($className){
         array_shift($Arr);
         $Path .= '/models/'. implode('/',$Arr) .'.model.php';
     }
+    elseif($Arr[0] === 'Controllers'){
+        array_shift($Arr);
+        $Path .= '/controllers/'. implode('/',$Arr) .'.controller.php';
+    }
     elseif($Arr[0] === 'Dm' && count($Arr)>1){
         array_shift($Arr);
         $Path .= '/dm/'. implode('/',$Arr) .'.dm.php';
@@ -43,6 +47,8 @@ spl_autoload_register(function($className){
     else{
         $Path .= '/code/'. implode('/',$Arr) .'.class.php';
     }
+    
+    //dump($Path,$className);
     
     if(file_exists($Path)) require_once($Path);
     else throw new \Exception('Class "'. $className .'" file not found.');

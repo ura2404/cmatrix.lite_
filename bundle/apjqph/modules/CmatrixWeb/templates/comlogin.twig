@@ -54,17 +54,18 @@
             </from>
         </div>
     {% else %}
-        <div class="cm-back cm-menu-container cm-behind cm-noselect flex z-40">
+        <div class="cm-back cm-menu-container cm-behind cm-noselect flex z-40 {#bg-gray-800 bg-opacity-50#}">
             <div class="container flex mx-auto">
-                <ul id="wi-s-menu" class="relative ml-auto mt-10 mb-auto bg-gray-200 cursor-pointer">
-                    {# <li class="p-2 hover:bg-gray-400"><span class="w-7 inline-block"></span>Text</li> #}
-                    <li class="p-2 hover:bg-gray-300"><i class="w-7 far fa-user"></i></span><a href="{{ url.profilу }}">Профиль</a></li>
-                    <li class="p-2 hover:bg-gray-300"><i class="w-7 far fa-gem"></i></span><a href="{{ url.session }}">Сессия</a></li>
-                    <li class="cm-h-devider text-gray-400"></li>
-                    <li class="p-2 hover:bg-gray-300"><i class="w-7 fas fa-desktop"></i></span><a href="{{ url.admin }}">Admin`ка</a></li>
-                    <li class="cm-h-devider text-gray-400"></li>
-                    <li class="wi-logout p-2 hover:bg-gray-300"><i class="w-7 fas fa-sign-out-alt"></i><span>Завершение сессии</span></li>
-                </ul>
+                <div class="ml-auto mt-10 mb-6 overflow-y-auto">
+                    <ul id="wi-s-menu" class="bg-gray-200 cursor-pointer">
+                        <li class="flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.profilу }}"><i class="w-7 far fa-user"></i><span>Профиль</span></a></li>
+                        <li class="flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.session }}"><i class="w-7 far fa-paper-plane"></i><span>Сеанс</span></a></li>
+                        <li class="cm-h-devider text-gray-400"></li>
+                        <li class="flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.admin }}"><i class="w-7 fas fa-desktop"></i><span>Admin`ка</span></a></li>
+                        <li class="cm-h-devider text-gray-400"></li>
+                        <li class="flex wi-logout"><a class="w-full p-2 hover:bg-gray-300"><i class="w-7 fas fa-sign-out-alt"></i><span>Завершение сеанса</span></a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         

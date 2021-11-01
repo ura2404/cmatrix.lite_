@@ -1,0 +1,18 @@
+{#
+    Admin`ка
+#}
+{% extends "/CmatrixWeb/templates/comlogin.twig" %}
+
+{% block main %}
+    <div class="container m-auto h-full w-full flex">
+        
+        <ul class="bg-gray-200 cursor-pointer">
+            <li class="flex">
+                <a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.dictionary }}" __onclick="event.preventDefault()">
+                <i class="w-7 fas fa-list"></i><span>Справочники</span>
+                </a>
+            </li>
+        </ul>
+        
+    </div>
+{% endblock %}
