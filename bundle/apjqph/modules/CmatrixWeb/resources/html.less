@@ -26,9 +26,12 @@ html {
     z-index : -100;
 }
 
+button:focus, a:focus {
+    outline: none;
+}
 
-button:focus, input:focus {
-    outline: 1px solid gray
+input:focus {
+    outline: 1px solid gray;
 }
 
 /* подложка на весь экран */
@@ -46,8 +49,19 @@ button:focus, input:focus {
     }
 }
 
+/* горизонтальный разделитель */
 .cm-h-devider {
     border-top : 1px solid;
+}
+
+
+.cm-menu {
+    .cm-menu-item {
+        span {
+            position : relative;
+            top : -0.125rem;
+        }
+    }
 }
 
 @keyframes win-show {

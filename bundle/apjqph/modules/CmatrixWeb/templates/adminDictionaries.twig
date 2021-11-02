@@ -1,0 +1,117 @@
+{% extends "/CmatrixWeb/templates/admin.twig" %}
+
+{% block main_container %}
+        
+    {# --- строка фильтра и кнопок --- #}
+    <div class="flex-shrink-0 flex">
+        <fieldset class="relative mr-auto m-1">
+            <input class="pl-1 pr-8" type="text" name="table-edit" placeholder="поиск..." />
+            <i class="absolute text-gray-400 right-2 top-1 fas fa-search"></i>
+        </fieldset>
+        
+        <button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Настройки"><i class="text-gray-500 fas fa-cog"></i></button>
+        <button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Фильтры"><i id="wi-filter-b" class="text-gray-500 cursor-pointer fas fa-filter"></i></button>
+        <button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Плитка"><i class="text-gray-500 fa fa-th"></i></button>
+        <button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Список"><i class="text-gray-500 fa fa-th-list"></i></button>
+        {#<button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Помощь">
+            <i class="text-xl text-gray-500 far fa-question-circle"></i>
+        </button>#}
+        <a href="" class="hover:bg-gray-200 _hover:text-gray-100 px-2 py-2" title="Помощь">
+            <i class="text-xl text-gray-500 far fa-question-circle"></i>
+        </a>
+        
+    </div>
+            
+            {# --- скролируемая область --- #}
+            <div class="overflow-y-auto">
+            
+                <div id="wi-filter" class="flex-shrink-0 bg-green-600 text-white pb-10">
+                    <div class="flex bg-green-700">
+                        <div class="p-1"><i class="fas fa-arrow-right"></i><span class="ml-2">Фильтры</span></div>
+                        <button type="button" class="_cm-hover ml-auto px-2 py-1.5 hover:bg-green-500" title="Применить"><i class="fas fa-check"></i></button>
+                        <button type="button" class="_cm-hover px-2 py-1.5 hover:bg-red-400" title="Сбросить"><i class="fas fa-redo"></i></button>
+                        <button type="button" class="_cm-hover px-2 py-1.5 hover:bg-blue-400" title="Сохранить"><i class="fas fa-download"></i></button>
+                        <button type="button" class="_cm-hover px-2 py-1.5 hover:bg-blue-400" title="Восстановить"><i class="fas fa-upload"></i></button>
+                    </div>
+                    <div class="max-h-80 _overflow-y-auto">
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>1WEFWEFWF</div>
+                        <div>000000000000000</div>
+                    </div>
+                </div>
+            
+            
+            
+            
+            
+            
+                <div class="wi-dicts-container overflow-y-auto">
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>111111111111111111111111111111</div>
+                    <div>00000000000000000000000000</div>
+                </div>
+
+            </div>
+{% endblock %}

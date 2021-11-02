@@ -6,8 +6,8 @@ use \CmatrixWeb as web;
 class Common implements web\iModel {
     public function getData(){
         return [
-            'url'     => $this->getMyUrl(),
-            'project' => $this->getMyProject(),
+            'url' => $this->getMyUrl(),
+            'app' => $this->getMyProject(),
         ];
     }
     

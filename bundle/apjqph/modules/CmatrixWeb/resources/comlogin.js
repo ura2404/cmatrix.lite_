@@ -11,7 +11,7 @@ const error = new Alert($('#wi-error')).init();
 const session = new Session($('#wi-session'));
 
 // --- --- --- --- ---
-$(document).ready(function(){
+$(document).ready(() => {
     let $Form;
     
     session.onSuccess = _success;

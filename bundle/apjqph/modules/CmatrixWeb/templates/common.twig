@@ -13,7 +13,7 @@
     <head>
         <link rel="icon" href="{% block favicon %}res/CmatrixWeb/ico/honeycomb.ico{% endblock %}" type="image/x-icon"/> 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <title>{{ project.name }} v{{ project.version }}</title>
+        <title>{{ app.name }} v{{ app.version }}</title>
         <link rel="stylesheet" type="text/css" href="res/CmatrixWeb/vendor/tailwindcss.com/tailwind.min.css"/>
         <link rel="stylesheet" type="text/css" href="res/CmatrixWeb/vendor/fontawesome.com/5.15.2/css/all.css"/>
         <link rel="stylesheet" type="text/css" href="res/CmatrixWeb/vendor/google.com/fonts/Arsenal/font.less"/>
@@ -37,7 +37,7 @@
                 </div>
                 #}
                 
-                <div class="cm-name my-auto pl-1 pr-2 _font-bold text-2xl text-green-400 truncate _flex-none" title="{% block nameTitle %}{% endblock %}">{% block name %}Name{% endblock %}</div>
+                <div class="cm-name my-auto pl-1 pr-2 _font-bold text-2xl text-green-400 truncate _flex-none" title="{% block nameTitle %}{% endblock %}">{% block name %}{{ app.name }}{% endblock %}</div>
                 {% block current %}{# {{ session.hid }} #}{% endblock %}
                 <div id="cm-actions" class="flex ml-auto">{% block actions %}{% endblock %}</div>
             </div>
@@ -49,7 +49,7 @@
         
         <footer class="bg-gray-500 text-white text-xs h-6 fixed bottom-0 left-0 right-0">
             <div class="container mx-auto px-3 flex h-full">
-                <div class="m-auto">{{ project.name }} &copy; <span>v{{ project.version }}</span> by {{ project.author }}</div>
+                <div class="m-auto">{{ app.name }} &copy; <span>v{{ app.version }}</span> by {{ app.author }}</div>
             </div>
         </footer>
         

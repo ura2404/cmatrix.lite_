@@ -5,23 +5,27 @@ require_once '../../../common.php';
 \Cmatrix\App::instance();
 
 // --- --- --- --- ----
-\CmatrixWeb\Controller::add('Twig','/CmatrixWeb/Twig');
+\CmatrixWeb\Controller::add('twig','/CmatrixWeb/Twig');
 //dump(\CmatrixWeb\Controller::$CONTROLLERS);
 //die();
 
 // --- --- --- --- ----
 \CmatrixWeb\Model::add('P404','/CmatrixWeb/P404');
-\CmatrixWeb\Model::add('Home','/CmatrixWeb/Home');
-\CmatrixWeb\Model::add('Login','/CmatrixWeb/Login');
-\CmatrixWeb\Model::add('Admin','/CmatrixWeb/Admin');
+\CmatrixWeb\Model::add('home','/CmatrixWeb/Home');
+\CmatrixWeb\Model::add('login','/CmatrixWeb/Login');
+\CmatrixWeb\Model::add('admin','/CmatrixWeb/Admin');
+\CmatrixWeb\Model::add('adminTables','/CmatrixWeb/AdminTables');
+\CmatrixWeb\Model::add('adminDictionaries','/CmatrixWeb/AdminDictionaries');
 //dump(\CmatrixWeb\Model::$MODELS);
 //die();
 
 // --- --- --- --- ----
 \CmatrixWeb\Template::add('404','/CmatrixWeb/404.twig');
-\CmatrixWeb\Template::add('Home','/CmatrixWeb/home.twig');
-\CmatrixWeb\Template::add('Login','/CmatrixWeb/login.twig');
-\CmatrixWeb\Template::add('Admin','/CmatrixWeb/admin.twig');
+\CmatrixWeb\Template::add('home','/CmatrixWeb/home.twig');
+\CmatrixWeb\Template::add('login','/CmatrixWeb/login.twig');
+\CmatrixWeb\Template::add('admin','/CmatrixWeb/admin.twig');
+\CmatrixWeb\Template::add('adminTables','/CmatrixWeb/adminTables.twig');
+\CmatrixWeb\Template::add('adminDictionaries','/CmatrixWeb/adminDictionaries.twig');
 //dump(\CmatrixWeb\Template::$TEMPLATES);
 //die();
 
@@ -29,25 +33,37 @@ require_once '../../../common.php';
 \CmatrixWeb\Router::add('404',[
     'template' => '404',
     'model' => 'P404',
-    'controller' => 'Twig'
+    'controller' => 'twig'
 ]);
 
 \CmatrixWeb\Router::add(['/','home'],[
-    'template' => 'Home',
-    'model' => 'Home',
-    'controller' => 'Twig'
+    'template' => 'home',
+    'model' => 'home',
+    'controller' => 'twig'
 ]);
 
 \CmatrixWeb\Router::add('login',[
-    'template' => 'Login',
-    'model' => 'Login',
-    'controller' => 'Twig'
+    'template' => 'login',
+    'model' => 'login',
+    'controller' => 'twig'
 ]);
 
-\CmatrixWeb\Router::add('/^admin/',[
-    'template' => 'Admin',
-    'model' => 'Admin',
-    'controller' => 'Twig'
+\CmatrixWeb\Router::add(['/^admin$/','lk'],[
+    'template' => 'admin',
+    'model' => 'admin',
+    'controller' => 'twig'
+]);
+
+\CmatrixWeb\Router::add('admin/tables',[
+    'template' => 'adminTables',
+    'model' => 'adminTables',
+    'controller' => 'twig'
+]);
+
+\CmatrixWeb\Router::add('admin/dictionaries',[
+    'template' => 'adminDictionaries',
+    'model' => 'adminDictionaries',
+    'controller' => 'twig'
 ]);
 
 // --- --- --- --- ----

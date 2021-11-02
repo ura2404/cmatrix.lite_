@@ -26,8 +26,8 @@ export default class Menu extends Window {
             e.stopPropagation();
         });*/
         
-        Object.keys(this.onClicks).forEach(function(key) {
-            Instance.$Tag.find(key).on('click',this[key]);
+        Object.keys(this.onClicks).forEach(function(key){
+            Instance.$Tag.find(key).on('click',e => this[key].call(e.target));
         },this.onClicks);
         
         return this;

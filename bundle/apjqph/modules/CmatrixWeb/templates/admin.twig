@@ -3,16 +3,32 @@
 #}
 {% extends "/CmatrixWeb/templates/comlogin.twig" %}
 
+{% block style %}
+    {{ parent() }}
+    <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/admin.less"/>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type="module" src="res/CmatrixWeb/admin.js"></script>
+{% endblock %}
+
 {% block main %}
     <div class="container m-auto h-full w-full flex">
         
-        <ul class="bg-gray-200 cursor-pointer">
-            <li class="flex">
-                <a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.dictionary }}" __onclick="event.preventDefault()">
-                <i class="w-7 fas fa-list"></i><span>Справочники</span>
-                </a>
-            </li>
+        {# --- левое меню --- #}
+        <ul id="wi-ad-menu" class="cm-menu overflow-y-auto bg-gray-200 cursor-pointer flex-shrink-0">
+            <li class="cm-menu-item flex"><a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.dictionaries }}"><i class="text-gray-700 w-7 fab fa-elementor"></i><span>Справочники</span></a></li>
+            <li class="cm-menu-item flex"><a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.tables }}"><i class="text-gray-700 w-7 fas fa-table"></i><span>Таблицы</span></a></li>
+            <li class="cm-menu-item flex"><a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.messages }}"><i class="text-gray-700 w-7 far fa-comments"></i><span>Сообщения</span></a></li>
+            <li class="cm-h-devider text-gray-400"></li>
+            <li class="cm-menu-item flex"><a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.setup }}"><i class="text-gray-700 w-7 fas fa-cogs"></i><span>Настройки</span></a></li>
         </ul>
+        
+        {# --- контент --- #}
+        <div class="bg-gray-100 w-full h-full flex flex-col">
+            {% block main_container %}{% endblock %}
+        </div>
         
     </div>
 {% endblock %}
