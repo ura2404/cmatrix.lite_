@@ -1,18 +1,25 @@
-{% extends "/CmatrixWeb/templates/admin.twig" %}
+{#
+ # Макрос 'table'
+ #
+ # @param data - массив параметров
+ #   props - поля
+ #
+ #
+ #
+ #}
 
-{% block main_container %}
-        
+{% macro table(data) %}
     {# --- строка фильтра и кнопок --- #}
-    <div class="flex-shrink-0 flex">
-        <fieldset class="relative mr-auto m-1">
+    <div class="flex-shrink-0 flex bg-gray-200">
+        <fieldset class="relative my-auto ml-auto mr-2">
             <input class="pl-1 pr-8" type="text" name="table-edit" placeholder="поиск..." />
             <i class="absolute text-gray-400 right-2 top-1 fas fa-search"></i>
         </fieldset>
         
-        <button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Настройки"><i class="text-gray-500 fas fa-cog"></i></button>
-        <button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Фильтры"><i id="wi-filter-b" class="text-gray-500 cursor-pointer fas fa-filter"></i></button>
-        <button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Плитка"><i class="text-gray-500 fa fa-th"></i></button>
-        <button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Список"><i class="text-gray-500 fa fa-th-list"></i></button>
+        <button type="button" class="hover:bg-gray-300 _hover:text-gray-100 px-2" title="Настройки"><i class="text-gray-500 fas fa-cog"></i></button>
+        <button id="wi-filter-button"type="button" class="hover:bg-gray-300 _hover:text-gray-100 px-2" title="Фильтры"><i id="wi-filter-b" class="text-gray-500 cursor-pointer fas fa-filter"></i></button>
+        <button type="button" class="hover:bg-gray-300 _hover:text-gray-100 px-2" title="Плитка"><i class="text-gray-500 fa fa-th"></i></button>
+        <button type="button" class="hover:bg-gray-300 _hover:text-gray-100 px-2" title="Список"><i class="text-gray-500 fa fa-th-list"></i></button>
         {#<button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Помощь">
             <i class="text-xl text-gray-500 far fa-question-circle"></i>
         </button>#}
@@ -21,9 +28,9 @@
         </a>
         
     </div>
-            
+
             {# --- скролируемая область --- #}
-            <div class="overflow-y-auto">
+            <div class="_overflow-y-auto">
             
                 <div id="wi-filter" class="flex-shrink-0 bg-green-600 text-white pb-10">
                     <div class="flex bg-green-700">
@@ -114,4 +121,5 @@
                 </div>
 
             </div>
-{% endblock %}
+
+{% endmacro %}

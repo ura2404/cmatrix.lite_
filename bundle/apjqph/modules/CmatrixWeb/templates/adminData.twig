@@ -1,0 +1,22 @@
+{% extends "/CmatrixWeb/templates/comlogin.twig" %}
+
+{% block main %}
+    {% import "/CmatrixWeb/templates/lib/table.twig" as _table %}
+    
+    <div class="container mx-auto flex">
+        
+        {# --- левое меню --- #}
+        <ul id="wi-ad-menu" class="cm-menu fixed left-0 top-10 bottom-6 overflow-y-auto bg-gray-200 cursor-pointer flex-shrink-0">
+            <li class="cm-menu-item flex"><a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.dictionaries }}"><i class="text-gray-700 w-7 fab fa-elementor"></i><span>Справочники</span></a></li>
+            <li class="cm-menu-item flex"><a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.tables }}"><i class="text-gray-700 w-7 fas fa-table"></i><span>Таблицы</span></a></li>
+            <li class="cm-menu-item flex"><a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.messages }}"><i class="text-gray-700 w-7 far fa-comments"></i><span>Сообщения</span></a></li>
+            <li class="cm-h-devider text-gray-400"></li>
+            <li class="cm-menu-item flex" title="Настройки системы"><a class="cm-no-click w-full px-2 md:px-4 py-2 hover:bg-gray-300" href="{{ url.setup }}"><i class="text-gray-700 w-7 fas fa-cogs"></i><span>Настройки</span></a></li>
+        </ul>
+        
+        {#<div id="wi-table" class="w-full h-full flex-shrink-0 flex flex-col">
+            {{ _table.table() }}
+        </div>#}
+    </div>
+    
+{% endblock %}

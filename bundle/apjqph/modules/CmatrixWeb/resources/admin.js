@@ -11,5 +11,4 @@ $(document).ready(() => {
         //'.wi-setup' : function(){_fun.call(this)}
     }).init();
     
-
 });

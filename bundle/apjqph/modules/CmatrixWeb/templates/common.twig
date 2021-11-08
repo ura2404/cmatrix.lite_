@@ -24,7 +24,7 @@
         <script type="text/javascript" src="res/CmatrixWeb/vendor/lesscss.org/3.7.1/less.min.js"></script>
     </head>
     <body>
-        <header class="bg-gray-500 text-white h-10 fixed top-0 left-0 right-0">
+        <header class="bg-gray-500 text-white h-10 fixed top-0 left-0 right-0 z-10">
             <div class="container mx-auto flex h-full">
                 <a id="cm-logo" href="{{ url.home }}" class="cm-hover my-auto text-6xl _w-11 flex-shrink-0">
                     <span class="_m-auto">~</span>
@@ -43,11 +43,11 @@
             </div>
         </header>
         
-        <div class="pt-10 pb-6 h-full w-full">
+        <div class="pt-10 pb-6 w-full">
             {% block main %}{% endblock %}
         </div>
         
-        <footer class="bg-gray-500 text-white text-xs h-6 fixed bottom-0 left-0 right-0">
+        <footer class="bg-gray-500 text-white text-xs h-6 fixed bottom-0 left-0 right-0 z-10">
             <div class="container mx-auto px-3 flex h-full">
                 <div class="m-auto">{{ app.name }} &copy; <span>v{{ app.version }}</span> by {{ app.author }}</div>
             </div>

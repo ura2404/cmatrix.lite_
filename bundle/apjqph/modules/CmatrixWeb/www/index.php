@@ -15,7 +15,7 @@ require_once '../../../common.php';
 \CmatrixWeb\Model::add('login','/CmatrixWeb/Login');
 \CmatrixWeb\Model::add('admin','/CmatrixWeb/Admin');
 \CmatrixWeb\Model::add('adminTables','/CmatrixWeb/AdminTables');
-\CmatrixWeb\Model::add('adminDictionaries','/CmatrixWeb/AdminDictionaries');
+\CmatrixWeb\Model::add('adminData','/CmatrixWeb/AdminData');
 //dump(\CmatrixWeb\Model::$MODELS);
 //die();
 
@@ -25,7 +25,7 @@ require_once '../../../common.php';
 \CmatrixWeb\Template::add('login','/CmatrixWeb/login.twig');
 \CmatrixWeb\Template::add('admin','/CmatrixWeb/admin.twig');
 \CmatrixWeb\Template::add('adminTables','/CmatrixWeb/adminTables.twig');
-\CmatrixWeb\Template::add('adminDictionaries','/CmatrixWeb/adminDictionaries.twig');
+\CmatrixWeb\Template::add('adminData','/CmatrixWeb/adminData.twig');
 //dump(\CmatrixWeb\Template::$TEMPLATES);
 //die();
 
@@ -60,9 +60,9 @@ require_once '../../../common.php';
     'controller' => 'twig'
 ]);
 
-\CmatrixWeb\Router::add('admin/dictionaries',[
-    'template' => 'adminDictionaries',
-    'model' => 'adminDictionaries',
+\CmatrixWeb\Router::add('admin/data',[
+    'template' => 'adminData',
+    'model' => 'adminData',
     'controller' => 'twig'
 ]);
 

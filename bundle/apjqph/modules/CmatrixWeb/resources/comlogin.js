@@ -17,6 +17,7 @@ $(document).ready(() => {
     session.onSuccess = _success;
     session.onError = _error;
     
+    
     if(($Form = $('#wi-login')).length){
         session.Target = new Form($Form,(url,data) => session.login(url,data));
     }
@@ -34,6 +35,8 @@ $(document).ready(() => {
     
     session.Target.init();
     session.init();
+    
+    if($('.wi-need-login').length) session.Target.show();
 }); 
 
 // --- --- --- --- ---
