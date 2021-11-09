@@ -20,7 +20,7 @@ class Comlogin extends Common implements web\iModel {
         
         $Data = [
             'enable' => $Config->getValue('session/enable'),
-            'user' => array_intersect_key($Sysuser->Data,array_flip(['code','name'])),
+            'user' => array_intersect_key($Sysuser->Data,array_flip(['code','name','lk'])),
             'hid' => $Session->Data['hid']
         ];
         return $Data;

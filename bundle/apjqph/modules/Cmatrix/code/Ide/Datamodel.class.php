@@ -8,6 +8,7 @@ use \Cmatrix\Exception as ex;
  */
 class Datamodel implements iDatamodel{
     private $P_Url = null;
+    private $P_Name = null;
     private $P_Path = null;
     private $P_Json = null;
     private $P_Props = null;
@@ -22,6 +23,8 @@ class Datamodel implements iDatamodel{
     function __get($name){
         switch($name){
             case 'Url' : return $this->getMyUrl();
+            case 'Name' : return cm\Lang::instance()->str($this->Json['name']);
+            case 'Info' : return cm\Lang::instance()->str($this->Json['info']);
             case 'Parent' : return $this->getMyParent();
             case 'Path' : return $this->getMyPath();
             case 'Json' : return $this->getMyJson();
@@ -54,6 +57,12 @@ class Datamodel implements iDatamodel{
     }
     
     // --- --- --- --- ---
+    protected function getMyName(){
+        if($this->P_Name !== null) return $this->P_Name;
+        return $this->Json['name']['_def'];
+    }
+    
+    // --- --- --- --- ---
     protected function getMyParent(){
         $ParentUrl = $this->Json['parent'];
         return $ParentUrl ? self::instance($ParentUrl) : null;
@@ -66,14 +75,16 @@ class Datamodel implements iDatamodel{
     protected function getMyPath(){
         if($this->P_Path !== null) return $this->P_Path;
         $Arr = explode('/',ltrim($this->Url,'/'));
-        return $this->P_Path = CM_ROOT.'/modules/'.$Arr[0].'/dm/'.lcfirst($Arr[1]).'.dm.json';
+        
+        $Path = CM_ROOT.'/modules/'.$Arr[0].'/dm/'.lcfirst($Arr[1]).'.dm.json';
+        if(!file_exists($Path)) throw new \Exception('Datamodel "'. $this->Url .'" is not found.');
+        
+        return $this->P_Path = $Path;
     }
     
     // --- --- --- --- ---
     protected function getMyJson(){
         if($this->P_Json !== null) return $this->P_Json;
-        
-        if(!file_exists($this->Path)) throw new \Exception('Datamodel "'. $this->Url .'" is not found.');
         return $this->P_Json = cm\Json::getFile($this->Path)->Data;
     }
     

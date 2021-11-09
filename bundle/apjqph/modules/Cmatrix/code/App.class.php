@@ -29,6 +29,7 @@ class App {
             case 'isSession' : return $this->getMyIsSession();
             case 'isWeb' : return $this->getMyIsWeb();
             case 'Sapi' : return $this->getMySapi();
+            default : throw new ex\Property($this,$name);
         }
     }
 

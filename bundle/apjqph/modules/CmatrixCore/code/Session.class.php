@@ -70,7 +70,7 @@ class Session {
                     $this->Sysuser = db\Obbject::instance('/CmatrixCore/Sysuser')->get($Session->sysuser_id);
                     
                     // --- touch
-                    // через \CmatrixDb нельзя, так как происходи зацикливание
+                    // через \CmatrixDb нельзя, так как происходит зацикливание
                     $Query = \CmatrixDb\Cql::update(\Cmatrix\Ide\Datamodel::instance('/CmatrixCore/Session'))->value('touch_ts','current_timestamp')->rule('id',$this->Session->id);
                     cm\App::connect()->exec($Query);
                     //$this->Session->value('touch_ts','current_timestamp')->update();

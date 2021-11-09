@@ -1,0 +1,35 @@
+{#
+ # Макрос 'tree'
+ #
+ # @param data - массив параметров
+ #   nodes - массив узлов
+ #
+ #
+ #
+ #}
+
+{% macro tree(data,opts={}) %}
+    {% set opts = {
+    } | merge(opts)%}
+
+    {{ _self.nodes(data.nodes,0,opts) }}
+{% endmacro %}
+
+{% macro nodes(data,level,opts) %}
+    <ul class="cm-tree-nodes">
+        {% for node in data %}
+            {{ _self.node(node,level,opts) }}
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% macro node(data,level,opts) %}
+    <li class="cm-tree-node">
+        <span class="w-full px-2 py-1 inline-block hover:bg-gray-300" data-level="{{ level }}">
+            {% for i in 1..level if level > 0 %}<span class="cm-tree-node-indent w-4 inline-block"></span>{% endfor %}
+            <span>{{ data.label }}</span>
+        </span>
+        
+        {% if data.nodes %}{{ _self.nodes(data.nodes,level+1,opts) }}{% endif %}
+    </li>
+{% endmacro %}

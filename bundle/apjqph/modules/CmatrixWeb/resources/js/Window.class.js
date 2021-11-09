@@ -45,8 +45,13 @@ export default class Window {
     }
     
     // --- --- --- --- ---
-    show(){
+    show(isHidable){
         const Instance = this;
+        
+        this.isHidable = isHidable;
+        
+        // если форма не закрывемая, удалить кнопку закрытия
+        if(this.isHidable === false) this.$Tag.find('.cm-a-close').remove();
         
         Esc.push(function(){ Instance.hide() });
         
@@ -54,20 +59,21 @@ export default class Window {
             .on('click',() => Instance.hide())
             //.removeClass('cm-behind').delay(0).queue(function(){ $(this).addClass('cm-opend'); $(this).dequeue(); });
             .removeClass('cm-behind').addClass('cm-opend');
-        
-        this.$Tag.on('click',e => e.stopPropagation());
-        
+            
         // если обозначет timeout, то закрыть отреагировать на это
         if(this.Timeout) setTimeout(function(){
             Instance.hide();
         },this.Timeout);
+        
+        // не передавать click на форме нижестоящим элементам
+        this.$Tag.on('click',e => e.stopPropagation());
         
         if(typeof this.onShow === 'function') this.onShow();
     }
     
     // --- --- --- --- ---
     hide(){
-        //console.log('hide');
+        if(this.isHidable === false) return;
         
         const Instance = this;
         

@@ -1,0 +1,16 @@
+{
+    "module" : {
+        "code" : "cmatrixDb",
+        "name" : "CmatrixDb",
+        "prefix" : "cmDb",
+        "info" : "Ядро DataBase подсистемы",
+        "author" : "ura@itx.ru",
+        "url" : null,
+        "since" : 2018,
+        "major" : 0,
+        "minor" : 1,
+        "build" : 1
+    },
+	"dependences" : [
+	]
+}

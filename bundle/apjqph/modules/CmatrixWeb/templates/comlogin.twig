@@ -84,6 +84,5 @@
 {% endblock %}
 
 {% block main %}
-    {#<div class="cm-win-container cm-noselect fixed top-0 bottom-0 left-0 right-0 bg-gray-200 bg-opacity-50 flex z-50">#}
-    
+    {% if session.user.lk != true %}<div class="wi-need-login"></div>{% endif %}
 {% endblock %}

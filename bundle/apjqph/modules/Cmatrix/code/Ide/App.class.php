@@ -16,6 +16,7 @@ class App {
         switch($name){
             case 'Path' : return $this->getMyPath();
             case 'Modules' : return $this->getMyModules();
+            default : throw new ex\Property($this,$name);
         }
     }
 

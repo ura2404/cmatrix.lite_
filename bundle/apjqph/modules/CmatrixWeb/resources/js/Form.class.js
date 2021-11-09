@@ -47,12 +47,12 @@ export default class Form extends Window {
     }
     
     // --- --- --- --- ---
-    show(){
+    show(isHidable){
         const Instance = this;
-        super.show();
+        super.show(isHidable);
         
-        // очитсить поля
-        this.$Tag.find(':input').filter((index, element) =>$(element).is('input:not(:hidden)')).map((index, element) => $(element).removeClass('cm-invalid').next().text('').end().val(''));
+        // очистить поля
+        this.$Tag.find(':input').filter((index, element) => $(element).is('input:not(:hidden)')).map((index, element) => $(element).removeClass('cm-invalid').next().text('').end().val(''));
         
         // фокус на первое поле
         this.$Tag.find('input:not(:hidden):first').focus();

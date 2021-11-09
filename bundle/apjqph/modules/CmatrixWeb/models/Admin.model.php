@@ -1,5 +1,6 @@
 <?php
 namespace CmatrixWeb\Models;
+use \CmatrixCore as co;
 use \CmatrixWeb as web;
 
 class Admin extends Comlogin implements web\iModel {
@@ -7,7 +8,7 @@ class Admin extends Comlogin implements web\iModel {
         
         return arrayMergeReplace(parent::getData(),[
             'app' => [
-                'name' => 'Admin`ка'
+                'module' => 'Admin`ка'
             ],
             'blocks' => $this->getMyBlocks(),
             
@@ -25,7 +26,7 @@ class Admin extends Comlogin implements web\iModel {
         return [
             [
                 'enable' => true,
-                'visible' => true,
+                'visible' => co\Sysuser::instance()->isMyGroups('coAdmins','coSupervisors'),
                 'code' => 'data',
                 'name' => 'Данные (Data managment)',
                 'icon' => 'fab fa-elementor',
@@ -34,12 +35,30 @@ class Admin extends Comlogin implements web\iModel {
             ],
             [
                 'enable' => false,
-                'visible' => true,
-                'code' => 'table',
-                'name' => 'Таблицы',
-                'icon' => 'fas fa-table',
-                'info' => 'Пользовательские таблицы',
-                'url' => CM_WHOME.'/admin/tables',
+                'visible' => co\Sysuser::instance()->isMyGroups('coAdmins','coSupervisors'),
+                'code' => 'sysuser',
+                'name' => 'Пользователи',
+                'icon' => 'fas fa-user',
+                'info' => 'Управление пользователями системы',
+                'url' => CM_WHOME.'/admin/data',
+            ],
+            [
+                'enable' => false,
+                'visible' => co\Sysuser::instance()->isMyGroups('coAdmins','coSupervisors'),
+                'code' => 'sysgroup',
+                'name' => 'Группы пользователей',
+                'icon' => 'fas fa-users',
+                'info' => 'Управление группами пользователей системы',
+                'url' => CM_WHOME.'/admin/data',
+            ],
+            [
+                'enable' => false,
+                'visible' => co\Sysuser::instance()->isMyGroups('coAdmins','coSupervisors'),
+                'code' => 'sysrole',
+                'name' => 'Роли пользователей',
+                'icon' => 'fas fa-user-tag',
+                'info' => 'Управление ролями пользователей системы',
+                'url' => CM_WHOME.'/admin/data',
             ],
             [
                 'enable' => false,
@@ -61,12 +80,21 @@ class Admin extends Comlogin implements web\iModel {
             ],
             [
                 'enable' => false,
-                'visible' => true,
+                'visible' => co\Sysuser::instance()->isMyGroups('coProjects','coSupervisors','coProjects'),
                 'code' => 'project',
                 'name' => 'Проекты',
                 'icon' => 'fas fa-user-friends',
                 'info' => 'Управление проектами, группами пользователей с локальнымы чатом и заданиями',
                 'url' => CM_WHOME.'/admin/messages',
+            ],
+            [
+                'enable' => false,
+                'visible' => true,
+                'code' => 'table',
+                'name' => 'Мои таблицы',
+                'icon' => 'fas fa-table',
+                'info' => 'Пользовательские таблицы',
+                'url' => CM_WHOME.'/admin/tables',
             ],
             [
                 'enable' => false,

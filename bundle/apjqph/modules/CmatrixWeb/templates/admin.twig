@@ -14,33 +14,30 @@
 {% endblock %}
 
 {% block main %}
-    {% if session.user.code != 'guest' %}
-        <div class="container mx-auto flex flex-wrap">
-            {% for block in blocks %}
-                {% set enable = block.enable ? block.enable : false %}
-                {% set visible = block.visible ? block.visible : false %}
-                
-                {% if _context.visible %}
-                    {% if _context.enable %}
-                        <a class="md:mx-2 mx-auto rounded overflow-hidden bg-gray-200 w-80 h-44 flex m-2 flex-col" href="{{ block.url }}">
-                            <span class="text-center font-bold bg-gray-300 p-2">{{ block.name }}</span>
-                            <i class="p-1 text-center fa-3x text-gray-700 {{ block.icon }}"></i>
-                            <span class="text-center mb-1 mt-auto mx-2 h-20 overflow-y-auto">{{ block.info }}</span>
-                        </a>
-                    {% else %}
-                        <div class="md:mx-2 mx-auto rounded overflow-hidden bg-gray-200 w-80 h-44 flex m-2 flex-col opacity-30">
-                            <span class="text-center font-bold bg-gray-300 p-2">{{ block.name }}</span>
-                            <i class="p-1 text-center fa-3x text-gray-700 {{ block.icon }}"></i>
-                            <span class="text-center mb-1 mt-auto mx-2 h-20 overflow-y-auto">{{ block.info }}</span>
-                        </div>
-                    {% endif %}
+    {{ parent() }}
+    <div class="container mx-auto flex flex-wrap">
+        {% for block in blocks %}
+            {% set enable = block.enable ? block.enable : false %}
+            {% set visible = block.visible ? block.visible : false %}
+            
+            {% if _context.visible %}
+                {% if _context.enable %}
+                    <a class="md:mx-2 mx-auto rounded overflow-hidden bg-gray-200 w-80 h-44 flex m-2 flex-col border-2 border-white hover:border-2 hover:border-green-400 " href="{{ block.url }}">
+                        <span class="text-center font-bold bg-gray-300 p-2">{{ block.name }}</span>
+                        <i class="p-1 text-center fa-3x text-gray-700 {{ block.icon }}"></i>
+                        <span class="text-center mb-1 mt-auto mx-2 h-20 overflow-y-auto">{{ block.info }}</span>
+                    </a>
+                {% else %}
+                    <div class="md:mx-2 mx-auto rounded overflow-hidden bg-gray-200 w-80 h-44 flex m-2 flex-col opacity-30 border-2 border-white">
+                        <span class="text-center font-bold bg-gray-300 p-2">{{ block.name }}</span>
+                        <i class="p-1 text-center fa-3x text-gray-700 {{ block.icon }}"></i>
+                        <span class="text-center mb-1 mt-auto mx-2 h-20 overflow-y-auto">{{ block.info }}</span>
+                    </div>
                 {% endif %}
-                
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="wi-need-login"></div>
-    {% endif %}
+            {% endif %}
+            
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block main1 %}

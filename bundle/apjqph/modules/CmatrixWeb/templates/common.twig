@@ -37,7 +37,7 @@
                 </div>
                 #}
                 
-                <div class="cm-name my-auto pl-1 pr-2 _font-bold text-2xl text-green-400 truncate _flex-none" title="{% block nameTitle %}{% endblock %}">{% block name %}{{ app.name }}{% endblock %}</div>
+                <div class="cm-name my-auto pl-1 pr-2 _font-bold text-2xl text-green-400 truncate _flex-none" title="{% block nameTitle %}{% endblock %}">{% block name %}{% if app.module %}{{ app.module }}{% else %}{{ app.name }}{% endif %}{% endblock %}</div>
                 {% block current %}{# {{ session.hid }} #}{% endblock %}
                 <div id="cm-actions" class="flex ml-auto">{% block actions %}{% endblock %}</div>
             </div>

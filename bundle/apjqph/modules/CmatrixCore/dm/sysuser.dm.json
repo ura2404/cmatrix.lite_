@@ -42,7 +42,7 @@
             "index": null,
             "default": null,
             "register" : null,
-            "info": "имя пользователя",
+            "info": "Имя пользователя",
             "association": null
         },
         "name" : {

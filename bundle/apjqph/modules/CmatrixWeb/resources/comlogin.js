@@ -36,7 +36,7 @@ $(document).ready(() => {
     session.Target.init();
     session.init();
     
-    if($('.wi-need-login').length) session.Target.show();
+    if($('.wi-need-login').length) session.Target.show(false);
 }); 
 
 // --- --- --- --- ---
