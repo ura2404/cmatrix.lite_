@@ -6,10 +6,28 @@
     
     {{ parent() }}
     
-    <div class="container mx-auto flex">
+    <div class="container mx-auto">
+        {% for i in data %}
+            <div class="bg-gray-200 m-2 rounded">
+                <div class="bg-gray-400 text-white font-bold flex">
+                    <div class="pl-2 flex"><span class="my-auto">{{ i.module.name }}{% if i.module.baloon %} - {{ i.module.baloon }}{% endif %}</span></div>
+                    <i class="ml-auto my-auto fas fa-plus p-2 hover:bg-gray-500"></i>
+                    <i class="my-auto fas fa-cog p-2 hover:bg-gray-500"></i>
+                </div>
+                {% for datamodel in i.datamodels %}
+                    <div class="pl-2 hover:bg-gray-300 cursor-pointer flex">
+                        <span class="my-auto">{{ datamodel.name }}{% if datamodel.baloon %} - {{ datamodel.baloon }}{% endif %}</span>
+                        <i class="ml-auto my-auto text-gray-500 fas fa-cog p-2 hover:text-white hover:bg-green-500"></i>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        
+        {#
         <div id="wi-menu" class="fixed top-10 bottom-6 overflow-y-auto bg-gray-200 cursor-pointer flex-shrink-0">
             {{ _tree.tree(tree) }}
         </div>
+        #}
         
         {# --- левое меню --- #}
         {#

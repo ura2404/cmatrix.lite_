@@ -17,7 +17,7 @@ class Json {
         switch($name){
             case 'Data' : return $this->getData();
             case 'Encode' : return $this->encode();
-            
+            default : throw new ex\Property($this,$name);            
         }
     }
 

@@ -1,6 +1,7 @@
 <?php
 namespace Cmatrix\Ide;
 use \Cmatrix as cm;
+use \Cmatrix\Exception as ex;
 
 /**
  * Получени любой инофрмации о модуле
@@ -20,9 +21,9 @@ class Module {
     function __get($name){
         switch($name){
             case 'Path' : return $this->getMyPath();
+            case 'Name' : return cm\Lang::str($this->Json['module']['name']);
+            case 'Baloon' : return cm\Lang::str($this->Json['module']['baloon']);
             case 'Json' : return $this->getMyJson();
-            case 'Name' : return $this->Json['module']['name'];
-            case 'Info' : return $this->Json['module']['info'];
             case 'Datamodels' : return $this->getMyDatamodels();
             default : throw new ex\Property($this,$name);
         }

@@ -3,13 +3,16 @@
         "code" : "cmatrixCore",
         "name" : "CmatrixCore",
         "prefix" : "cmCore",
-        "info" : "Ядро SystemData подсистемы",
+        "baloon" : {
+            "_def" : "Ядро SystemData подсистемы"
+        },
         "author" : "ura@itx.ru",
         "url" : null,
         "since" : 2018,
         "major" : 0,
         "minor" : 1,
-        "build" : 1
+        "build" : 1,
+        "info" : null
     },
 	"dependences" : [
 	]

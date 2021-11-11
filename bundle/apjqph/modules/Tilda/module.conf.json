@@ -1,15 +1,16 @@
 {
     "module" : {
-        "code" : "cmatrix",
-        "name" : "Cmatrix",
-        "prefix" : "cm",
-        "info" : null,
+        "code" : "tilda",
+        "name" : "tilda",
+        "prefix" : "td",
+        "baloon" : null,
         "author" : "ura@itx.ru",
         "url" : null,
         "since" : 2018,
         "major" : 0,
         "minor" : 1,
-        "build" : 1
+        "build" : 1,
+        "info" : null
     },
 	"dependences" : [
 	]

@@ -23,8 +23,8 @@ class Datamodel implements iDatamodel{
     function __get($name){
         switch($name){
             case 'Url' : return $this->getMyUrl();
-            case 'Name' : return cm\Lang::instance()->str($this->Json['name']);
-            case 'Info' : return cm\Lang::instance()->str($this->Json['info']);
+            case 'Name' : return cm\Lang::str($this->Json['name']);
+            case 'Baloon' : return cm\Lang::str($this->Json['baloon']);
             case 'Parent' : return $this->getMyParent();
             case 'Path' : return $this->getMyPath();
             case 'Json' : return $this->getMyJson();
@@ -54,12 +54,6 @@ class Datamodel implements iDatamodel{
     protected function getMyUrl(){
         if($this->P_Url !== null) return $this->P_Url;
         return '/'. implode('/',explode('\Dm\\',get_class($this)));
-    }
-    
-    // --- --- --- --- ---
-    protected function getMyName(){
-        if($this->P_Name !== null) return $this->P_Name;
-        return $this->Json['name']['_def'];
     }
     
     // --- --- --- --- ---

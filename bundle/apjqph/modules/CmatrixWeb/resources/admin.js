@@ -2,6 +2,7 @@ import Menu from './js/Menu.class.js';
 
 // --- --- --- --- ---
 $(document).ready(() => {
+    /*
     const _fun = tag => document.location = tag.attr('href') ;
     
     const menu = new Menu($('#wi-ad-menu'),{
@@ -10,5 +11,6 @@ $(document).ready(() => {
         //'.wi-table' : function(){_fun.call(this)},
         //'.wi-setup' : function(){_fun.call(this)}
     }).init();
+    */
     
 });

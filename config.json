@@ -3,7 +3,8 @@
         "code" : "cmatrix",
         "name" : "Cmatrix Lite",
         "version" : "1.0",
-        "author" : "ura@itx.ru"
+        "author" : "ura@itx.ru",
+        "lang" : "ru"
     },
     "www": {
         "root": "/cmatrix.lite"

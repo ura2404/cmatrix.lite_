@@ -3,13 +3,16 @@
         "code" : "cmatrixWeb",
         "name" : "CmatrixWeb",
         "prefix" : "cmWeb",
-        "info" : "Ядро Web подсистемы",
+        "baloon" : {
+            "_def" : "Ядро Web подсистемы"
+        },
         "author" : "ura@itx.ru",
         "url" : null,
         "since" : 2018,
         "major" : 0,
         "minor" : 1,
-        "build" : 1
+        "build" : 1,
+        "info" : null
     },
 	"dependences" : [
 	]

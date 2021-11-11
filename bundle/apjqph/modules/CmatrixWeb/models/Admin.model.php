@@ -39,16 +39,7 @@ class Admin extends Comlogin implements web\iModel {
                 'code' => 'sysuser',
                 'name' => 'Пользователи',
                 'icon' => 'fas fa-user',
-                'info' => 'Управление пользователями системы',
-                'url' => CM_WHOME.'/admin/data',
-            ],
-            [
-                'enable' => false,
-                'visible' => co\Sysuser::instance()->isMyGroups('coAdmins','coSupervisors'),
-                'code' => 'sysgroup',
-                'name' => 'Группы пользователей',
-                'icon' => 'fas fa-users',
-                'info' => 'Управление группами пользователей системы',
+                'info' => 'Управление пользователями и группами',
                 'url' => CM_WHOME.'/admin/data',
             ],
             [
@@ -57,7 +48,7 @@ class Admin extends Comlogin implements web\iModel {
                 'code' => 'sysrole',
                 'name' => 'Роли пользователей',
                 'icon' => 'fas fa-user-tag',
-                'info' => 'Управление ролями пользователей системы',
+                'info' => 'Управление ролями пользователей',
                 'url' => CM_WHOME.'/admin/data',
             ],
             [
