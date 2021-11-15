@@ -21,6 +21,7 @@ class Module {
     function __get($name){
         switch($name){
             case 'Path' : return $this->getMyPath();
+            case 'Code' : return $this->Json['module']['code'];
             case 'Name' : return cm\Lang::str($this->Json['module']['name']);
             case 'Baloon' : return cm\Lang::str($this->Json['module']['baloon']);
             case 'Json' : return $this->getMyJson();

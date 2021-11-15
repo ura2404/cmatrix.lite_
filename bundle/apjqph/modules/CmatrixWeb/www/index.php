@@ -16,6 +16,7 @@ require_once '../../../common.php';
 \CmatrixWeb\Model::add('admin','/CmatrixWeb/Admin');
 \CmatrixWeb\Model::add('adminTables','/CmatrixWeb/AdminTables');
 \CmatrixWeb\Model::add('adminData','/CmatrixWeb/AdminData');
+\CmatrixWeb\Model::add('adminDataViewEntity','/CmatrixWeb/AdminDataViewEntity');
 //dump(\CmatrixWeb\Model::$MODELS);
 //die();
 
@@ -26,6 +27,7 @@ require_once '../../../common.php';
 \CmatrixWeb\Template::add('admin','/CmatrixWeb/admin.twig');
 \CmatrixWeb\Template::add('adminTables','/CmatrixWeb/adminTables.twig');
 \CmatrixWeb\Template::add('adminData','/CmatrixWeb/adminData.twig');
+\CmatrixWeb\Template::add('adminDataViewEntity','/CmatrixWeb/adminDataViewEntity.twig');
 //dump(\CmatrixWeb\Template::$TEMPLATES);
 //die();
 
@@ -63,6 +65,12 @@ require_once '../../../common.php';
 \CmatrixWeb\Router::add('admin/data',[
     'template' => 'adminData',
     'model' => 'adminData',
+    'controller' => 'twig'
+]);
+
+\CmatrixWeb\Router::add('/^admin\/data\/view\/entity/',[
+    'template' => 'adminDataViewEntity',
+    'model' => 'adminDataViewEntity',
     'controller' => 'twig'
 ]);
 

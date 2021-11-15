@@ -23,6 +23,7 @@ class Datamodel implements iDatamodel{
     function __get($name){
         switch($name){
             case 'Url' : return $this->getMyUrl();
+            case 'Code' : return $this->Json['code'];
             case 'Name' : return cm\Lang::str($this->Json['name']);
             case 'Baloon' : return cm\Lang::str($this->Json['baloon']);
             case 'Parent' : return $this->getMyParent();

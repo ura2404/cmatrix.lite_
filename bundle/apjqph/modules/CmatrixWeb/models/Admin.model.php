@@ -54,6 +54,15 @@ class Admin extends Comlogin implements web\iModel {
             [
                 'enable' => false,
                 'visible' => true,
+                'code' => 'module',
+                'name' => 'Модули',
+                'icon' => 'far fa-object-ungroup',
+                'info' => 'Управление модулями системы',
+                'url' => CM_WHOME.'/admin/nodules',
+            ],
+            [
+                'enable' => false,
+                'visible' => true,
                 'code' => 'task',
                 'name' => 'Задания',
                 'icon' => 'fas fa-tasks',

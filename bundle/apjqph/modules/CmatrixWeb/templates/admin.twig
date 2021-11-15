@@ -14,7 +14,8 @@
 {% endblock %}
 
 {% block main %}
-    {{ parent() }}
+    {% if session.user.lk != true %}<div class="wi-need-login"></div>{% endif %}
+
     <div class="container mx-auto flex flex-wrap">
         {% for block in blocks %}
             {% set enable = block.enable ? block.enable : false %}

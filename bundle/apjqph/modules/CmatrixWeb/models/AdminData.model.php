@@ -7,7 +7,10 @@ class AdminData extends Comlogin implements web\iModel {
     public function getData(){
         return arrayMergeReplace(parent::getData(),[
             'app' => [
-                'module' => 'Admin`ка • Данные'
+                'module' => 'Admin`ка • Данные',
+            ],
+            'page' => [
+                'url'=> CM_WHOME .'/'. web\Page::instance()->Url,
             ],
             'data' => $this->getMyData(),
             'tree' => $this->getMyTree()
@@ -20,12 +23,14 @@ class AdminData extends Comlogin implements web\iModel {
             $Module = cm\Ide\Module::instance($module);
             return [
                 'module' => [
+                    'code' => $Module->Code,
                     'name' => $Module->Name,
                     'baloon' => $Module->Baloon
                 ],
                 'datamodels' => array_map(function($dm){
                     $Datamodel = cm\Ide\Datamodel::instance($dm);
                     return [
+                        'code' => $Datamodel->Code,
                         'name' => $Datamodel->Name,
                         'baloon' => $Datamodel->Baloon
                     ];
