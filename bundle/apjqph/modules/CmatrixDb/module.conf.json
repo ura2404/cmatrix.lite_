@@ -1,6 +1,6 @@
 {
     "module" : {
-        "code" : "cmatrixDb",
+        "code" : "/CmatrixDb",
         "name" : "CmatrixDb",
         "prefix" : "cmDb",
         "baloon" : {

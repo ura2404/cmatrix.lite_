@@ -273,6 +273,7 @@ function arrayDefs(...$arrays){
  */
 function arrayMergeReplace(...$arrays){
     if(!count($arrays)) return [];
+    if(count($arrays) == 1) return $arrays[0];
     
     $first = array_shift($arrays);
     if(!count($arrays)) return $first;

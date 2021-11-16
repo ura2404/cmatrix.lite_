@@ -1,6 +1,6 @@
 {
     "module" : {
-        "code" : "cmatrixCore",
+        "code" : "/CmatrixCore",
         "name" : "CmatrixCore",
         "prefix" : "cmCore",
         "baloon" : {

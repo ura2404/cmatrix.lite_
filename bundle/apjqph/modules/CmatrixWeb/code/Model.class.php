@@ -3,6 +3,8 @@ namespace CmatrixWeb;
 use \Cmatrix\Exception as ex;
 
 class Model {
+    static $INSTANCES = [];
+    
     static $MODELS = [];
     private $Mix;
     
@@ -53,14 +55,16 @@ class Model {
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
+    /**
+     * @param \Closure|array|string $mix
+     */
     static function instance($mix){
+        $Key = gettype($mix) === 'string' ? $mix : serialize($mix);
+        if(array_key_exists($Key,self::$INSTANCES)) return self::$INSTANCES[$Key];
         return new self($mix);
     }
-    
+    /*    
     // --- --- --- --- ---
-    /**
-     * @param \Closure\array\string $mix
-     */
     static function add($name,$mix){
         if(array_key_exists($name,self::$MODELS)) throw new \Exception('Model "'.$name.'" allready exists.');
         return self::$MODELS[$name] = self::instance($mix);
@@ -71,5 +75,6 @@ class Model {
         if(!array_key_exists($name,self::$MODELS)) throw new \Exception('Model "'.$name.'" is not exists.');
         return self::$MODELS[$name];
     }
+    */
 }
 ?>

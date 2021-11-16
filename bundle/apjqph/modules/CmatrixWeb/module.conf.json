@@ -1,6 +1,6 @@
 {
     "module" : {
-        "code" : "cmatrixWeb",
+        "code" : "/CmatrixWeb",
         "name" : "CmatrixWeb",
         "prefix" : "cmWeb",
         "baloon" : {

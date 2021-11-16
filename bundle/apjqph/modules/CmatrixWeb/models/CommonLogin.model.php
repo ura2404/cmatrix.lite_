@@ -3,7 +3,7 @@ namespace CmatrixWeb\Models;
 use \Cmatrix as cm;
 use \CmatrixWeb as web;
 
-class Comlogin extends Common implements web\iModel {
+class CommonLogin extends Common implements web\iModel {
     public function getData(){
         return arrayMergeReplace(parent::getData(),[
             'session' => $this->getMySession(),

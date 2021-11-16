@@ -3,7 +3,7 @@ namespace CmatrixWeb\Models;
 use \Cmatrix as cm;
 use \CmatrixWeb as web;
 
-class AdminData extends Comlogin implements web\iModel {
+class AdminData extends AdminCommon implements web\iModel {
     public function getData(){
         return arrayMergeReplace(parent::getData(),[
             'app' => [

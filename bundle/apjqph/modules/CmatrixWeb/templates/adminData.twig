@@ -1,29 +1,31 @@
-{% extends "/CmatrixWeb/templates/comlogin.twig" %}
+{% extends "/CmatrixWeb/templates/adminCommon.twig" %}
 
 {% block main %}
     {% import "/CmatrixWeb/templates/lib/tree.twig" as _tree %}
     {% import "/CmatrixWeb/templates/lib/table.twig" as _table %}
     
-    {% if session.user.lk != true %}<div class="wi-need-login"></div>{% endif %}
-
+    {{ parent() }}
+    
     <div class="container mx-auto">
         {% for i in data %}
             <div class="bg-gray-200 m-2 rounded overflow-hidden">
+                
                 <div class="bg-gray-400 text-white font-bold flex">
                     <div class="pl-2 flex"><span class="my-auto">{{ i.module.name }}{% if i.module.baloon %} - {{ i.module.baloon }}{% endif %}</span></div>
-                    <a class="ml-auto" href="{{ page.url }}/add/module/{{ i.module.code }}">
+                    <a class="ml-auto" href="{{ page.url }}/add/module{{ i.module.code }}">
                         <i class="wi-add my-auto fas fa-plus p-2 hover:bg-gray-500 cursor-pointer"></i>
                     </a>
-                    <a class="" href="{{ page.url }}/setup/module/{{ i.module.code }}">
+                    <a class="" href="{{ page.url }}/setup/module{{ i.module.code }}">
                         <i class="my-auto fas fa-cog p-2 hover:bg-gray-500 cursor-pointer"></i>
                     </a>
                 </div>
+                
                 {% for datamodel in i.datamodels %}
                     <div class="flex hover:bg-gray-300">
-                        <a class="w-full pl-2 cursor-pointer flex" href="{{ page.url }}/view/entity{{ datamodel.code }}" {#onclick="event.preventDefault()"#}>
+                        <a class="w-full pl-2 cursor-pointer flex" href="{{ url.home }}/entity{{ datamodel.code }}" {#onclick="event.preventDefault()"#}>
                             <span class="my-auto">{{ datamodel.name }}{% if datamodel.baloon %} - {{ datamodel.baloon }}{% endif %}</span>
                         </a>
-                        <a class="mx-0 my-auto text-gray-500 hover:text-white hover:bg-green-500" href="{{ page.url }}/setup/entity{{ datamodel.code }}" {#onclick="event.preventDefault()"#}>
+                        <a class="mx-0 my-auto text-gray-500 hover:text-white hover:bg-green-500" href="{{ url.home }}/entity{{ datamodel.code }}/setup" {#onclick="event.preventDefault()"#}>
                             <i class="fas fa-cog p-2"></i>
                         </a>
                     </div>
@@ -33,6 +35,7 @@
                         <i class="wi-setup ml-auto my-auto text-gray-500 fas fa-cog p-2 hover:text-white hover:bg-green-500"></i>
                     </div>#}
                 {% endfor %}
+                
             </div>
         {% endfor %}
         

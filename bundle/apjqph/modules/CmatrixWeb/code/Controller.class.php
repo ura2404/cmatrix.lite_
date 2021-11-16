@@ -3,7 +3,7 @@ namespace CmatrixWeb;
 use \Cmatrix\Exception as ex;
 
 class Controller {
-    static $CONTROLLERS = [];
+    static $INSTANCES = [];
     private $Url;
     
     // --- --- --- --- ---
@@ -50,20 +50,9 @@ class Controller {
     // --- --- --- --- ---
     // --- --- --- --- ---
     static function instance($url){
-        return new self($url);
+        $Key = $url;
+        if(array_key_exists($Key,self::$INSTANCES)) return self::$INSTANCES[$Key];
+        return (new self($url))->Controller;
     }
-    
-    // --- --- --- --- ---
-    static function add($name,$url){
-        if(array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller "'.$name.'" allready exists.');
-        return self::$CONTROLLERS[$name] = self::instance($url)->Controller;
-    }
-    
-    // --- --- --- --- ---
-    static function get($name){
-        if(!array_key_exists($name,self::$CONTROLLERS)) throw new \Exception('Controller "'.$name.'" is not exists.');
-        return self::$CONTROLLERS[$name];
-    }
-    
 }
 ?>

@@ -1,7 +1,7 @@
 {#
     Admin`ка
 #}
-{% extends "/CmatrixWeb/templates/comlogin.twig" %}
+{% extends "/CmatrixWeb/templates/adminCommon.twig" %}
 
 {% block style %}
     {{ parent() }}
@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block main %}
-    {% if session.user.lk != true %}<div class="wi-need-login"></div>{% endif %}
+    {{ parent() }}
 
     <div class="container mx-auto flex flex-wrap">
         {% for block in blocks %}

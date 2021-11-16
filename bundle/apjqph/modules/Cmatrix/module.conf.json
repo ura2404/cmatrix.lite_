@@ -1,6 +1,6 @@
 {
     "module" : {
-        "code" : "cmatrix",
+        "code" : "/Cmatrix",
         "name" : "Cmatrix",
         "baloon" : null,
         "prefix" : "cm",

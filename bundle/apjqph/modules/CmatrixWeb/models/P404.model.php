@@ -2,13 +2,13 @@
 namespace CmatrixWeb\Models;
 use \CmatrixWeb as web;
 
-class P404 extends Comlogin implements web\iModel {
+class P404 extends CommonLogin implements web\iModel {
     
     public function getData(){
 
         return arrayMergeReplace(parent::getData(),[
             'app' => [
-                'name' => '404'
+                'module' => '404'
             ],
             'page' => [
                 'url' => web\Page::instance()->Url

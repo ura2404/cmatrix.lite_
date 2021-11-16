@@ -8,31 +8,30 @@
  #
  #}
 
-{% macro table(data) %}
+{% macro table(id,data) %}
+<div id="{{ id }}">
+
     {# --- строка фильтра и кнопок --- #}
-    <div class="flex-shrink-0 flex bg-gray-200">
+    <div class="cm-toolbar fixed h-8 left-0 right-0 _flex-shrink-0 flex bg-gray-200">
         <fieldset class="relative my-auto ml-auto mr-2">
-            <input class="pl-1 pr-8" type="text" name="table-edit" placeholder="поиск..." />
-            <i class="absolute text-gray-400 right-2 top-1 fas fa-search"></i>
+            <input class="w-64 pl-1 pr-12 focus:ring-2 focus:ring-green-400" type="text" name="table-edit" placeholder="поиск..." />
+            <i class="absolute text-gray-400 top-1 right-8 fas fa-times"></i>
+            <i class="absolute text-gray-400 top-1 right-2 fas fa-search"></i>
         </fieldset>
         
-        <button type="button" class="hover:bg-gray-300 _hover:text-gray-100 px-2" title="Настройки"><i class="text-gray-500 fas fa-cog"></i></button>
-        <button id="wi-filter-button"type="button" class="hover:bg-gray-300 _hover:text-gray-100 px-2" title="Фильтры"><i id="wi-filter-b" class="text-gray-500 cursor-pointer fas fa-filter"></i></button>
-        <button type="button" class="hover:bg-gray-300 _hover:text-gray-100 px-2" title="Плитка"><i class="text-gray-500 fa fa-th"></i></button>
-        <button type="button" class="hover:bg-gray-300 _hover:text-gray-100 px-2" title="Список"><i class="text-gray-500 fa fa-th-list"></i></button>
-        {#<button type="button" class="hover:bg-gray-200 _hover:text-gray-100 px-2" title="Помощь">
-            <i class="text-xl text-gray-500 far fa-question-circle"></i>
-        </button>#}
-        <a href="" class="hover:bg-gray-200 _hover:text-gray-100 px-2 py-2" title="Помощь">
-            <i class="text-xl text-gray-500 far fa-question-circle"></i>
+        <button type="button" class="w-8 hover:bg-gray-300 " title="Настройки"><i class="text-gray-500 fas fa-cog"></i></button>
+        <button type="button" class="cm-filter-button w-8 hover:bg-gray-300 " tag=".cm-filter" title="Фильтры"><i id="wi-filter-b" class="text-gray-500 cursor-pointer fas fa-filter"></i></button>
+        <button type="button" class="w-8 hover:bg-gray-300 " title="Плитка"><i class="text-gray-500 fa fa-th"></i></button>
+        <button type="button" class="w-8 hover:bg-gray-300 " title="Список"><i class="text-gray-500 fa fa-th-list"></i></button>
+        <a href="wefwfwf" class="w-8 text-xl text-gray-500 hover:bg-yellow-600 hover:text-white flex" title="Помощь">
+            <i class="m-auto far fa-question-circle"></i>
         </a>
-        
     </div>
 
             {# --- скролируемая область --- #}
-            <div class="_overflow-y-auto">
+            <div class="pt-8 _overflow-y-auto">
             
-                <div id="wi-filter" class="flex-shrink-0 bg-green-600 text-white pb-10">
+                <div class="cm-filter flex-shrink-0 bg-green-600 text-white pb-10">
                     <div class="flex bg-green-700">
                         <div class="p-1"><i class="fas fa-arrow-right"></i><span class="ml-2">Фильтры</span></div>
                         <button type="button" class="_cm-hover ml-auto px-2 py-1.5 hover:bg-green-500" title="Применить"><i class="fas fa-check"></i></button>
@@ -121,5 +120,5 @@
                 </div>
 
             </div>
-
+</div>
 {% endmacro %}

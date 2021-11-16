@@ -5,12 +5,12 @@
 
 {% block style %}
     {{ parent() }}
-    <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/comlogin.less"/>
+    <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/commonLogin.less"/>
 {% endblock %}
 
 {% block js %}
     {{ parent() }}
-    <script type="module" src="res/CmatrixWeb/comlogin.js"></script>
+    <script type="module" src="res/CmatrixWeb/commonLogin.js"></script>
 {% endblock %}
 
 {% block actions %}
@@ -61,7 +61,7 @@
                         <li class="cm-menu-item flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.profile }}"><i class="text-gray-700 w-7 far fa-user"></i><span>Профиль</span></a></li>
                         <li class="cm-menu-item flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.session }}"><i class="text-gray-700 w-7 far fa-paper-plane"></i><span>Сеанс</span></a></li>
                         <li class="cm-h-devider text-gray-400"></li>
-                        <li class="cm-menu-item flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.admin }}"><i class="text-gray-700 w-7 fas fa-desktop"></i><span>Кабинет</span></a></li>
+                        <li class="cm-menu-item flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.admin }}"><i class="text-gray-700 w-7 fas fa-desktop"></i><span>Admin`ка</span></a></li>
                         <li class="cm-h-devider text-gray-400"></li>
                         <li class="cm-menu-item wi-logout flex"><a class="w-full p-2 hover:bg-gray-300"><i class="text-gray-700 w-7 fas fa-sign-out-alt"></i><span>Завершение сеанса</span></a></li>
                     </ul>

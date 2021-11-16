@@ -1,5 +1,7 @@
-{% extends "/CmatrixWeb/templates/adminCommon.twig" %}
+{% extends "/CmatrixWeb/templates/commonLogin.twig" %}
 
 {% block main %}
+    {{ parent() }}
+    
     {% if session.user.lk != true %}<div class="wi-need-login"></div>{% endif %}
 {% endblock %}

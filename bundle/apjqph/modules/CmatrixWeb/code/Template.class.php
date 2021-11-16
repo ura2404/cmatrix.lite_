@@ -3,6 +3,8 @@ namespace CmatrixWeb;
 use \Cmatrix\Exception as ex;
 
 class Template {
+    static $INSTANCES = [];
+    
     static $TEMPLATES = [];
     private $Url;
     
@@ -41,9 +43,11 @@ class Template {
     // --- --- --- --- ---
     // --- --- --- --- ---
     static function instance($url){
+        $Key = $url;
+        if(array_key_exists($Key,self::$INSTANCES)) return self::$INSTANCES[$Key];
         return new self($url);
     }
-    
+    /*    
     // --- --- --- --- ---
     static function add($name,$url){
         if(array_key_exists($name,self::$TEMPLATES)) throw new ex('Template "'.$name.'" allready exists.');
@@ -55,5 +59,6 @@ class Template {
         if(!array_key_exists($name,self::$TEMPLATES)) throw new ex('Template "'.$name.'" is not exists.');
         return self::$TEMPLATES[$name];
     }
+    */
 }
 ?>

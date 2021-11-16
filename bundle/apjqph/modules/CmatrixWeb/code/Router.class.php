@@ -15,9 +15,9 @@ class Router {
     public function addRouter($match,$data){
         if(array_key_exists($match,self::$ROUTERS)) throw new \Exception('Router '.$match.' allready exists');
         
-        $data['template'] = Template::get($data['template']);
-        $data['model'] = Model::get($data['model']);
-        $data['controller'] = Controller::get($data['controller']);
+        $data['template']   = Template::instance($data['template']);
+        $data['model']      = Model::instance($data['model']);
+        $data['controller'] = Controller::instance($data['controller']);
         
         self::$ROUTERS[$match] = $data;
         return $this;

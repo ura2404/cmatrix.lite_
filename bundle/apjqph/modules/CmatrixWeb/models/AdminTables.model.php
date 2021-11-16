@@ -2,7 +2,7 @@
 namespace CmatrixWeb\Models;
 use \CmatrixWeb as web;
 
-class AdminTables extends Admin implements web\iModel {
+class AdminTables extends AdminCommon implements web\iModel {
     public function getData(){
 
         return arrayMergeReplace(parent::getData(),[
