@@ -32,21 +32,6 @@ class Page {
             $Model = $router['model'];
             $Controller = $router['controller'];
             return $Controller->render($Template,$Model);
-            
-            /*
-            // 1. template
-            $Template = $router['template'];
-            
-            // 2. model
-            $Model = isset($router['model']) ? $router['model'] : [];
-            if($Model instanceof \Closure) $Data = $Model();
-            elseif(!is_array($Model)) $Data = $Model->getData();
-
-            // 3. controller
-            $Controller = $router['controller'];
-            
-            return $Controller->render($Template,!$Data ? [] : $Data);
-            */
         };
         
         $Router = Router::get($this->Url);
@@ -82,10 +67,5 @@ class Page {
     static function instance($url=null){
         return new self($url);
     }
-    
-    // --- --- --- --- ---
-    //static function get($pageName=null){
-    //    return self::instance()->setPage($pageName);
-    //}
 }
 ?>

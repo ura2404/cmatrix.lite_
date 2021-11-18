@@ -1,9 +1,9 @@
-import Session from './js/Session.class.js';
-import Window from './js/Window.class.js';
-import Form from './js/Form.class.js';
-import Menu from './js/Menu.class.js';
-import Alert from './js/Alert.class.js';
-import Esc from './js/Esc.class.js';
+import Session from './lib/Session.class.js';
+import Window from './lib/Window.class.js';
+import Form from './lib/Form.class.js';
+import Menu from './lib/Menu.class.js';
+import Alert from './lib/Alert.class.js';
+import Esc from './lib/Esc.class.js';
 
 const success = new Alert($('#wi-success'),2000).init();
 const error = new Alert($('#wi-error')).init();

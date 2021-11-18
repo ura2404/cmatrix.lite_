@@ -1,13 +1,5 @@
 {% extends "/CmatrixWeb/templates/adminCommon.twig" %}
 
-{% block error %}
-    {% if error|length %}
-        <div class="mt-20">
-            <h1 class="text-center">{{ error }}</h1>
-        </div>
-    {% endif %}
-{% endblock %}
-
 {% block main %}
     {# {% import "/CmatrixWeb/templates/lib/tree.twig" as _tree %} #}
     {% import "/CmatrixWeb/templates/lib/table.twig" as _table %}

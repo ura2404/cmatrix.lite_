@@ -9,26 +9,30 @@ class AdminDataEntityView extends AdminCommon implements web\iModel {
         
         try{
             $Entity = $this->getDatamodel();
-            $Datamodel = cm\Ide\Datamodel::instance($Entity);
+            $Datamodel = web\Ide\Datamodel::instance($Entity);
             
             return arrayMergeReplace(parent::getData(),[
                 'app' => [
                     'module' => 'Admin`ка • ' . $Datamodel->Name
                 ],
                 'datamodel' => [
-                    'props' => $Datamodel->Props
+                    'name' => $Datamodel->Name,
+                    'props' => $Datamodel->Props,
+                    'css' => $Datamodel->Css,
+                    'lines' => $Datamodel->Lines,
+                    'total' => $Datamodel->Total,
+                    'page' => 17
                 ],
-                'e' => $Datamodel->Code
             ]);
         }
         catch(\Exception $e){
             return arrayMergeReplace(parent::getData(),[
-                'error' => 'Ошибка.'
+                'error' => ['Ошибка',$e->getMessage()]
             ]);
         }
         catch(\Throwable $e){
             return arrayMergeReplace(parent::getData(),[
-                'error' => 'Ошибка.'
+                'error' => ['Ошибка',$e->getMessage()]
             ]);
         }
         

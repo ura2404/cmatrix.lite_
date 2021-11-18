@@ -48,7 +48,9 @@ class Pdo extends db\Connect\Driver implements db\Connect\iDriver{
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
-    public function query($query,$mode=\PDO::FETCH_ASSOC){
+    public function query($query,$mode=null){
+        if(!$mode) $mode = \PDO::FETCH_ASSOC;
+        
         $Query = $this->prepareQuery($query);
 		if(!strlen($Query)) return;
 			
@@ -78,7 +80,6 @@ class Pdo extends db\Connect\Driver implements db\Connect\iDriver{
         $this->Dbh->beginTransaction();
         
 		$Res = $this->Dbh->exec($Query);
-		//dump($Res);
 
         if($Res === FALSE){
             $this->Dbh->rollback();

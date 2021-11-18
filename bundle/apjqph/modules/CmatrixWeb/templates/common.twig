@@ -43,7 +43,7 @@
             </div>
         </header>
         
-        <div class="pt-10 pb-6 w-full">
+        <div class="fixed pt-10 pb-6 w-full h-full">
             {% block error %}{% endblock %}
             {% block main %}{% endblock %}
         </div>
@@ -103,6 +103,6 @@
     <script type="text/javascript" src="res/CmatrixWeb/vendor/jquery.com/jquery.md5.js"></script>
     <script type="text/javascript" src="res/CmatrixWeb/vendor/jquery.js"></script>
     {% block js %}
-        <script type="text/javascript" src="res/CmatrixWeb/common.js"></script>
+        <script type="module" src="res/CmatrixWeb/common.js"></script>
     {% endblock js %}
 </html>

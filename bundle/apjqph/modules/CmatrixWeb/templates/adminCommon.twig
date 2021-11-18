@@ -1,5 +1,15 @@
 {% extends "/CmatrixWeb/templates/commonLogin.twig" %}
 
+{% block error %}
+    {% if error|length %}
+        <div class="cm-error">
+            {%for e in error %}
+                <div>{{ e|raw }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block main %}
     {{ parent() }}
     

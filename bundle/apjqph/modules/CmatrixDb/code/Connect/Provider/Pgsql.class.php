@@ -70,6 +70,7 @@ class Pgsql extends db\Connect\Provider implements db\Connect\iProvider{
         $Agg = strBefore($code,'::');
         switch($Agg){
             case 'max' : return 'max(' .strAfter($code,'::'). ')';
+            case 'count' : return 'count(' .strAfter($code,'::'). ')';
             default : throw new \Exception('Invalid agg function "' .$Agg.'".');
         }
     }

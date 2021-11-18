@@ -1,0 +1,72 @@
+.cm-table {
+    .cm-filter-button {
+        &.cm-active {
+            color : white;
+            background-color: rgba(5,150,105,1);
+        }
+    }
+    
+    .cm-filter {
+        &:not(.cm-active) {
+            display: none;
+        }
+    }
+    
+    .cm-setup-button {
+        &.cm-active {
+            color : white;
+            background-color: rgba(96,165,250,1);
+        }
+    }
+    
+    .cm-setup {
+        &:not(.cm-active) {
+            display: none;
+        }
+    }
+    
+    .cm-table-footer {
+        i {
+            position: relative;
+            top: 0.1rem;
+        }
+    }
+    
+    thead {
+        th {
+            min-width : 2rem;
+        	border-left : 1px solid #ddd;
+        	border-right : 1px solid #ddd;
+        	cursor : pointer;
+        }
+    }
+    
+    tbody {
+        
+        tr {
+            &:nth-child(even){
+                background : #F5F5F5;
+            }
+            
+            &:hover {
+                background : #e0e0e0;
+            }
+            
+            &.cm-tr-selected {
+                background : rgba(146,217,191,1);
+                //#92d9bf
+                //#d0d0d0;
+            }
+        }
+    
+        td {
+            min-width : 2rem;
+        	border-left : 1px solid #ddd;
+        	border-right : 1px solid #ddd;
+        	cursor : pointer;
+        	
+        	&:hover {
+        	}
+        }
+    }
+}

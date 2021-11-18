@@ -24,7 +24,7 @@ export default class Alert extends Window {
     
     // --- --- --- --- ---
     show(message){
-        this.$Tag.find('.cm-text').text(message);
+        this.$Tag.find('.cm-text').html(message);
         super.show();
     }
     

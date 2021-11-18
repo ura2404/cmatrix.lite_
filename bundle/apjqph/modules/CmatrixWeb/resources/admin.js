@@ -1,4 +1,4 @@
-import Menu from './js/Menu.class.js';
+import Menu from './lib/Menu.class.js';
 
 // --- --- --- --- ---
 $(document).ready(() => {

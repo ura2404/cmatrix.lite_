@@ -15,13 +15,13 @@ class Connect{
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
-    public function query($query){
-        return $this->Driver->query($query);
+    public function query($query,$mode=null){
+        return $this->Driver->query($query,$mode);
     }
 
     // --- --- --- --- ---
-    public function exec($query){
-        return $this->Driver->exec($query);
+    public function exec($query,$mode=null){
+        return $this->Driver->exec($query,$mode);
     }
     
     // --- --- --- --- ---

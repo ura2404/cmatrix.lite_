@@ -1,11 +1,14 @@
 {% extends "/CmatrixWeb/templates/adminCommon.twig" %}
 
-{% block error %}
-    {% if error|length %}
-        <div class="mt-20">
-            <h1 class="text-center">{{ error }}</h1>
-        </div>
-    {% endif %}
+{% block style %}
+    {{ parent() }}
+    {# <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/adminDataEntityView.less"/> #}
+    <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/lib/table.less"/>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type="module" src="res/CmatrixWeb/adminDataEntityView.js"></script>
 {% endblock %}
 
 {% block main %}
@@ -13,7 +16,8 @@
     {% import "/CmatrixWeb/templates/lib/table.twig" as _table %}
     
     {{ parent() }}
-    
-    {{ _table.table('wi-table-entity') }}
+    <div class="container mx-auto h-full">
+        {{ _table.table('wi-table-entity',datamodel) }}
+    </div>
     
 {% endblock %}
