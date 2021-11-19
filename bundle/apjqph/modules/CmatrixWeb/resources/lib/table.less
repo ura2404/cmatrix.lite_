@@ -32,12 +32,28 @@
         }
     }
     
+    .cm-search {
+        &.cm-hover {
+            i.cm-novisible {
+                opacity : 1;
+            }
+        }
+    }
+
     thead {
+        
+        
         th {
             min-width : 2rem;
-        	border-left : 1px solid #ddd;
-        	border-right : 1px solid #ddd;
-        	cursor : pointer;
+            border-left : 1px solid #ddd;
+            border-right : 1px solid #ddd;
+            cursor : pointer;
+            
+            .cm-sort-container {
+                i:not(.cm-active) {
+                    display : none;
+                }
+            }
         }
     }
     

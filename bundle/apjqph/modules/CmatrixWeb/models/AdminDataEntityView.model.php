@@ -7,6 +7,8 @@ use \CmatrixWeb as web;
 class AdminDataEntityView extends AdminCommon implements web\iModel {
     public function getData(){
         
+        dump(web\Page::instance()->Params);
+        
         try{
             $Entity = $this->getDatamodel();
             $Datamodel = web\Ide\Datamodel::instance($Entity);
@@ -15,7 +17,7 @@ class AdminDataEntityView extends AdminCommon implements web\iModel {
                 'app' => [
                     'module' => 'Admin`ка • ' . $Datamodel->Name
                 ],
-                'datamodel' => [
+                'table' => [
                     'name' => $Datamodel->Name,
                     'props' => $Datamodel->Props,
                     'css' => $Datamodel->Css,
@@ -52,10 +54,9 @@ class AdminDataEntityView extends AdminCommon implements web\iModel {
     
     // --- --- --- --- ---
     private function getDatamodel(){
-        $Arr = explode('/',strAfter(web\Page::instance()->Url,'entity/'));
+        $Arr = explode('/',strBefore(strAfter(web\Page::instance()->Url,'entity/'),'&'));
         return '/'.$Arr[0].'/'.$Arr[1];
         //return cm\Ide\Datamodel::instance($Entity);
     }
-    
 }
 ?>

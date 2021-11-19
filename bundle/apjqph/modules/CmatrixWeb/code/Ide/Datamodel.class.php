@@ -3,6 +3,7 @@ namespace CmatrixWeb\Ide;
 use \Cmatrix as cm;
 use \Cmatrix\Exception as ex;
 use \CmatrixDb as db;
+use \CmatrixWeb as web;
 
 class Datamodel{
     static $INSTANCES = [];
@@ -28,32 +29,49 @@ class Datamodel{
     
     // --- --- --- --- ---
     private function getMyProps(){
+        $Props = $this->Datamodel->Props;
+        array_map(function($code,$prop) use(&$Props){
+            $prop['label'] = $prop['label'] ? cm\Lang::str($prop['label']) : ($prop['name'] ? cm\Lang::str($prop['name']) : $prop['code']);
+            $prop['baloon'] = $prop['baloon'] ? cm\Lang::str($prop['baloon']) : null;
+            $prop['sort'] = 'sort';
+            $prop['hsort'] = CM_WHOME. '/'.web\Page::instance()->Url;
+            
+            $Props[$code] = $prop;
+        },array_keys($Props),array_values($Props));
+        
         $Props = array_merge([
             'row_index'=>[
                 'code' => 'row_index',
                 'type' => 'integer',
+                'baloon' => 'Выбрать все записи'
             ]
-        ],$this->Datamodel->Props);
+        ],$Props);
+        
+        //dump($Props);
+        
         return $Props;
     }
     
     // --- --- --- --- ---
     private function getMyCss(){
         $_align = function($prop){
+            switch($prop['code']){
+                case 'status' : return 'center';
+            }
+            
             switch($prop['type']){
                 case '::id::' :
                 case 'integer' :
-                    return 'text-right';
+                case 'real' :
+                    return 'right';
                         
-                case ':hid::' :
-                    return 'text-center';
-                    
+                case '::hid::' :
                 case 'bool' :
-                    return 'text-center';
-                    
-                default : return 'text-left';
+                case 'timestamp' :
+                    return 'center';
+                
+                default : return 'left';
             }
-            
         };
         
         return array_map(function($prop) use($_align){
@@ -71,8 +89,20 @@ class Datamodel{
         
         $Iterator = 0;
         $Res = array_map(function($tr) use(&$Iterator){
+            array_map(function($code,$td) use(&$tr){
+                $Type = $this->Datamodel->Props[$code]['type'];
+                if($Type === 'timestamp') $td = strBefore($td,'.');
+                elseif($Type === 'bool'){
+                    //return $td === true ? ''
+                    //return $td;
+                }
+                return $tr[$code] = $td;
+            },array_keys($tr),array_values($tr));
+            
             return array_merge(['row_index' => ++$Iterator ],$tr);
         },$Res);
+        
+        //dump($Res);
         
         return $Res;
     }

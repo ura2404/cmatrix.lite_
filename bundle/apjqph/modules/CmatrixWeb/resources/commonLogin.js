@@ -22,13 +22,13 @@ $(document).ready(() => {
         session.Target = new Form($Form,(url,data) => session.login(url,data));
     }
     
-    if(($Form = $('#wi-s-menu')).length){
+    if(($Form = $('#wi-menu-session')).length){
         const formLogout = new Form($('#wi-logout'),(url,data) => session.login(url,data)).init();
         const menuSession = new Menu($Form,{
             '.wi-logout' : () => formLogout.show()
         });
-        menuSession.onShow = () => $('#wi-s-caret').addClass('wi-opend');
-        menuSession.onHide = () => $('#wi-s-caret').removeClass('wi-opend');
+        menuSession.onShow = () => $('#wi-caret-session').addClass('wi-opend');
+        menuSession.onHide = () => $('#wi-caret-session').removeClass('wi-opend');
         
         session.Target = menuSession;
     }

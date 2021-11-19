@@ -10,16 +10,20 @@ html {
     user-select: none;
 }
 
-.cm-x-noscroll {
-    overflow-x: hidden;
-}
+.cm-noscroll { overflow: hidden; }
+.cm-x-noscroll { overflow-x: hidden; }
+.cm-y-noscroll { overflow-y: hidden; }
 
 .cm-hidden {
     display: none;
 }
 
+.cm-novisible {
+    opacity: 0;
+}
+
 .cm-hover {
-    transition: .05s linear;
+    transition: .03s linear;
     
     &:hover {
         opacity: 0.5;

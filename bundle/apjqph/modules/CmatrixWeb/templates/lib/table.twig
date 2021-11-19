@@ -9,22 +9,22 @@
  #}
 
 {% macro table(id,data) %}
-<div id="{{ id }}" class="h-full cm-table flex flex-col">
+<div id="{{ id }}" class="cm-table h-full flex flex-col">
 
     {# --- строка фильтра и кнопок --- #}
     <div class="cm-toolbar h-8 flex-shrink-0 flex bg-gray-200">
-        <button type="button" class="w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Настройки"><i class="fas fa-plus"></i></button>
+        <button type="button" class="w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Настройки"><i class="far fa-plus"></i></button>
         
-        <fieldset class="relative my-auto ml-auto mr-2">
+        <fieldset class="cm-search relative my-auto ml-auto mr-2">
             <input class="w-64 pl-1 pr-12 focus:ring-2 focus:ring-green-400" type="text" name="table-edit" placeholder="поиск..." />
-            <i class="absolute top-1 right-8 text-gray-400 hover:text-gray-600 opacity-0 fas fa-times"></i>
-            <i class="absolute top-1 right-2 text-gray-400 hover:text-gray-600 fas fa-search"></i>
+            <i class="cm-novisible absolute top-1 right-8 text-gray-400 hover:text-gray-600 fal fa-times"></i>
+            <i class="absolute top-1 right-2 text-gray-400 hover:text-gray-600 fal fa-search"></i>
         </fieldset>
         
-        <button type="button" class="cm-setup-button w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Настройки"><i class="fas fa-cog"></i></button>
-        <button type="button" class="cm-filter-button w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Фильтры"><i id="wi-filter-b" class="fas fa-filter"></i></button>
-        <button type="button" class="w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Плитка"><i class="fa fa-th"></i></button>
-        <button type="button" class="w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Список"><i class="fa fa-th-list"></i></button>
+        <button type="button" class="cm-setup-button w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Настройки"><i class="far fa-cog"></i></button>
+        <button type="button" class="cm-filter-button w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Фильтры"><i id="wi-filter-b" class="far fa-filter"></i></button>
+        <button type="button" class="w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Плитка"><i class="far fa-th"></i></button>
+        <button type="button" class="w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Список"><i class="far fa-th-list"></i></button>
         <a href="{{ url.home }}" class="w-8 text-xl text-yellow-600 hover:bg-yellow-600 hover:text-white flex" title="Помощь">
             <i class="m-auto far fa-question-circle"></i>
         </a>
@@ -37,15 +37,15 @@
         
 
     {# --- скролируемая область --- #}
-    <div class="cm-scroll h-full overflow-auto __-mt-8">
+    <div class="cm-scroll h-full overflow-auto relative">
     
         <div class="cm-setup flex-shrink-0 bg-blue-400 text-white mb-8 relative">
             <div class="flex h-8 bg-blue-500">
-                <div class="p-1"><i class="fas fa-arrow-right"></i><span class="ml-2">Настройки</span></div>
-                <button type="button" class="w-8 hover:bg-green-500 ml-auto" title="Применить"><i class="fas fa-check"></i></button>
-                <button type="button" class="w-8 hover:bg-red-400" title="Сбросить"><i class="fas fa-redo"></i></button>
-                <button type="button" class="w-8 hover:bg-green-500" title="Сохранить"><i class="fas fa-download"></i></button>
-                <button type="button" class="w-8 hover:bg-green-500" title="Восстановить"><i class="fas fa-upload"></i></button>
+                <div class="p-1"><i class="far fa-arrow-right"></i><span class="ml-2">Настройки</span></div>
+                <button type="button" class="w-8 hover:bg-green-500 ml-auto" title="Применить"><i class="far fa-check"></i></button>
+                <button type="button" class="w-8 hover:bg-red-400" title="Сбросить"><i class="far fa-redo"></i></button>
+                <button type="button" class="w-8 hover:bg-green-500" title="Сохранить"><i class="far fa-download"></i></button>
+                <button type="button" class="w-8 hover:bg-green-500" title="Восстановить"><i class="far fa-upload"></i></button>
             </div>
             <div class="cm-filter-container">
                 <div>start</div>
@@ -58,11 +58,11 @@
         
         <div class="cm-filter flex-shrink-0 bg-green-600 text-white mb-8 relative">
             <div class="flex h-8 bg-green-700">
-                <div class="p-1"><i class="fas fa-arrow-right"></i><span class="ml-2">Фильтры</span></div>
-                <button type="button" class="w-8 hover:bg-green-500 ml-auto" title="Применить"><i class="fas fa-check"></i></button>
-                <button type="button" class="w-8 hover:bg-red-400" title="Сбросить"><i class="fas fa-redo"></i></button>
-                <button type="button" class="w-8 hover:bg-green-500" title="Сохранить"><i class="fas fa-download"></i></button>
-                <button type="button" class="w-8 hover:bg-green-500" title="Восстановить"><i class="fas fa-upload"></i></button>
+                <div class="p-1"><i class="far fa-arrow-right"></i><span class="ml-2">Фильтры</span></div>
+                <button type="button" class="w-8 hover:bg-green-500 ml-auto" title="Применить"><i class="far fa-check"></i></button>
+                <button type="button" class="w-8 hover:bg-red-400" title="Сбросить"><i class="far fa-redo"></i></button>
+                <button type="button" class="w-8 hover:bg-green-500" title="Сохранить"><i class="far fa-download"></i></button>
+                <button type="button" class="w-8 hover:bg-green-500" title="Восстановить"><i class="far fa-upload"></i></button>
             </div>
             <div class="cm-filter-container _max-h-80 _overflow-y-auto">
                 <div>start</div>
@@ -84,8 +84,7 @@
                 <thead>
                     <tr class="bg-gray-300 h-8">
                         {% for code,prop in data.props %}
-                            {# <th class="px-1">{{ prop.code }}</th> #}
-                            {{ _self.th(prop.code,data.css[code]) }}
+                            {{ _self.th(prop,data.css[code]) }}
                         {% endfor %}
                     </tr>
                 <thead>
@@ -105,31 +104,42 @@
     {# --- скролируемая область --- #}
     
     {# --- строка фильтра и кнопок --- #}
-    <div class="cm-table-footer h-8 flex-shrink-0 flex bg-gray-200 text-gray-600 _text-sm flex">
+    <div class="cm-table-footer h-6 flex-shrink-0 flex bg-gray-200 text-gray-600 _text-sm flex">
         <span class="my-auto">Строки: </span>
         <span class="ml-2 my-auto">{{ data.total }}</span>
         <span class="cm-count-selected ml-1 my-auto"></span>
         <span class="ml-auto my-auto">Страницы: </span>
         <div class="cm-pager flex cursor-pointer">
-            <button type="button" class="w-6 hover:bg-gray-300" title="В начало"><i class="my-auto fas fa-angle-double-left"></i></button>
-            <button type="button" class="w-6 hover:bg-gray-300" title="Предидущая страница"><i class="my-auto fas fa-angle-left"></i></button>
+            <button type="button" class="w-6 hover:bg-gray-300" title="В начало"><i class="my-auto far fa-angle-double-left"></i></button>
+            <button type="button" class="w-6 hover:bg-gray-300" title="Предидущая страница"><i class="my-auto far fa-angle-left"></i></button>
             <div class="cm-pager-n px-2 hover:bg-gray-300 flex" title="Текущая страница"><span class="m-auto">{{ data.page }}</span></div>
-            <button type="button" class="w-6 hover:bg-gray-300" title="Следующая страница"><i class="my-auto fas fa-angle-right"></i></button>
-            <button type="button" class="w-6 hover:bg-gray-300" title="В конец"><i class="my-auto fas fa-angle-double-right"></i></button>
+            <button type="button" class="w-6 hover:bg-gray-300" title="Следующая страница"><i class="my-auto far fa-angle-right"></i></button>
+            <button type="button" class="w-6 hover:bg-gray-300" title="В конец"><i class="my-auto far fa-angle-double-right"></i></button>
         </div>
     </div>
     
 </div>
 {% endmacro %}
 
-{% macro th(th,css) %}
-    {% if th=='row_index' %}
-        <th></th>
+{% macro th(prop,css) %}
+    {% if prop.code=='row_index' %}
+        <th class="cm-fselect px-1 text-center hover:bg-gray-400 hover:bg-opacity-20" title="{{ prop.baloon }}"><i class="far fa-check-square"></i></i></th>
     {% else %}
-        <th class="px-1 {{css.align}} hover:bg-gray-400 hover:bg-opacity-20">{{ th|raw }}</th>
+        <th class="px-1 hover:bg-gray-400 hover:bg-opacity-20 {%if prop.sort %}cm-{{ prop.sort }}{% endif %}" title="{{ prop.baloon }}">
+            <span class="flex">
+                <span class="ml-auto pl-1">{{ prop.label|raw }}</span>
+                {% if prop.sort %}
+                    <span class="cm-sort-container ml-auto pl-1 flex">
+                        <a href="{{prop.hsort}}"><i class="{% if prop.sort == 'sort' %}cm-active{% endif %} cm-sort text-gray-400 hover:text-gray-900 fad fa-sort"></i></a>
+                        <a href="{{prop.hsort}}"><i class="{% if prop.sort == 'asc' %}cm-active{% endif %} cm-asc text-gray-600 hover:text-gray-900 fad fa-sort-up"></i></a>
+                        <a href="{{prop.hsort}}"><i class="{% if prop.sort == 'desc' %}cm-active{% endif %} cm-desc text-gray-600 hover:text-gray-900 fad fa-sort-down"></i></a>
+                    </span>
+                {% endif %}
+            </span>
+        </th>
     {% endif %}
 {% endmacro %}
 
 {% macro td(td,css) %}
-    <td class="px-1 whitespace-nowrap {{css.align}}">{{ td|raw }}</td>
+    <td class="px-1 whitespace-nowrap text-{{ css.align }}">{{ td|raw }}</td>
 {% endmacro %}

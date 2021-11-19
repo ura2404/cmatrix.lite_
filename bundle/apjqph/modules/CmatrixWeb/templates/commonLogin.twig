@@ -23,7 +23,7 @@
         >
             <span class="cm-name my-auto mr-2">{{ session.user.name }}</span>
             <i class="text-3xl my-auto mr-2 fas fa-user-circle"></i>
-            {% if session.user.code != 'guest'%}<i id="wi-s-caret" class="my-auto mr-2 fas fa-caret-left"></i>{% endif %}
+            {% if session.user.code != 'guest'%}<i id="wi-caret-session" class="my-auto mr-2 fas fa-caret-left"></i>{% endif %}
         </a>
     {% endif %}
 {% endblock %}
@@ -57,20 +57,20 @@
         <div class="cm-back cm-menu-container cm-behind cm-noselect flex z-40 bg-gray-800 bg-opacity-50">
             <div class="container flex mx-auto">
                 <div class="ml-auto mt-10 mb-6 overflow-y-auto">
-                    <ul id="wi-s-menu" class="cm-menu bg-gray-200 cursor-pointer">
+                    <ul id="wi-menu-session" class="cm-menu bg-gray-200 cursor-pointer">
                         <li class="cm-menu-item flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.profile }}"><i class="text-gray-700 w-7 far fa-user"></i><span>Профиль</span></a></li>
                         <li class="cm-menu-item flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.session }}"><i class="text-gray-700 w-7 far fa-paper-plane"></i><span>Сеанс</span></a></li>
                         <li class="cm-h-devider text-gray-400"></li>
-                        <li class="cm-menu-item flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.admin }}"><i class="text-gray-700 w-7 fas fa-desktop"></i><span>Admin`ка</span></a></li>
+                        <li class="cm-menu-item flex"><a class="w-full p-2 hover:bg-gray-300" href="{{ url.admin }}"><i class="text-gray-700 w-7 far fa-desktop"></i><span>Admin`ка</span></a></li>
                         <li class="cm-h-devider text-gray-400"></li>
-                        <li class="cm-menu-item wi-logout flex"><a class="w-full p-2 hover:bg-gray-300"><i class="text-gray-700 w-7 fas fa-sign-out-alt"></i><span>Завершение сеанса</span></a></li>
+                        <li class="cm-menu-item wi-logout flex"><a class="w-full p-2 hover:bg-gray-300"><i class="text-gray-700 w-7 far fa-sign-out-alt"></i><span>Завершение сеанса</span></a></li>
                     </ul>
                 </div>
             </div>
         </div>
         
         <div class="cm-back cm-win-container cm-behind cm-noselect flex z-40 bg-gray-800 bg-opacity-50">
-            <form id="wi-logout" class="relative rounded-md mx-auto my-auto flex flex-col pt-10 pb-3 px-8 sm:px-12 bg-blue-400 bg-opacity-90" method="post" action="{{ url.post }}">
+            <form id="wi-logout" class="relative rounded mx-auto my-auto flex flex-col pt-10 pb-3 px-8 sm:px-12 bg-blue-400 bg-opacity-90" method="post" action="{{ url.post }}">
                 <input name="m" type="hidden" value="lo"/>
                 <span class="text-white _font-bold _absolute w-52 sm:w-72 _top-0 -mt-4 text-xl">Действительно завершить сеанс?</span>
                 <div class="flex mt-5 mb-2">

@@ -8,6 +8,7 @@ export default class Table {
     constructor($tag){
         this.$Tag = $tag;
         this.$Scroll = $tag.find('.cm-scroll');
+        this.$Search = $tag.find('.cm-search');
         
         this.$Head = $tag.find('.cm-head');
         this.$Body = $tag.find('.cm-body');
@@ -18,24 +19,38 @@ export default class Table {
         this.$Filter = $tag.find('.cm-filter');
         this.$FilterButton = $tag.find('.cm-filter-button');
         
-        this.$Tr = this.$Body.find('tr'); // строки
+        this.$Th = this.$Tag.find('thead th'); // поля шапки
+        this.$Tr = this.$Body.find('tbody tr'); // строки
         
         this.Mode = null;
-        this.CountSelected = 0;
-        this.$CountSelected = $tag.find('.cm-count-selected');
+        
+        this.Count = this.$Tr.length;   // --- кол-во строк
+        this.CountSelected = 0;         // --- кол-во выделенных строк
+        this.$CountSelected = $tag.find('.cm-table-footer').find('.cm-count-selected'); // контенер для отображения кол-ва выделенных строк
     }
     
     // --- --- --- --- ---
     init(){
         const Instance = this;
         
-        this.head();
-        
-        this.$FilterButton.on('click',e => this.filter(this.Mode));
-        this.$SetupButton.on('click',e => this.setup(this.Mode));
+        this.$FilterButton.on('click',e => this.openFilter(this.Mode));
+        this.$SetupButton.on('click',e => this.openSetup(this.Mode));
         
         // click по строке
         this.$Body.on('click','tr',function(e){ Instance.selectTr(e,this) });
+        
+        //
+        this.$Search.on('mouseover',() => this.$Search.addClass('cm-hover')).on('mouseleave',() => this.$Search.removeClass('cm-hover'));
+        
+        // кнопка full select
+        this.$Tag.find('.cm-fselect').on('click',() => this.selectTrAll());
+        
+        //
+        this.$Th.on('click',function(e){
+            this.nextSortIcon(element);
+        });
+        
+        this.genHead();
         
         return this;
     }    
@@ -44,11 +59,11 @@ export default class Table {
     /**
      * формирование мнимой шапки & scroll
      */
-    head(){
+    genHead(){
         const Instance = this;
         
         this.$Head.find('table').width(this.$Body.find('table').width());
-        this.$Tag.find('thead').clone().appendTo(this.$Head.find('table'));
+        this.$Tag.find('thead').clone(true).appendTo(this.$Head.find('table'));
 
         // --- head
         const $Th = this.$Head.find('th');
@@ -86,35 +101,72 @@ export default class Table {
     }   
     
     // --- --- --- --- ---
+    /**
+     * пометка строки
+     */
     selectTr(e,tr){
         const $Current = $(tr);
         const IsSelected = $Current.hasClass('cm-tr-selected');
         
-        if(IsSelected){
-            $Current.removeClass('cm-tr-selected');
-            this.CountSelected--;
-        }
-        else{
-            if(e.ctrlKey){
+        if(e.ctrlKey){
+            if(IsSelected){
+                $Current.removeClass('cm-tr-selected');
+                this.CountSelected--;
+            }
+            else{
                 $Current.addClass('cm-tr-selected');
                 this.CountSelected++;
             }
-            else{
-                this.$Tr.removeClass('cm-tr-selected');
-                if(this.CountSelected > 1){
-                    this.CountSelected = 0;
-                }
-                else{
-                    $Current.addClass('cm-tr-selected');
-                    this.CountSelected = 1;
-                }
-            }
+        }
+        else{
+            this.selectTrAll(false);
+            $Current.addClass('cm-tr-selected');
+            this.CountSelected = 1;
         }
         
+        this.showCountSelected();
+    }
+    
+    // --- --- --- --- ---
+    /**
+     * Выделени всех строк
+     * 
+     * @param bool select
+     *      -true выделить все
+     *      -false освободить все
+     */
+    selectTrAll(select){
+        if(select === false || (select === undefined && this.CountSelected == this.Count)){
+            this.$Tr.removeClass('cm-tr-selected');
+            this.CountSelected = 0;
+        }
+        else if(select === true || (select === undefined && this.CountSelected != this.Count)){
+            this.$Tr.addClass('cm-tr-selected');
+            this.CountSelected = this.Count;
+        }
+        this.showCountSelected();
+    }
+    
+    // --- --- --- --- ---
+    /**
+     * Отрисовка кол-ва выделенных строк
+     */
+    showCountSelected(){
         if(this.CountSelected) this.$CountSelected.text(' / '+this.CountSelected);
         else this.$CountSelected.text('');
-        
-        //console.log(this.CountSelected);
+    }
+    
+    /**
+     * Отрисовать иконку сортировку в шапке
+     */
+    // --- --- --- --- ---
+    showSortIcon(th){
+        const $Current = $(th);
+        /*
+        if($Current.hasClass('cm-sort')) $Current.find('.cm-sort-container i.cm-sort').removeClass('cm-hidden');
+        if($Current.hasClass('cm-asc')) $Current.find('.cm-sort-container i.cm-asc').removeClass('cm-hidden');
+        if($Current.hasClass('cm-desc')) $Current.find('.cm-sort-container i.cm-desc').removeClass('cm-hidden');
+        */
     }
     
     // --- --- --- --- ---
@@ -130,40 +182,40 @@ export default class Table {
     }
 
     // --- --- --- --- ---
-    setup(mode){
+    openSetup(mode){
         this.tbOff();
         if(mode === 'setup') return;
+        
         this.Mode = 'setup';
         this.$SetupButton.addClass('cm-active');
         this.$Setup.addClass('cm-active');
+        
+        // скрыть горизонтальный scroll
         this.$Head.addClass('cm-hidden');
         
-        console.log(this.$Scroll.position().left);
-        console.log(this.$Body.position().left);
+        // смесить окно по горизонтали
+        this.$Setup.offset({ left : this.$Scroll.position().left });
         
-        const Left = this.$Scroll.position().left + this.$Body.position().left;
-        console.log(Left);
-        
-        this.$Setup.offset({
-            left : Left
-        });
+        // скролировать вверх
         this.$Scroll.addClass('cm-x-noscroll').animate({ scrollTop: 0 },200);
     }
     
     // --- --- --- --- ---
-    filter(mode){
+    openFilter(mode){
         this.tbOff();
         if(mode === 'filter') return;
+        
         this.Mode = 'filter';
         this.$FilterButton.addClass('cm-active');
         this.$Filter.addClass('cm-active');
+        
+        // скрыть горизонтальный scroll
         this.$Head.addClass('cm-hidden');
         
-        const Left = this.$Body.find('table').position().left;
-        console.log(Left);
-        this.$Filter.position({
-            left : Left
-        });
+        // смесить окно по горизонтали
+        this.$Filter.offset({ left : this.$Scroll.position().left });
+        
+        // скролировать вверх
         this.$Scroll.addClass('cm-x-noscroll').animate({ scrollTop: 0 },200);
     }
 }

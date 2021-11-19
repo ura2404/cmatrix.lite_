@@ -16,6 +16,7 @@ class Page {
             //case 'Name' : return $this->Pagename;
             case 'Html' : return $this->getMyHtml();
             case 'Url' : return $this->Url;
+            case 'Params' : return $this->getMyParams();
             default : throw new ex\Property($this,$name);
         }
     }
@@ -59,6 +60,11 @@ class Page {
         };
         
         return $url ? $url : $_url();
+    }
+    
+      // --- --- --- --- ---
+    private function getMyParams(){
+        dump($_REQUEST);
     }
     
     // --- --- --- --- ---
