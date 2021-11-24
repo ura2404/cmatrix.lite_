@@ -8,6 +8,8 @@ use \CmatrixWeb as web;
 class Datamodel{
     static $INSTANCES = [];
     private $Datamodel;
+    private $P_Total;
+    private $P_Pager;
 
     // --- --- --- --- ---
     function __construct($url){
@@ -22,40 +24,17 @@ class Datamodel{
             case 'Props' : return $this->getMyProps();
             case 'Lines' : return $this->getMyLines();
             case 'Total' : return $this->getMyTotal();
-            case 'Css' : return $this->getMyCss();
+            case 'Sorts' : return $this->getMySorts();
+            case 'Pager' : return $this->getMyPager();
+            case 'Filter' : return $this->getMyFilter();
             default : throw new ex\Property($this,$name);
         }
     }
     
     // --- --- --- --- ---
     private function getMyProps(){
-        $Props = $this->Datamodel->Props;
-        array_map(function($code,$prop) use(&$Props){
-            $prop['label'] = $prop['label'] ? cm\Lang::str($prop['label']) : ($prop['name'] ? cm\Lang::str($prop['name']) : $prop['code']);
-            $prop['baloon'] = $prop['baloon'] ? cm\Lang::str($prop['baloon']) : null;
-            $prop['sort'] = 'sort';
-            $prop['hsort'] = CM_WHOME. '/'.web\Page::instance()->Url;
-            
-            $Props[$code] = $prop;
-        },array_keys($Props),array_values($Props));
-        
-        $Props = array_merge([
-            'row_index'=>[
-                'code' => 'row_index',
-                'type' => 'integer',
-                'baloon' => 'Выбрать все записи'
-            ]
-        ],$Props);
-        
-        //dump($Props);
-        
-        return $Props;
-    }
-    
-    // --- --- --- --- ---
-    private function getMyCss(){
-        $_align = function($prop){
-            switch($prop['code']){
+        $_align = function($code,$prop){
+            switch($code){
                 case 'status' : return 'center';
             }
             
@@ -74,20 +53,186 @@ class Datamodel{
             }
         };
         
-        return array_map(function($prop) use($_align){
-            return [
-                'align' => $_align($prop),
-            ];
-            return $prop;
-        },$this->Props);
+        $Props = $this->Datamodel->Props;
+        
+        array_map(function($code,$prop) use(&$Props,$_align){
+            $prop['label'] = $prop['label'] ? cm\Lang::str($prop['label']) : ($prop['name'] ? cm\Lang::str($prop['name']) : $prop['code']);
+            $prop['baloon'] = $prop['baloon'] ? cm\Lang::str($prop['baloon']) : null;
+            $prop['sortable'] = true;
+            $prop['align'] = $_align($code,$prop);
+            //$prop['sort'] = !isset($Sort[$code]) ? 's' : $Sort[$code];
+            //$prop['hsort'] = $this->getHsort($code,$prop);
+            
+            $Props[$code] = $prop;
+        },array_keys($Props),array_values($Props));
+        
+        $Props = array_merge([
+            'row_index'=>[
+                'code' => 'row_index',
+                'type' => '::index::',
+                'baloon' => 'Выбрать все записи',
+                'sortable' => false,
+                'align' => 'center'
+            ]
+        ],$Props);
+        
+        //dump($Props);
+        
+        return $Props;
     }
     
     // --- --- --- --- ---
+    private function getMySorts(){
+        $_calculate = function(){
+            $Sort = web\Page::instance()->getParam('s');
+            if(!$Sort) return [];
+            
+            $Arr = explode(',',$Sort);
+            $Count = count($Arr);
+            $Even = $Count % 2;
+            if($Even) return;
+            
+            $Sort = [];
+            for($i=0;$i<count($Arr)-1;$i=$i+2){
+                $Order = $Arr[$i+1];
+                $Sort[$Arr[$i]] = $Arr[$i+1];
+            }
+            return $Sort;
+        };
+        $Sorts = $_calculate();
+        
+        // ---  ссылка на следующую сортировку
+        // обязательно разбирать массив Sorts для сохранения последовательности сортировки по полям
+        $_href = function($code,$sort) use($Sorts){
+            $Next = $sort === 's' ? 'a' : ($sort === 'a' ? 'd' : 's');
+            if(isset($Sorts[$code]) && $Next === 's') unset($Sorts[$code]);
+            else $Sorts[$code] = $Next;
+            
+            return web\Page::instance()->setParam('s',implode(',',array_map(function($code,$sort){
+                return $code .','. $sort;
+            },array_keys($Sorts),array_values($Sorts))))->getUrl();
+        };
+        
+        $Arr = [];
+        array_map(function($code,$prop) use(&$Arr,$Sorts,$_href){
+            if(!$prop['sortable']) return;
+            
+            if(!isset($Sorts[$code])) $Arr[$code] = [ 's', $_href($code,'s') ];
+            else $Arr[$code] = [ $Sorts[$code], $_href($code, $Sorts[$code]) ];
+        },array_keys($this->Props),array_values($this->Props));
+        
+        return $Arr;
+    }
+
+    // --- --- --- --- ---
+    /**
+     * Праметр pager в url строкае 'p=<count>,<offset>'
+     * 
+     * [
+     *     'total' - всего строк
+     *     'pages' - коло-во страниц
+     *     'page' - номер текущей страницы
+     *     'count' - кол-во строк на странице
+     *     'current' - страница из страниц
+     * ]
+     */
+    private function getMyPager(){
+        if($this->P_Pager) return $this->P_Pager;
+        
+        $_calculate = function(){
+            $Pager = web\Page::instance()->getParam('p');
+            if(!$Pager) $Pager = '10,0';
+            
+            $Arr = array_slice(array_filter(explode(',',$Pager),function($value){ return !!$value; }),0,2);
+            if(count($Arr) !=2) $Arr[1] = 0;
+            
+            return $Arr;
+        };
+        
+        // функция поиска номера страницы по номеру строки
+        $_searchPage = function($count,$offset,$pages,$total){
+            // массив номеров строк начала и конца страниц
+            $PagesLines = array_map(function($page) use($count,$total){
+                $First = $page * $count;
+                $Last = ($Last = $page * $count + $count - 1) > $total-1 ? $total-1 : $Last;
+                return [ $First,$Last ];
+                
+            },range(0,$pages-1));
+            
+            
+            $Page = 0;
+            foreach($PagesLines as $index=>$page){
+                if($offset >= $page['0'] && $offset <= $page['1']) {$Page = $index; break;}
+            }
+            return $Page;
+        };
+        
+        // --- --- --- --- ---
+        $Pager = $_calculate();
+        $Count = $Pager[0];
+        $Offset = $Pager[1];
+        $Total = $this->Total;
+        $Pages = ceil($Total / $Count);
+        $Page = $_searchPage($Count,$Offset,$Pages,$Total);
+
+        if($Page == 0) $Hfirst = $Hprev = null;
+        else{
+            $Hfirst = web\Page::instance()->setParam('p',$Count.',0')->getUrl();
+            $Hprev = web\Page::instance()->setParam('p',$Count.','.(($Page-1)*$Count))->getUrl();
+        }
+        
+        if($Page == $Pages - 1) $Hlast = $Hnext = null;
+        else{
+            $Hlast = web\Page::instance()->setParam('p',$Count.','.(($Pages-1)*$Count))->getUrl();
+            $Hnext = web\Page::instance()->setParam('p',$Count.','.(($Page+1)*$Count))->getUrl();
+        }
+        
+        $Pager = [
+            'total' => $Total,
+            'pages' => $Pages,
+            'page' => $Page,
+            'count' => $Count,
+            'current' => $Page .'/'. $Pages,
+            'hfirst' => $Hfirst,
+            'hprev' => $Hprev,
+            'hnext' => $Hnext,
+            'hlast' => $Hlast
+        ];
+        
+        return $this->P_Pager = $Pager;
+    }    
+    
+    private function getMyFilter(){
+        $Rfilter = $this->getRfilter();
+    }
+    // --- --- --- --- ---
+    /**
+     * Получить свободный фильтр
+     */
+    private function getRfilter(){
+        $Filtr = web\Page::instance()->getParam('r');
+        
+        //dump($Filtr);
+        
+    }
+
+    // --- --- --- --- ---
     private function getMyLines(){
-        $Query = db\Cql::select($this->Datamodel);
+        $Sorts = array_filter(array_map(function($sort){
+            return $sort[0];
+        },$this->Sorts),function($sort){
+            return $sort !== 's';
+        });
+        
+        $Limit = array_intersect_key($this->Pager,array_flip(['count','page']));
+        
+        $Query = db\Cql::select($this->Datamodel)->orders($Sorts)->rules()->limit($Limit);
+        //dump($Query->Query);
+        
         $Res = db\Connect::instance()->query($Query);
         
-        $Iterator = 0;
+        $Pager = $this->Pager;
+        $Iterator = $Pager['page'] * $Pager['count'];
         $Res = array_map(function($tr) use(&$Iterator){
             array_map(function($code,$td) use(&$tr){
                 $Type = $this->Datamodel->Props[$code]['type'];
@@ -109,11 +254,13 @@ class Datamodel{
     
     // --- --- --- --- ---
     private function getMyTotal(){
+        if($this->P_Total) return $this->P_Total;
+        
         $Query = db\Cql::select($this->Datamodel)->prop('count::id','qaz');
         $Res = db\Connect::instance()->query($Query,\PDO::FETCH_NUM);
         
         if(!$Res) return 0;
-        return array_values($Res)[0][0];
+        return $this->P_Total = array_values($Res)[0][0];
     }
     
     // --- --- --- --- ---

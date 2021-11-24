@@ -1,8 +1,7 @@
-{% extends "/CmatrixWeb/templates/adminCommon.twig" %}
+{% extends "/Tilda/templates/tildaCommon.twig" %}
 
 {% block style %}
     {{ parent() }}
-    {# <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/adminDataEntityView.less"/> #}
     <link rel="stylesheet/less" type="text/css" href="res/CmatrixWeb/lib/table.less"/>
 {% endblock %}
 
@@ -12,10 +11,9 @@
 {% endblock %}
 
 {% block main %}
-    {# {% import "/CmatrixWeb/templates/lib/tree.twig" as _tree %} #}
     {% import "/CmatrixWeb/templates/lib/table.twig" as _table %}
-    
     {{ parent() }}
+    
     <div class="container mx-auto h-full flex">
         {#<div class="w-50 flex-shrink0">
             <div>111111</div>
@@ -27,7 +25,5 @@
         <div class="overflow-auto">
             {{ _table.table('wi-table-entity',table) }}
         </div>
-        
     </div>
-    
 {% endblock %}

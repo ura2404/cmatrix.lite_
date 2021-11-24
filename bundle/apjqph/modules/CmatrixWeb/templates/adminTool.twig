@@ -1,0 +1,40 @@
+{% extends "/CmatrixWeb/templates/commonLogin.twig" %}
+
+{% block error %}
+    {% if error|length %}
+        <div class="cm-error">
+            {%for e in error %}
+                <div>{{ e|raw }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    {{ parent() }}
+    <div class="h-full overflow-y-auto">
+        <div class="container mx-auto flex flex-wrap">
+            {% for tool in tools %}
+                {% set enable = tool.enable ? tool.enable : false %}
+                {% set visible = tool.visible ? tool.visible : false %}
+                
+                {% if _context.visible %}
+                    {% if _context.enable %}
+                        <a class="md:mx-2 mx-auto rounded overflow-hidden bg-gray-200 w-80 h-44 flex m-2 flex-col border-2 border-white hover:border-2 hover:border-green-400 " href="{{ tool.url }}">
+                            <span class="text-center font-bold bg-gray-400 p-2 text-white">{{ tool.name }}</span>
+                            <i class="p-1 text-center fa-3x text-gray-700 {{ tool.icon }}"></i>
+                            <span class="text-center mb-1 mt-auto mx-2 h-20 overflow-y-auto">{{ tool.info }}</span>
+                        </a>
+                    {% else %}
+                        <div class="md:mx-2 mx-auto rounded overflow-hidden bg-gray-200 w-80 h-44 flex m-2 flex-col opacity-30 border-2 border-white">
+                            <span class="text-center font-bold bg-gray-300 p-2">{{ tool.name }}</span>
+                            <i class="p-1 text-center fa-3x text-gray-700 {{ tool.icon }}"></i>
+                            <span class="text-center mb-1 mt-auto mx-2 h-20 overflow-y-auto">{{ tool.info }}</span>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

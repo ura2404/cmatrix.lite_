@@ -1,4 +1,10 @@
 .cm-table {
+    
+    table {
+        
+        //transition: .03s linear;
+    }
+    
     .cm-filter-button {
         &.cm-active {
             color : white;
@@ -39,10 +45,21 @@
             }
         }
     }
+    
+    .cm-scroll {
+        background : white;
+        border-left : 1px solid #ddd;
+        border-right : 1px solid #ddd;
+    }
+
+    .cm-filter-container {
+        > div {
+            display: grid;
+            grid-template-columns: max-content max-content;
+        }
+    }
 
     thead {
-        
-        
         th {
             min-width : 2rem;
             border-left : 1px solid #ddd;
@@ -50,16 +67,21 @@
             cursor : pointer;
             
             .cm-sort-container {
-                i:not(.cm-active) {
+                /*i:not(.cm-active) {
                     display : none;
-                }
+                }*/
+            }
+            &:first-child,
+            &:last-child{
+                border : none;
             }
         }
     }
     
     tbody {
-        
         tr {
+            background : white;
+            
             &:nth-child(even){
                 background : #F5F5F5;
             }
@@ -77,12 +99,17 @@
     
         td {
             min-width : 2rem;
-        	border-left : 1px solid #ddd;
-        	border-right : 1px solid #ddd;
-        	cursor : pointer;
-        	
-        	&:hover {
-        	}
+            border-left : 1px solid #ddd;
+            border-right : 1px solid #ddd;
+            cursor : pointer;
+            
+            &:first-child,
+            &:last-child{
+                border : none;
+            }
+            
+            &:hover {
+            }
         }
     }
 }

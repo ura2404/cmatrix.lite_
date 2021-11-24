@@ -41,6 +41,12 @@ require_once '../../../common.php';
     'controller' => '/CmatrixWeb/Twig'
 ]);
 
+\CmatrixWeb\Router::add('admin/tool',[
+    'template' => '/CmatrixWeb/adminTool.twig',
+    'model' => '/CmatrixWeb/AdminTool',
+    'controller' => '/CmatrixWeb/Twig'
+]);
+
 \CmatrixWeb\Router::add('/^entity\/.*\/.*(?<!setup)$/',[
     'template' => '/CmatrixWeb/adminDataEntityView.twig',
     'model' => '/CmatrixWeb/AdminDataEntityView',
@@ -50,6 +56,12 @@ require_once '../../../common.php';
 \CmatrixWeb\Router::add('/^entity\/.*\/.*\/(setup)$/',[
     'template' => '/CmatrixWeb/adminDataEntitySetup.twig',
     'model' => '/CmatrixWeb/AdminDataEntitySetup',
+    'controller' => '/CmatrixWeb/Twig'
+]);
+
+\CmatrixWeb\Router::add('/^tilda\/toolSupervisor/',[
+    'template' => '/Tilda/toolSupervisor.twig',
+    'model' => '/Tilda/ToolSupervisor',
     'controller' => '/CmatrixWeb/Twig'
 ]);
 

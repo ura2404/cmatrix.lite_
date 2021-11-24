@@ -14,8 +14,13 @@ class Cql{
     private $Agg     = [];
     private $Rules   = [];
     private $Values  = [];
+    private $Orders  = [];
+    private $Limit   = [100,0];
 
     // --- --- --- --- ---
+    /**
+     * @param $cond - тип запроса select|insert|update|delete
+     */
     function __construct(cm\Ide\iDatamodel $datamodel,$cond){
         $this->Datamodel = $datamodel;
         $this->Cond = $cond;
@@ -70,12 +75,31 @@ class Cql{
             return 'WHERE '. implode(' AND ',$Arr);
         };
         
+        $_orders = function(){
+            $Orders = array_map(function($code,$value){
+                return $code .' '. ($value === 'a' ? 'ASC' : 'DESC');
+            },array_keys($this->Orders),array_values($this->Orders));
+            
+            return 'ORDER BY ' . implode(',',$Orders);
+        };
+        
+        $_limit = function(){
+            $Limit = $this->Limit;
+            return 'LIMIT '. $Limit[0] .' OFFSET '. $Limit[1];
+        };
+        
         $Queries = [];
         $Queries[] = 'SELECT ' . ($this->Props ? implode(',',$_props()) : '*');
         $Queries[] = 'FROM '. $this->StructureProvider->sqlTableName();
         
         $Query = $this->Rules ? $_rules() : null;
         $Queries[] = $Query;        
+        
+        $Query = $this->Orders ? $_orders() : null;
+        $Queries[] = $Query;
+        
+        $Query = $this->Limit ? $_limit() : null;
+        $Queries[] = $Query;
         
         $Queries = array_filter($Queries,function($value){ return !!$value; });
         //dump($Queries);die();
@@ -195,11 +219,11 @@ class Cql{
     // --- --- --- --- ---
     public function values(array $values=null){
         if(!$values) return $this;
-
+        
         array_map(function($code,$value){
             $this->value($code,$value);
         },array_keys($values),array_values($values));
-
+        
         return $this;
     }
     
@@ -217,6 +241,36 @@ class Cql{
         array_map(function($code,$value){
             $this->rule($code,$value);
         },array_keys($rules),array_values($rules));
+        
+        return $this;
+    }
+    
+    // --- --- --- --- ---
+    public function order($code,$value){
+        $this->checkProp($code);
+        $this->Orders[$code] = $value;
+        return $this;
+    }
+
+    // --- --- --- --- ---
+    public function orders(array $orders=null){
+        if(!$orders) return $this;
+        
+        array_map(function($code,$value){
+            $this->order($code,$value);
+        },array_keys($orders),array_values($orders));
+        
+        return $this;
+    }
+
+    // --- --- --- --- ---
+    public function limit(array $limit=null){
+        if(!$limit) return $this;
+        
+        $this->Limit = [
+            $limit['count'],
+            $limit['page']*$limit['count']
+        ];
         
         return $this;
     }

@@ -16,7 +16,7 @@
         <button type="button" class="w-8 text-gray-500 hover:text-gray-600 hover:bg-gray-300" title="Настройки"><i class="far fa-plus"></i></button>
         
         <fieldset class="cm-search relative my-auto ml-auto mr-2">
-            <input class="w-64 pl-1 pr-12 focus:ring-2 focus:ring-green-400" type="text" name="table-edit" placeholder="поиск..." />
+            <input class="w-64 pl-1 pr-12 focus:ring-2 focus:ring-green-400" type="text" name="table-edit" placeholder="поиск..." value="{{ data.rfilter}}"/>
             <i class="cm-novisible absolute top-1 right-8 text-gray-400 hover:text-gray-600 fal fa-times"></i>
             <i class="absolute top-1 right-2 text-gray-400 hover:text-gray-600 fal fa-search"></i>
         </fieldset>
@@ -32,7 +32,7 @@
     {# --- строка фильтра и кнопок --- #}
     
     <div class="cm-head h-8 flex-shrink-0 bg-gray-200 overflow-hidden">
-        <table class="table-auto"></table>
+        <table class="table-fixed opacity-0"></table>
     </div>
         
 
@@ -64,27 +64,28 @@
                 <button type="button" class="w-8 hover:bg-green-500" title="Сохранить"><i class="far fa-download"></i></button>
                 <button type="button" class="w-8 hover:bg-green-500" title="Восстановить"><i class="far fa-upload"></i></button>
             </div>
-            <div class="cm-filter-container _max-h-80 _overflow-y-auto">
-                <div>start</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>end</div>
+            <div class="cm-filter-container _max-h-80 _overflow-y-auto flex">
+                <div class="mx-auto">
+                    {% for prop in data.props if prop.type != '::index::' %}
+                        <div class="">{{ prop.label }}</div>
+                        <div>{{ prop.type }}</div>
+                    {% endfor %}
+                </div>
+                <div class="mx-auto">
+                    {% for prop in data.props  if prop.type != '::index::' %}
+                        <div class="">{{ prop.label }}</div>
+                        <div>{{ prop.type }}</div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         
         <div class="cm-body -mt-8 _wi-dicts-container">
-            <table class="table-auto">
+            <table class="table-fixed opacity-0">
                 <thead>
                     <tr class="bg-gray-300 h-8">
                         {% for code,prop in data.props %}
-                            {{ _self.th(prop,data.css[code]) }}
+                            {{ _self.th(prop,data) }}
                         {% endfor %}
                     </tr>
                 <thead>
@@ -92,7 +93,7 @@
                     {% for tr in data.lines %}
                         <tr>
                             {% for code,td in tr %}
-                                {{ _self.td(td,data.css[code]) }}
+                                {{ _self.td(td,data.props[code]) }}
                             {% endfor %}
                         </tr>
                     {% endfor %}
@@ -106,33 +107,56 @@
     {# --- строка фильтра и кнопок --- #}
     <div class="cm-table-footer h-6 flex-shrink-0 flex bg-gray-200 text-gray-600 _text-sm flex">
         <span class="my-auto">Строки: </span>
-        <span class="ml-2 my-auto">{{ data.total }}</span>
-        <span class="cm-count-selected ml-1 my-auto"></span>
+        <span class="ml-2 my-auto flex cursor-pointer">
+            <span class="w-5 text-center hover:bg-gray-300" title="Строк на странице">{{ data.lines|length}}</span>
+            {%if data.lines|length != data.pager.total %}/<span class="w-5 text-center hover:bg-gray-300" title="Всего строк">{{ data.pager.total }}</span>{% endif %}
+            <span></span><span class="cm-count-selected w-5 text-center hover:bg-gray-300" title="Выделено строк"></span>
+        </span>
+        
         <span class="ml-auto my-auto">Страницы: </span>
         <div class="cm-pager flex cursor-pointer">
-            <button type="button" class="w-6 hover:bg-gray-300" title="В начало"><i class="my-auto far fa-angle-double-left"></i></button>
-            <button type="button" class="w-6 hover:bg-gray-300" title="Предидущая страница"><i class="my-auto far fa-angle-left"></i></button>
-            <div class="cm-pager-n px-2 hover:bg-gray-300 flex" title="Текущая страница"><span class="m-auto">{{ data.page }}</span></div>
-            <button type="button" class="w-6 hover:bg-gray-300" title="Следующая страница"><i class="my-auto far fa-angle-right"></i></button>
-            <button type="button" class="w-6 hover:bg-gray-300" title="В конец"><i class="my-auto far fa-angle-double-right"></i></button>
+            {% if data.pager.hfirst %}
+                <a href="{{ data.pager.hfirst }}" class="w-6 hover:text-white hover:bg-gray-300 flex" title="В начало" disabled="disabled"><i class="m-auto far fa-angle-double-left"></i></a>
+                <a href="{{ data.pager.hprev }}" class="w-6 hover:text-white hover:bg-gray-300 flex" title="Предидущая страница" disabled="disabled"><i class="m-auto far fa-angle-left"></i></a>
+            {% else %}
+                <button type="button" class="w-6 text-gray-300 hover:text-white hover:bg-gray-300" title="В начало" disabled="disabled"><i class="my-auto far fa-angle-double-left"></i></button>
+                <button type="button" class="w-6 text-gray-300 hover:text-white hover:bg-gray-300" title="Предидущая страница" disabled="disabled"><i class="my-auto far fa-angle-left"></i></button>
+            {% endif %}
+            
+            <div class="cm-pager-n px-2 hover:bg-gray-300 flex" title="Текущая страница"><span class="m-auto">{{ data.pager.page + 1 }} / {{data.pager.pages}}</span></div>
+            
+            {% if data.pager.hlast %}
+                <a href="{{ data.pager.hnext }}" class="w-6 hover:text-white hover:bg-gray-300 flex" title="Следующая страница"><i class="m-auto far fa-angle-right"></i></a>
+                <a href="{{ data.pager.hlast }}" class="w-6 hover:text-white hover:bg-gray-300 flex" title="В конец"><i class="m-auto far fa-angle-double-right"></i></a>
+            {% else %}
+                <button type="button" class="w-6 text-gray-300 hover:text-white hover:bg-gray-300" title="Следующая страница"><i class="my-auto far fa-angle-right"></i></button>
+                <button type="button" class="w-6 text-gray-300 hover:text-white hover:bg-gray-300" title="В конец"><i class="my-auto far fa-angle-double-right"></i></button>
+            {% endif %}
+            
         </div>
     </div>
     
 </div>
 {% endmacro %}
 
-{% macro th(prop,css) %}
+{% macro th(prop,data) %}
+    {% set sort = data[prop['code']] %}
+
     {% if prop.code=='row_index' %}
         <th class="cm-fselect px-1 text-center hover:bg-gray-400 hover:bg-opacity-20" title="{{ prop.baloon }}"><i class="far fa-check-square"></i></i></th>
     {% else %}
-        <th class="px-1 hover:bg-gray-400 hover:bg-opacity-20 {%if prop.sort %}cm-{{ prop.sort }}{% endif %}" title="{{ prop.baloon }}">
+        <th class="px-1 hover:bg-gray-400 hover:bg-opacity-20 {#{%if prop.sort %}cm-{{ prop.sort }}{% endif %}#}" title="{{ prop.baloon }}">
             <span class="flex">
                 <span class="ml-auto pl-1">{{ prop.label|raw }}</span>
-                {% if prop.sort %}
+                {% if prop.sortable %}
                     <span class="cm-sort-container ml-auto pl-1 flex">
-                        <a href="{{prop.hsort}}"><i class="{% if prop.sort == 'sort' %}cm-active{% endif %} cm-sort text-gray-400 hover:text-gray-900 fad fa-sort"></i></a>
-                        <a href="{{prop.hsort}}"><i class="{% if prop.sort == 'asc' %}cm-active{% endif %} cm-asc text-gray-600 hover:text-gray-900 fad fa-sort-up"></i></a>
-                        <a href="{{prop.hsort}}"><i class="{% if prop.sort == 'desc' %}cm-active{% endif %} cm-desc text-gray-600 hover:text-gray-900 fad fa-sort-down"></i></a>
+                        {% if data.sorts[prop.code][0] =='s' %}
+                            <a href="{{ data.sorts[prop.code][1] }}"><i class="cm-sort text-gray-400 hover:text-gray-900 fad fa-sort"></i></a>
+                        {% elseif data.sorts[prop.code][0] == 'a'%}
+                            <a href="{{ data.sorts[prop.code][1] }}"><i class="cm-asc text-gray-600 hover:text-gray-900 fad fa-sort-up"></i></a>
+                        {% elseif data.sorts[prop.code][0] == 'd'%}
+                            <a href="{{ data.sorts[prop.code][1] }}"><i class="cm-desc text-gray-600 hover:text-gray-900 fad fa-sort-down"></i></a>
+                        {% endif %}
                     </span>
                 {% endif %}
             </span>
@@ -140,6 +164,6 @@
     {% endif %}
 {% endmacro %}
 
-{% macro td(td,css) %}
-    <td class="px-1 whitespace-nowrap text-{{ css.align }}">{{ td|raw }}</td>
+{% macro td(td,prop) %}
+    <td class="px-1 whitespace-nowrap text-{{ prop.align }}">{{ td|raw }}</td>
 {% endmacro %}

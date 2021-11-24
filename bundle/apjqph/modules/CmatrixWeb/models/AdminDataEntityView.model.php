@@ -7,32 +7,37 @@ use \CmatrixWeb as web;
 class AdminDataEntityView extends AdminCommon implements web\iModel {
     public function getData(){
         
-        dump(web\Page::instance()->Params);
-        
         try{
             $Entity = $this->getDatamodel();
             $Datamodel = web\Ide\Datamodel::instance($Entity);
             
-            return arrayMergeReplace(parent::getData(),[
+            //dump($Datamodel->Sorts);
+            
+            $Data = arrayMergeReplace(parent::getData(),[
                 'app' => [
                     'module' => 'Admin`ка • ' . $Datamodel->Name
                 ],
                 'table' => [
                     'name' => $Datamodel->Name,
+                    'sorts' => $Datamodel->Sorts,
                     'props' => $Datamodel->Props,
-                    'css' => $Datamodel->Css,
                     'lines' => $Datamodel->Lines,
-                    'total' => $Datamodel->Total,
-                    'page' => 17
+                    //'total' => $Datamodel->Total,
+                    'pager' => $Datamodel->Pager,
+                    'filter' => $Datamodel->Filter,
+                    'rfilter' => web\Page::instance()->getParam('r')
                 ],
             ]);
+            //dump($Data);
+            
+            return $Data;
         }
-        catch(\Exception $e){
+        catch(\Exception1 $e){
             return arrayMergeReplace(parent::getData(),[
                 'error' => ['Ошибка',$e->getMessage()]
             ]);
         }
-        catch(\Throwable $e){
+        catch(\Throwable1 $e){
             return arrayMergeReplace(parent::getData(),[
                 'error' => ['Ошибка',$e->getMessage()]
             ]);
@@ -50,6 +55,11 @@ class AdminDataEntityView extends AdminCommon implements web\iModel {
             'tree' => $this->getMyTree()
         ]);
         */
+    }
+    
+    // --- --- --- --- ---
+    private function getMyUrl(){
+        return CM_WHOME . '/' . web\Page::instance()->Page;
     }
     
     // --- --- --- --- ---

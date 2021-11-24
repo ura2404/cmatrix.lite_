@@ -3,11 +3,15 @@ namespace CmatrixWeb;
 use \Cmatrix\Exception as ex;
 
 class Page {
+    static $INSTANCES = [];
+    
     private $Url;
+    private $Params;
     
     // --- --- --- --- ---
     function __construct($url=null){
         $this->Url = $this->calculatePage($url);
+        $this->Params = $this->parseParams($url);
     }
     
     // --- --- --- --- ---
@@ -16,7 +20,8 @@ class Page {
             //case 'Name' : return $this->Pagename;
             case 'Html' : return $this->getMyHtml();
             case 'Url' : return $this->Url;
-            case 'Params' : return $this->getMyParams();
+            case 'Page' : return $this->getMyPage();
+            case 'Params' : return $this->Params;
             default : throw new ex\Property($this,$name);
         }
     }
@@ -56,21 +61,61 @@ class Page {
             else{
                 $Url = trim($_SERVER['REQUEST_URI'],'/');
             }
+            
             return $Url == '' ? '/' : $Url;
         };
         
         return $url ? $url : $_url();
     }
     
-      // --- --- --- --- ---
-    private function getMyParams(){
-        dump($_REQUEST);
+    // --- --- --- --- ---
+    private function parseParams($url){
+        $Params = array_diff_key($_REQUEST,array_flip(['cmp']));
+        return $Params;
+    }
+    
+    // --- --- --- --- ---
+    /**
+     * url страницы без параметров
+     */
+    private function getMyPage(){
+        $Url = $this->Url;
+        $Url = strBefore($Url,'?');
+        $Url = strBefore($Url,'&');
+        return $Url;
+    }
+    
+    // --- --- --- --- ---
+    // --- --- --- --- ---
+    // --- --- --- --- ---
+    public function getParam($name=null){
+        $Params = $this->Params;
+        return ($name && array_key_exists($name,$Params)) ? $Params[$name] : null;
+    }
+
+    // --- --- --- --- ---
+    public function setParam($name,$value){
+        if($value) $this->Params[$name] = $value;
+        else unset($this->Params[$name]);
+        return $this;
+    }
+
+    // --- --- --- --- ---
+    /**
+     * Получить оперативный url
+     */
+    public function getUrl(){
+        return CM_WHOME. '/' .$this->Page. (count($this->Params) ? '?'.implode('&',array_map(function($key,$value){
+            return $key .'='. $value;
+        },array_keys($this->Params),array_values($this->Params))) : null);
     }
     
     // --- --- --- --- ---
     // --- --- --- --- ---
     // --- --- --- --- ---
     static function instance($url=null){
+        $Key = $url ? $url : 'home';
+        if(array_key_exists($Key,self::$INSTANCES)) return self::$INSTANCES[$Key];
         return new self($url);
     }
 }

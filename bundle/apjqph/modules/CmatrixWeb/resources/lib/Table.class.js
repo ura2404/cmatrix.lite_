@@ -40,15 +40,49 @@ export default class Table {
         this.$Body.on('click','tr',function(e){ Instance.selectTr(e,this) });
         
         //
-        this.$Search.on('mouseover',() => this.$Search.addClass('cm-hover')).on('mouseleave',() => this.$Search.removeClass('cm-hover'));
+        this.$Search
+            .on('mouseover',() => this.$Search.addClass('cm-hover'))
+            .on('mouseleave',() => this.$Search.removeClass('cm-hover'))
+            .find('input').on('keydown',function(e){
+                if(e.keyCode !== 13 && e.keyCode !== undefined) return;
+                
+                const Page = window.location.href.split('?')[0];
+                const Params = location.search.substring(1) ?
+                    JSON.parse('{"' + decodeURI(location.search.substring(1).replace(/&/g, "\",\"").replace(/=/g, "\":\"")) + '"}') : {};
+                const Value = $(this).val();
+                
+                if(Value) Params.r = Value;
+                else delete Params.r;
+                
+                //console.log(Params);
+                //console.log(Page);
+                //console.log($.param(Params));
+                //console.log(new URLSearchParams(Params).toString());
+                
+                window.location.href = Page + (Object.keys(Params).length ? '?'+ $.param(Params) : '');
+            })
+            .focus().map(function(){                                                            // фокус на поле ввода и курсор в конец
+                $(this)[0].setSelectionRange($(this).val().length,$(this).val().length);
+            })
+            .end()
+            .next().on('click',function(){ $(this).prev().val('').focus() })                    // кнопка очистки поля ввода
+            .next().on('click',function(){ $(this).prev().prev().trigger('keydown').focus() }); // иконка поиска
         
         // кнопка full select
         this.$Tag.find('.cm-fselect').on('click',() => this.selectTrAll());
         
-        //
-        this.$Th.on('click',function(e){
-            this.nextSortIcon(element);
-        });
+        /*setTimeout(()=> {
+            console.log(localStorage.getItem('scrolLeft'));
+            this.$Body.find('table').offset({
+            left : localStorage.getItem('scrolLeft')
+            });
+        },10);*/
+        
+        this.$Scroll.animate({
+            scrollRight : localStorage.getItem('scrolLeft')
+        },100);
+        
+        //this.$Scroll.addClass('cm-x-noscroll').animate({ scrollTop: 0 },200);
         
         this.genHead();
         
@@ -64,6 +98,10 @@ export default class Table {
         
         this.$Head.find('table').width(this.$Body.find('table').width());
         this.$Tag.find('thead').clone(true).appendTo(this.$Head.find('table'));
+        setTimeout(()=> {
+            this.$Head.find('table').css('opacity',1);
+            this.$Body.find('table').css('opacity',1);
+        },100);
 
         // --- head
         const $Th = this.$Head.find('th');
@@ -71,7 +109,7 @@ export default class Table {
             this.$Body.find('thead th').map((index,element) => {
                 $($Th[index]).width($(element).width());
             });
-        },0);
+        },10);
         
         // --- scroll
         //const Left = this.$Body.find('table').offset().left;
@@ -97,6 +135,7 @@ export default class Table {
     // --- --- --- --- ---
     scrollHead(){
         const Left = this.$Body.find('table').offset().left;
+        localStorage.setItem('scrolLeft',Left);
         this.$Head.find('table').offset({ left : Left});
     }   
     
@@ -152,8 +191,8 @@ export default class Table {
      * Отрисовка кол-ва выделенных строк
      */
     showCountSelected(){
-        if(this.CountSelected) this.$CountSelected.text(' / '+this.CountSelected);
-        else this.$CountSelected.text('');
+        if(this.CountSelected) this.$CountSelected.text(this.CountSelected).prev().text('/');
+        else this.$CountSelected.text('').prev().text('');
     }
     
     /**

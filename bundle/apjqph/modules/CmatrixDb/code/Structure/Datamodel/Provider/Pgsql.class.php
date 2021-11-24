@@ -205,6 +205,7 @@ class Pgsql extends db\Structure\Datamodel\Provider implements db\Structure\Data
                     if(!$props[$index]['nn'] && $var == '1') $Rules[] = $props[$index]['code'] .' IS NOT NULL';
                 },$Variants,array_keys($Variants));
                 
+                // если есть поле active, учесть его
                 if(array_key_exists('active',$this->Datamodel->Props)) $Rules[] = 'active IS NOT NULl';
                 
                 $Ret[] = [

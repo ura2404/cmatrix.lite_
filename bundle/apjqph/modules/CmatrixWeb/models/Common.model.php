@@ -14,6 +14,7 @@ class Common implements web\iModel {
     // --- --- --- --- ---
     private function getMyUrl(){
         return [
+            //'curr' => CM_WHOME . '/' . web\Page::instance()->Url,
             'home'  => CM_WHOME,
             'login' => CM_WHOME .'/login'
         ];
