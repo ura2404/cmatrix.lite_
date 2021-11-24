@@ -69,7 +69,7 @@ export default class Table {
             .next().on('click',function(){ $(this).prev().prev().trigger('keydown').focus() }); // иконка поиска
         
         // кнопка full select
-        this.$Tag.find('.cm-fselect').on('click',() => this.selectTrAll());
+        this.$Tag.find('.cm-full-select').on('click',() => this.selectTrAll());
         
         /*setTimeout(()=> {
             console.log(localStorage.getItem('scrolLeft'));

@@ -101,7 +101,7 @@
             "type": "bool",
             "length": null,
             "pk" : null,
-            "nn": null,
+            "nn": true,
             "default": null,
             "registr" : null,
             "info": null,

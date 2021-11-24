@@ -67,14 +67,18 @@
             <div class="cm-filter-container _max-h-80 _overflow-y-auto flex">
                 <div class="mx-auto">
                     {% for prop in data.props if prop.type != '::index::' %}
-                        <div class="">{{ prop.label }}</div>
-                        <div>{{ prop.type }}</div>
+                        {# {% if loop.index is odd %} #}
+                        {% if loop.index <= data.props|length / 2%}
+                            {{ _self.filter_prop(prop) }}
+                        {% endif %}
                     {% endfor %}
                 </div>
                 <div class="mx-auto">
                     {% for prop in data.props  if prop.type != '::index::' %}
-                        <div class="">{{ prop.label }}</div>
-                        <div>{{ prop.type }}</div>
+                        {# {% if loop.index is even %} #}
+                        {% if loop.index > data.props|length /2 %}
+                            {{ _self.filter_prop(prop) }}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -139,11 +143,12 @@
 </div>
 {% endmacro %}
 
+{# --- --- --- --- --- #}
 {% macro th(prop,data) %}
     {% set sort = data[prop['code']] %}
 
     {% if prop.code=='row_index' %}
-        <th class="cm-fselect px-1 text-center hover:bg-gray-400 hover:bg-opacity-20" title="{{ prop.baloon }}"><i class="far fa-check-square"></i></i></th>
+        <th class="cm-full-select px-1 text-center hover:bg-gray-400 hover:bg-opacity-20" title="{{ prop.baloon }}"><i class="far fa-check-square"></i></i></th>
     {% else %}
         <th class="px-1 hover:bg-gray-400 hover:bg-opacity-20 {#{%if prop.sort %}cm-{{ prop.sort }}{% endif %}#}" title="{{ prop.baloon }}">
             <span class="flex">
@@ -164,6 +169,169 @@
     {% endif %}
 {% endmacro %}
 
+{# --- --- --- --- --- #}
 {% macro td(td,prop) %}
     <td class="px-1 whitespace-nowrap text-{{ prop.align }}">{{ td|raw }}</td>
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_prop(prop) %}
+    <div title="{{ prop.baloon }}">{{ prop.label }}</div>
+    <div>{{ _self.filter_prop_container(prop) }}</div>
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_prop_container(prop) %}
+    <div class="cm-filer-prop-container _w-96 flex ">
+        {{ _self.filter_choices(prop) }}
+        {{ _self.filter_choice_button(prop) }}
+    </div>
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_choice_button(prop) %}
+    {% if prop.type == 'bool' %}
+        <div class="ml-2 w-6"></div>
+    {% else %}
+        <button type="button" class="ml-2 mr-0 h-6 w-6 text-gray-300 hover:text-white"><i class="far fa-bars"></i></button>
+    {% endif %}
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_choices(prop) %}
+    <div class="cm-filer-prop-choices w-full">
+        {% if prop.type == '::id::' or prop.type == '' %}
+            {{ _self.filter_integer(prop) }}
+        {% elseif prop.type == 'timestamp' %}
+            {{ _self.filter_datetime(prop) }}
+        {% elseif prop.type == 'bool' %}
+            {{ _self.filter_bool(prop) }}
+        {% elseif prop.type == 'date' %}
+        {% elseif prop.type == 'time' %}
+        {% elseif prop.type == 'integer' %}
+        {% elseif prop.type == 'real' %}
+        {% elseif prop.type == 'string' or prop.type == 'text' %}
+            {{ _self.filter_string(prop) }}
+        {% else %}
+            {{ _self.filter_default(prop) }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+{# --- --- --- --- --- #}
+{% macro filter_default(prop) %}
+    <div class="flex" type="=">
+        <span class="mr-2 w-20">равно</span>
+        {{ _self.input(prop.code) }}
+    </div>
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_string(prop) %}
+    <div class="flex" type="=">
+        <span class="mr-2 w-20">равно</span>
+        {{ _self.input(prop.code) }}
+    </div>
+    <div class="flex cm-hidden" type="%%">
+        <span class="mr-2 w-20">содержит</span>
+        {{ _self.input(prop.code) }}
+    </div>
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_integer(prop) %}
+    <div type="=">
+        {{ _self.input(prop.code) }}
+    </div>
+    <div class="flex cm-hidden" type="d">
+        {{ _self.input(prop.code) }}
+        <i class="m-auto mx-2 fal fa-minus"></i>
+        {{ _self.input(prop.code) }}
+    </div>
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_datetime(prop) %}
+    <div class="flex" type="=">
+        {{ _self.datetime(prop) }}
+    </div>
+    <div class="flex cm-hidden" type="d">
+        {{ _self.datetime(prop) }}
+        <i class="m-auto mx-2 fal fa-minus"></i>
+        {{ _self.datetime(prop) }}
+    </div>
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_bool(prop) %}
+    <span class="mr-4 opacity-30" type="t">
+        {{ _self.bool('t')}}
+    </span>        
+    <span class="mr-4 opacity-30" type="f">
+        {{ _self.bool('f')}}
+    </span>        
+    {% if prop.nn == null %}
+        <span class="mr-4 opacity-30" type="n">
+            {{ _self.bool('n')}}
+        </span>        
+    {% endif %}
+    
+    {#
+    {{ _self.bool('f')}}{{ _self.bool('n')}}
+    <div class="flex" type="e">
+        <span>...</span>
+    </div>
+    <div class="flex cm-hidden" type="t">
+        {{ _self.bool('t')}}
+    </div>
+    <div class="flex cm-hidden" type="f">
+        {{ _self.bool('f')}}
+    </div>
+    {% if prop.nn == null %}
+        <div class="flex cm-hidden" type="n">
+            {{ _self.bool('n')}}
+        </div>
+    {% endif %}
+    #}
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{# --- --- --- --- --- #}
+{# --- --- --- --- --- #}
+{% macro input(prop) %}
+    <fieldset class="relative w-ful flex-1">
+        <input name="{{ prop.code }}" type="text" class="pl-1 pr-5 h-7 w-full text-white bg-green-600 border border-solid border-gray-300 active:border-white"/>
+        <button class="absolute h-6 w-6 right-0 cursor-pointer text-gray-300 hover:text-white">
+            <i class="fal fa-times"></i>
+        </button>
+    </fieldset>
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{#
+date: устанавливает дату
+month: устанавливает текущий месяц и год
+time: устанавливает время
+week: устанавливает текущую неделю
+#}
+{% macro datetime(prop) %}
+    <input type="datetime-local" placeholder="MY PLACEHOLDER" class="px-1 w-full h-7 text-white bg-green-600 border border-solid border-gray-300 active:border-white"">
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro bool(value) %}
+    {% if value == 't' %}
+        <button>
+            <i class="fal fa-check-square"></i> Да
+        </button>
+    {% elseif value == 'f' %}
+        <button>
+            <i class="fal fa-square"></i> Нет
+        </button>
+    {% elseif value == 'n' %}
+        <button>
+            <i class="fal fa-empty-set"></i> Пусто
+        </button>
+    {% endif %}
 {% endmacro %}

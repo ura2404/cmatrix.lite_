@@ -1,3 +1,7 @@
+@color-bg-green-600 : rgba(5,150,105,1);
+
+@filter-background-color : @color-bg-green-600;
+
 .cm-table {
     
     table {
@@ -54,8 +58,28 @@
 
     .cm-filter-container {
         > div {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
             display: grid;
             grid-template-columns: max-content max-content;
+            row-gap : 1.0rem;
+            column-gap : 1.5rem;
+            
+            > div:nth-child(odd) {
+                text-align : right;
+                //padding : 0.1rem 0.2rem 0.1rem 0;
+            }
+        }
+        
+        .cm-filer-prop-container {
+            
+            /*input {
+                padding-left: 0.2rem;
+                padding-right: 0.2rem;
+                border : 1px white solid;
+                background-color: @filter-background-color;
+                
+            }*/
         }
     }
 

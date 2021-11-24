@@ -14,9 +14,9 @@
         "type"   : "pgsql",
         "driver" : "pdo",
         "host"   : "localhost",
-        "port"   : 5433,
-        "name"   : "cmatrix",
-        "user"   : "cmatrix",
+        "port"   : 5432,
+        "name"   : "ru.cmatrix.lite",
+        "user"   : "ru.cmatrix",
         "pass"   : "cmatrix2000",
         "_prefix" : "cm_"
     },
