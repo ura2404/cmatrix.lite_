@@ -39,7 +39,7 @@ class Admin extends AdminCommon implements web\iModel {
                 'code' => 'tool',
                 'name' => 'Инструменты',
                 'icon' => 'fal fa-tools',
-                'info' => 'Набор инструментов, утилит для настройки и управления системой и базой данных',
+                'info' => 'Инструменты, утилиты, отчёты',
                 'url' => CM_WHOME.'/admin/tool',
             ],
             [

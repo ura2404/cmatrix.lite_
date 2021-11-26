@@ -20,6 +20,17 @@
         "pass"   : "cmatrix2000",
         "_prefix" : "cm_"
     },
+    "dbv2" : {
+        "enable" : true,
+        "type"   : "pgsql",
+        "driver" : "pdo",
+        "host"   : "10.0.68.125",
+        "_port"   : 5432,
+        "name"   : "ru_rostvertol_mz_tilda20",
+        "user"   : "ru_rostvertol_mz",
+        "pass"   : "ru_rostvertol_mz2000",
+        "_prefix" : "cm_"
+    },
     "session" : {
         "enable" : true
     }

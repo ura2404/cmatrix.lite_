@@ -1,6 +1,7 @@
 <?php
 namespace CmatrixDb;
 use \Cmatrix as cm;
+use \Cmatrix\Exception as ex;
 
 class Connect{
     static $INSTANCES = [];
@@ -35,6 +36,13 @@ class Connect{
         if(isset(self::$INSTANCES[$Key])) return self::$INSTANCES[$Key];
         return self::$INSTANCES[$Key] = new self($Config);
     }
-    
+
+    // --- --- --- --- ---
+    static function get($name='db'){
+        $Config = cm\Hash::getFile(CM_TOP.'/config.json')->getValue($name);
+        if(!$Config) throw new ex('Connect config is not defined.');
+        
+        return self::instance($Config);
+    }    
 }
 ?>

@@ -22,17 +22,25 @@ class Datamodel{
             case 'Code' : return $this->Datamodel->Url;
             case 'Name' : return $this->Datamodel->Name;
             case 'Props' : return $this->getMyProps();
+            case 'OwnProps' : return $this->getMyOwnProps();
             case 'Lines' : return $this->getMyLines();
             case 'Total' : return $this->getMyTotal();
             case 'Sorts' : return $this->getMySorts();
             case 'Pager' : return $this->getMyPager();
-            case 'Filter' : return $this->getMyFilter();
+            case 'Rfilter' : return $this->getMyRfilter();
+            case 'Pfilter' : return $this->getMyPfilter();
             default : throw new ex\Property($this,$name);
         }
     }
     
     // --- --- --- --- ---
+    private function getMyOwnProps(){
+    }
+    
+    // --- --- --- --- ---
     private function getMyProps(){
+        $Props = $this->Datamodel->OwnProps;
+        
         $_align = function($code,$prop){
             switch($code){
                 case 'status' : return 'center';
@@ -53,9 +61,8 @@ class Datamodel{
             }
         };
         
-        $Props = $this->Datamodel->Props;
-        
         array_map(function($code,$prop) use(&$Props,$_align){
+            $prop['name'] = $prop['name'] ? cm\Lang::str($prop['name']) : $prop['code'];
             $prop['label'] = $prop['label'] ? cm\Lang::str($prop['label']) : ($prop['name'] ? cm\Lang::str($prop['name']) : $prop['code']);
             $prop['baloon'] = $prop['baloon'] ? cm\Lang::str($prop['baloon']) : null;
             $prop['sortable'] = true;
@@ -75,8 +82,6 @@ class Datamodel{
                 'align' => 'center'
             ]
         ],$Props);
-        
-        //dump($Props);
         
         return $Props;
     }
@@ -202,18 +207,26 @@ class Datamodel{
         return $this->P_Pager = $Pager;
     }    
     
-    private function getMyFilter(){
-        $Rfilter = $this->getRfilter();
+    // --- --- --- --- ---
+    /**
+     * Получить параметрический фильтр
+     */
+    private function getMyPfilter(){
+        $Filter = web\Page::instance()->getParam('f');
+        $Clean = strtr($Filter, ' ', '+');
+        $Res = json_decode(base64_decode( $Clean ),true);
+        //dump($Res);
+        
+        return $Res;
     }
+    
     // --- --- --- --- ---
     /**
      * Получить свободный фильтр
      */
-    private function getRfilter(){
+    private function getMyRfilter(){
         $Filtr = web\Page::instance()->getParam('r');
-        
-        //dump($Filtr);
-        
+        return $Filtr;
     }
 
     // --- --- --- --- ---

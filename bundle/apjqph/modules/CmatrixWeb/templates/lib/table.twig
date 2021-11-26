@@ -42,42 +42,40 @@
         <div class="cm-setup flex-shrink-0 bg-blue-400 text-white mb-8 relative">
             <div class="flex h-8 bg-blue-500">
                 <div class="p-1"><i class="far fa-arrow-right"></i><span class="ml-2">Настройки</span></div>
-                <button type="button" class="w-8 hover:bg-green-500 ml-auto" title="Применить"><i class="far fa-check"></i></button>
+                <button type="button" class="w-8 hover:bg-blue-300 ml-auto" title="Применить"><i class="far fa-check"></i></button>
                 <button type="button" class="w-8 hover:bg-red-400" title="Сбросить"><i class="far fa-redo"></i></button>
-                <button type="button" class="w-8 hover:bg-green-500" title="Сохранить"><i class="far fa-download"></i></button>
-                <button type="button" class="w-8 hover:bg-green-500" title="Восстановить"><i class="far fa-upload"></i></button>
+                <button type="button" class="w-8 hover:bg-blue-300" title="Сохранить"><i class="far fa-download"></i></button>
+                <button type="button" class="w-8 hover:bg-blue-300" title="Восстановить"><i class="far fa-upload"></i></button>
             </div>
-            <div class="cm-filter-container">
-                <div>start</div>
+            <div class="cm-filter-container py-3">
+                {#<div>start</div>
                 <div>1rtrt rety rty rety rty rtyy</div>
                 <div>1</div>
                 <div>1</div>
-                <div>end</div>
+                <div>end</div>#}
             </div>
         </div>
         
         <div class="cm-filter flex-shrink-0 bg-green-600 text-white mb-8 relative">
-            <div class="flex h-8 bg-green-700">
+            <div class="cm-filter-toolbar flex h-8 bg-green-700">
                 <div class="p-1"><i class="far fa-arrow-right"></i><span class="ml-2">Фильтры</span></div>
-                <button type="button" class="w-8 hover:bg-green-500 ml-auto" title="Применить"><i class="far fa-check"></i></button>
-                <button type="button" class="w-8 hover:bg-red-400" title="Сбросить"><i class="far fa-redo"></i></button>
-                <button type="button" class="w-8 hover:bg-green-500" title="Сохранить"><i class="far fa-download"></i></button>
-                <button type="button" class="w-8 hover:bg-green-500" title="Восстановить"><i class="far fa-upload"></i></button>
+                <button type="button" class="cm-filter-commit w-8 hover:bg-green-500 ml-auto" title="Применить"><i class="far fa-check"></i></button>
+                <button type="button" class="cm-filter-reset w-8 hover:bg-red-400" title="Сбросить"><i class="far fa-redo"></i></button>
+                <button type="button" class="cm-filter-save w-8 hover:bg-green-500" title="Сохранить"><i class="far fa-download"></i></button>
+                <button type="button" class="cm-filter-load w-8 hover:bg-green-500" title="Восстановить"><i class="far fa-upload"></i></button>
             </div>
-            <div class="cm-filter-container _max-h-80 _overflow-y-auto flex">
+            <div class="cm-filter-container py-3 _max-h-80 _overflow-y-auto flex">
                 <div class="mx-auto">
-                    {% for prop in data.props if prop.type != '::index::' %}
-                        {# {% if loop.index is odd %} #}
+                    {% for prop in data.props if prop.type != '::index::' %} {# {% if loop.index is odd %} #}
                         {% if loop.index <= data.props|length / 2%}
-                            {{ _self.filter_prop(prop) }}
+                            {{ _self.filter_prop(prop,data.pfilter[prop.code]) }}
                         {% endif %}
                     {% endfor %}
                 </div>
                 <div class="mx-auto">
                     {% for prop in data.props  if prop.type != '::index::' %}
-                        {# {% if loop.index is even %} #}
                         {% if loop.index > data.props|length /2 %}
-                            {{ _self.filter_prop(prop) }}
+                            {{ _self.filter_prop(prop,data.pfilter[prop.code]) }}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -108,7 +106,7 @@
     </div>
     {# --- скролируемая область --- #}
     
-    {# --- строка фильтра и кнопок --- #}
+    {# --- footer таблицы --- #}
     <div class="cm-table-footer h-6 flex-shrink-0 flex bg-gray-200 text-gray-600 _text-sm flex">
         <span class="my-auto">Строки: </span>
         <span class="ml-2 my-auto flex cursor-pointer">
@@ -150,7 +148,7 @@
     {% if prop.code=='row_index' %}
         <th class="cm-full-select px-1 text-center hover:bg-gray-400 hover:bg-opacity-20" title="{{ prop.baloon }}"><i class="far fa-check-square"></i></i></th>
     {% else %}
-        <th class="px-1 hover:bg-gray-400 hover:bg-opacity-20 {#{%if prop.sort %}cm-{{ prop.sort }}{% endif %}#}" title="{{ prop.baloon }}">
+        <th class="px-1 {% if data.pfilter[prop.code] %}bg-green-300{% endif %} hover:bg-gray-400 hover:bg-opacity-20 {#{%if prop.sort %}cm-{{ prop.sort }}{% endif %}#}" title="{{ prop.baloon }}">
             <span class="flex">
                 <span class="ml-auto pl-1">{{ prop.label|raw }}</span>
                 {% if prop.sortable %}
@@ -174,138 +172,131 @@
     <td class="px-1 whitespace-nowrap text-{{ prop.align }}">{{ td|raw }}</td>
 {% endmacro %}
 
-{# --- --- --- --- --- #}
-{% macro filter_prop(prop) %}
-    <div title="{{ prop.baloon }}">{{ prop.label }}</div>
-    <div>{{ _self.filter_prop_container(prop) }}</div>
-{% endmacro %}
+
+
 
 {# --- --- --- --- --- #}
-{% macro filter_prop_container(prop) %}
-    <div class="cm-filer-prop-container _w-96 flex ">
-        {{ _self.filter_choices(prop) }}
-        {{ _self.filter_choice_button(prop) }}
-    </div>
-{% endmacro %}
-
+{# --- Filter  --- --- #}
 {# --- --- --- --- --- #}
-{% macro filter_choice_button(prop) %}
-    {% if prop.type == 'bool' %}
-        <div class="ml-2 w-6"></div>
-    {% else %}
-        <button type="button" class="ml-2 mr-0 h-6 w-6 text-gray-300 hover:text-white"><i class="far fa-bars"></i></button>
-    {% endif %}
-{% endmacro %}
-
-{# --- --- --- --- --- #}
-{% macro filter_choices(prop) %}
-    <div class="cm-filer-prop-choices w-full">
-        {% if prop.type == '::id::' or prop.type == '' %}
-            {{ _self.filter_integer(prop) }}
-        {% elseif prop.type == 'timestamp' %}
-            {{ _self.filter_datetime(prop) }}
-        {% elseif prop.type == 'bool' %}
-            {{ _self.filter_bool(prop) }}
-        {% elseif prop.type == 'date' %}
-        {% elseif prop.type == 'time' %}
-        {% elseif prop.type == 'integer' %}
-        {% elseif prop.type == 'real' %}
-        {% elseif prop.type == 'string' or prop.type == 'text' %}
-            {{ _self.filter_string(prop) }}
+{% macro filter_prop(prop,pfilter) %}
+    <div class="font-bold text-yellow-300" title="{{ prop.baloon }}">
+        {% if prop.name == prop.label %}
+            {{ prop.label|raw }}
         {% else %}
-            {{ _self.filter_default(prop) }}
+            {{ prop.name }}, {{ prop.label|raw }}
+        {% endif %}
+    </div>
+    {{ _self.filter_prop_container(prop,pfilter) }}
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_prop_container(prop,pfilter) %}
+    <div class="cm-filer-prop-container _w-96 flex " code="{{ prop.code }}">
+        {{ _self.filter_choices(prop,pfilter) }}
+        
+        {# --- кнопка очистки --- #}
+        <button class="cm-filter-clear-button h-6 w-6 right-0 cursor-pointer text-gray-300 hover:text-white">
+            <i class="fal fa-times"></i>
+        </button>
+        
+        {# --- кнопка выбора варианта --- #} 
+        {% if prop.type == 'bool' %}
+            <div class="w-6"></div>
+        {% else %}
+            <button type="button" class="cm-filter-choices-button cm-hidden mr-0 h-6 w-6 text-gray-300 hover:text-white"><i class="far fa-bars"></i></button>
+            <div class="cm-filter-choices-button cm-hidden ml-2 w-6"></div>
         {% endif %}
     </div>
 {% endmacro %}
 
-
 {# --- --- --- --- --- #}
-{% macro filter_default(prop) %}
-    <div class="flex" type="=">
-        <span class="mr-2 w-20">равно</span>
-        {{ _self.input(prop.code) }}
+{% macro filter_choices(prop,pfilter) %}
+    <div class="cm-filer-prop-choices w-full">
+        {% if prop.type == '::id::' %}        {{ _self.filter_integer(prop,pfilter) }}
+        {% elseif prop.type == 'timestamp' %} {{ _self.filter_datetime(prop,pfilter) }}
+        {% elseif prop.type == 'bool' %}      {{ _self.filter_bool(prop,pfilter) }}
+        {% elseif prop.type == 'date' %}
+        {% elseif prop.type == 'time' %}
+        {% elseif prop.type == 'integer' %}
+        {% elseif prop.type == 'real' %}
+        {% elseif prop.type == 'string' or prop.type == 'text' %} {{ _self.filter_string(prop,pfilter) }}
+        {% else %} {{ _self.filter_default(prop,pfilter) }}
+        {% endif %}
     </div>
 {% endmacro %}
 
 {# --- --- --- --- --- #}
-{% macro filter_string(prop) %}
-    <div class="flex" type="=">
+{% macro filter_default(prop,pfilter) %}
+    <div class="cm-filter-choice cm-active flex" type="="> 
         <span class="mr-2 w-20">равно</span>
-        {{ _self.input(prop.code) }}
+        {{ _self.input(prop.code,pfilter['=']) }}
     </div>
-    <div class="flex cm-hidden" type="%%">
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{% macro filter_string(prop,pfilter) %}
+    <div class="cm-filter-choice flex {% if pfilter['='] %}cm-active{% endif %}" type="=">
+        <span class="mr-2 w-20">равно</span>
+        {{ _self.input(prop.code,pfilter['=']) }}
+    </div>
+    <div class="cm-filter-choice flex {% if pfilter['%%'] or pfilter is empty %}cm-active{% endif %}" type="%%">
         <span class="mr-2 w-20">содержит</span>
-        {{ _self.input(prop.code) }}
+        {{ _self.input(prop.code,pfilter['%%']) }}
     </div>
 {% endmacro %}
 
 {# --- --- --- --- --- #}
-{% macro filter_integer(prop) %}
-    <div type="=">
-        {{ _self.input(prop.code) }}
+{% macro filter_integer(prop,pfilter) %}
+    <div class="cm-filter-choice {% if pfilter['='] or pfilter is empty %}cm-active{% endif %}" type="=">
+        {{ _self.input(prop.code,pfilter['=']) }}
     </div>
-    <div class="flex cm-hidden" type="d">
-        {{ _self.input(prop.code) }}
+    <div class="cm-filter-choice flex {% if pfilter['dp'] %}cm-active{% endif %}" type="dp">
+        {{ _self.input(prop.code,pfilter['dp'][0]) }}
         <i class="m-auto mx-2 fal fa-minus"></i>
-        {{ _self.input(prop.code) }}
+        {{ _self.input(prop.code,pfilter['dp'][1]) }}
     </div>
 {% endmacro %}
 
 {# --- --- --- --- --- #}
-{% macro filter_datetime(prop) %}
-    <div class="flex" type="=">
-        {{ _self.datetime(prop) }}
+{% macro filter_datetime(prop,pfilter) %}
+    <div class="cm-filter-choice flex {% if pfilter['='] or pfilter is empty %}cm-active{% endif %}" type="=">
+        {{ _self.datetime(prop,pfilter['=']) }}
     </div>
-    <div class="flex cm-hidden" type="d">
-        {{ _self.datetime(prop) }}
+    <div class="cm-filter-choice flex {% if pfilter['dp'] %}cm-active{% endif %}" type="dp">
+        {{ _self.datetime(prop,pfilter['dp'][0]) }}
         <i class="m-auto mx-2 fal fa-minus"></i>
-        {{ _self.datetime(prop) }}
+        {{ _self.datetime(prop,pfilter['dp'][1]) }}
     </div>
 {% endmacro %}
 
 {# --- --- --- --- --- #}
-{% macro filter_bool(prop) %}
-    <span class="mr-4 opacity-30" type="t">
-        {{ _self.bool('t')}}
-    </span>        
-    <span class="mr-4 opacity-30" type="f">
-        {{ _self.bool('f')}}
-    </span>        
+{% macro filter_bool(prop,pfilter) %}
+    <button class="cm-filter-choice-b mr-4 {% if pfilter|length and pfilter['='] == 'true' %}cm-active{% endif %}" type="=" value="true">
+        <i class="fal fa-check-square {% if pfilter|length and pfilter['='] == 'true' %}fas{% endif %}"></i><span class="ml-2">Да</span>
+    </button>        
+    <button class="cm-filter-choice-b mr-4 {% if pfilter|length and pfilter['='] == 'false' %}cm-active{% endif %}" type="=" value="false">
+        <i class="fal fa-square {% if pfilter|length and pfilter['='] == 'false' %}fas{% endif %}"></i><span class="ml-2">Нет</span>
+    </button>        
     {% if prop.nn == null %}
-        <span class="mr-4 opacity-30" type="n">
-            {{ _self.bool('n')}}
-        </span>        
+        <button class="cm-filter-choice-b mr-4 {% if pfilter|length and pfilter['='] == 'null' %}cm-active{% endif %}" type="=" value="null">
+            <i class="fal fa-empty-set {% if pfilter|length and pfilter['='] == 'null' %}fas{% endif %}"></i><span class="ml-2">Пусто</span>
+        </button>        
     {% endif %}
-    
+{% endmacro %}
+
+{# --- --- --- --- --- #}
+{# --- --- --- --- --- #}
+{# --- --- --- --- --- #}
+{% macro input(prop,pfilter) %}
     {#
-    {{ _self.bool('f')}}{{ _self.bool('n')}}
-    <div class="flex" type="e">
-        <span>...</span>
-    </div>
-    <div class="flex cm-hidden" type="t">
-        {{ _self.bool('t')}}
-    </div>
-    <div class="flex cm-hidden" type="f">
-        {{ _self.bool('f')}}
-    </div>
-    {% if prop.nn == null %}
-        <div class="flex cm-hidden" type="n">
-            {{ _self.bool('n')}}
-        </div>
-    {% endif %}
-    #}
-{% endmacro %}
-
-{# --- --- --- --- --- #}
-{# --- --- --- --- --- #}
-{# --- --- --- --- --- #}
-{% macro input(prop) %}
     <fieldset class="relative w-ful flex-1">
-        <input name="{{ prop.code }}" type="text" class="pl-1 pr-5 h-7 w-full text-white bg-green-600 border border-solid border-gray-300 active:border-white"/>
+        <input name="{{ prop.code }}" type="text" class="pl-1 pr-5 h-7 w-full text-white bg-green-600 border border-solid border-gray-300 focuse:border-white"/>
         <button class="absolute h-6 w-6 right-0 cursor-pointer text-gray-300 hover:text-white">
             <i class="fal fa-times"></i>
         </button>
     </fieldset>
+    #}
+    <input name="{{ prop.code }}" type="text" class="px-1 h-7 w-full text-white font-bold bg-green-200 bg-opacity-10 border border-solid border-white border-opacity-20 focus:border-opacity-80" value="{{ pfilter }}"/>
 {% endmacro %}
 
 {# --- --- --- --- --- #}
@@ -315,23 +306,6 @@ month: устанавливает текущий месяц и год
 time: устанавливает время
 week: устанавливает текущую неделю
 #}
-{% macro datetime(prop) %}
-    <input type="datetime-local" placeholder="MY PLACEHOLDER" class="px-1 w-full h-7 text-white bg-green-600 border border-solid border-gray-300 active:border-white"">
-{% endmacro %}
-
-{# --- --- --- --- --- #}
-{% macro bool(value) %}
-    {% if value == 't' %}
-        <button>
-            <i class="fal fa-check-square"></i> Да
-        </button>
-    {% elseif value == 'f' %}
-        <button>
-            <i class="fal fa-square"></i> Нет
-        </button>
-    {% elseif value == 'n' %}
-        <button>
-            <i class="fal fa-empty-set"></i> Пусто
-        </button>
-    {% endif %}
+{% macro datetime(prop,pfilter) %}
+    <input type="datetime-local" class="px-1 w-full h-7 text-white font-bold bg-green-200 bg-opacity-10 border border-solid border-white border-opacity-20 focus:border-opacity-80" value="{{ pfilter }}">
 {% endmacro %}

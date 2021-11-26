@@ -24,7 +24,6 @@ class AdminDataEntityView extends AdminCommon implements web\iModel {
                     'lines' => $Datamodel->Lines,
                     //'total' => $Datamodel->Total,
                     'pager' => $Datamodel->Pager,
-                    'filter' => $Datamodel->Filter,
                     'rfilter' => web\Page::instance()->getParam('r')
                 ],
             ]);

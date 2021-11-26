@@ -1,9 +1,9 @@
 {
     "module" : {
-        "code" : "/Tilda",
-        "name" : "tilda",
-        "prefix" : "td",
-        "baloon" : null,
+        "code" : "/TildaTool",
+        "name" : "TildaTool",
+        "prefix" : "tdTool",
+        "baloon" : "Режущий инструмент",
         "author" : "ura@itx.ru",
         "url" : null,
         "since" : 2018,

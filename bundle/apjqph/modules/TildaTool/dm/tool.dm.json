@@ -1,0 +1,1100 @@
+{
+    "code": "/TildaTool/Tool",
+    "name": {
+        "_def" : "Инструмент"
+    },
+    "baloon": {
+        "_def" : "Режущий инструмент"
+    },
+    "parent": "/TildaTool/Entity",
+    "info": null,
+    "indexes" : null,
+    "uniques": [
+        ["code","code1","vendor_id"]
+    ],
+    "props": {
+        "id" : {
+            "code": "id",
+            "name": {
+                "_def": "ID"
+            },
+            "label": null,
+            "baloon": {
+                "_def": "Уникальный ID идентификатор"
+            },
+            "type": "::id::",
+            "length": null,
+            "pk" : true,
+            "nn": true,
+            "index": null,
+            "default": "::counter::",
+            "registr" : null,
+            "info": null,
+            "association": null
+        },
+        "name" : {
+            "code": "name",
+            "name" : {
+                "_def" : "Наименование"
+            },
+            "label" : null,
+            "baloon": {
+                "_def" : "Наименование инструмента"
+            },
+            "type": "string",
+            "length" : 256,
+            "pk" : null,
+            "nn": true,
+            "index": true,
+            "default": null,
+            "registr" : null,
+            "info": null,
+            "association": null
+        },
+        "code" : {
+            "code": "code",
+            "name" : {
+                "_def" : "Код"
+            },
+            "label" : null,
+            "baloon": {
+                "_def" : "Код инструмента"
+            },
+            "type": "string",
+            "length" : 64,
+            "pk" : null,
+            "nn": true,
+            "index": true,
+            "default": null,
+            "registr" : null,
+            "info": null,
+            "association": null
+        },
+        "code1" : {
+            "code": "code1",
+            "name" : {
+                "_def" : "Доп.код"
+            },
+            "label" : null,
+            "baloon": {
+                "_def" : "Дополнительный код инструмента"
+            },
+            "type": "string",
+            "length" : 16,
+            "pk" : null,
+            "nn": null,
+            "index": true,
+            "default": null,
+            "registr" : null,
+            "info": null,
+            "association": null
+        },
+        "type_id" : {
+            "code": "type_id",
+            "name": {
+                "_def" : "Тип"
+            },
+            "label": null,
+            "baloon": {
+                "_def" : "Тип инструмента"
+            },
+            "type": "::id::",
+            "length": null,
+            "pk" : null,
+            "nn": true,
+            "index": null,
+            "default": null,
+            "registr" : null,
+            "info": null,
+            "association": {
+                "entity": "/TildaTool/Type",
+                "prop": "id"
+            }
+        },
+        "vendor_id" : {
+            "code": "vendor_id",
+            "name": {
+                "_def" : "Производитель"
+            },
+            "label": null,
+            "baloon": {
+                "_def" : "Производитель инструмента"
+            },
+            "type": "::id::",
+            "length": null,
+            "pk" : null,
+            "nn": true,
+            "index": null,
+            "default": null,
+            "registr" : null,
+            "info": null,
+            "association": {
+                "entity": "TildaTool/Vendor",
+                "prop": "id"
+            }
+        },
+        "ratio" : {
+            "code" : "ratio",
+            "name" : {
+                "_def" : "Рейтиг"
+            },
+            "label" : {
+                "_def" : "&lowast;"
+            },
+            "baloon" : {
+                "_def" : "Рейтиг инструмента"
+            },
+            "type" : "integer",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "material" : {
+            "code": "material",
+            "name" : {
+                "_def" : "Материал"
+            },
+            "label" : null,
+            "baloon": {
+                "_def" : "Обрабатываемый материал // PMKNSH"
+            },
+            "type": "string",
+            "length" : 6,
+            "pk" : null,
+            "nn": null,
+            "index": null,
+            "default": null,
+            "registr" : null,
+            "info": null,
+            "association": null
+        },
+        "analog" : {
+            "code" : "analog",
+            "name" : {
+                "_def" : "Аналоги"
+            },
+            "label" : {
+                "_def" : "А"
+            },
+            "baloon" : {
+                "_def" : "Количество аналогов инструмента"
+            },
+            "type" : "integer",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "systype" : {
+            "code": "systype",
+            "name": null,
+            "label": null,
+            "baloon": null,
+            "type": "string",
+            "length": 32,
+            "pk" : null,
+            "nn": true,
+            "index": null,
+            "default": "TildaTool/Tool",
+            "registr" : null,
+            "info": null,
+            "association": null
+        },
+        
+        
+        
+        
+        
+        "d" : {
+            "code" : "d",
+            "name" : {
+                "_def" : "Диаметр"
+            },
+            "label" : {
+                "_def" : "∅"
+            },
+            "baloon" : {
+                "_def" : "Диаметр"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "d1" : {
+            "code" : "d1",
+            "name" : {
+                "_def" : "Диам.реж.ч."
+            },
+            "label" : {
+                "_def" : "∅<sub>1</sub>"
+            },
+            "baloon" : {
+                "_def" : "Диаметр режущей части"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "d2" : {
+            "code" : "d2",
+            "name" : {
+                "_def" : "Диам.хв."
+            },
+            "label" : {
+                "_def" : "∅<sub>2</sub>"
+            },
+            "baloon" : {
+                "_def" : "Диаметр хвостовика"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "d3" : {
+            "code" : "d3",
+            "name" : {
+                "_def" : "Диам.обн."
+            },
+            "label" : {
+                "_def" : "∅<sub>3</sub>"
+            },
+            "baloon" : {
+                "_def" : "Диаметр обнижения"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "r" : {
+            "code" : "r",
+            "name" : {
+                "_def" : "Радиус"
+            },
+            "label" : {
+                "_def" : "R<sub>ƺ</sub>"
+            },
+            "baloon" : {
+                "_def" : "Радиус"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "cf" : {
+            "code" : "cf",
+            "name" : {
+                "_def" : "Фаска"
+            },
+            "label" : {
+                "_def" : "C<sub>f</sub>"
+            },
+            "baloon" : {
+                "_def" : "Фаска"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "l1" : {
+            "code" : "l1",
+            "name" : {
+                "_def" : "Длина общ."
+            },
+            "label" : {
+                "_def" : "L<sub>1</sub>"
+            },
+            "baloon" : {
+                "_def" : "Длина общая"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "l2" : {
+            "code" : "l2",
+            "name" : {
+                "_def" : "Длина обн."
+            },
+            "label" : {
+                "_def" : "L<sub>2</sub>"
+            },
+            "baloon" : {
+                "_def" : "Длина обнижения"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "l3" : {
+            "code" : "l3",
+            "name" : {
+                "_def" : "Длина хв."
+            },
+            "label" : {
+                "_def" : "L<sub>3</sub>"
+            },
+            "baloon" : {
+                "_def" : "Длина хвостовика"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "l4" : {
+            "code" : "l4",
+            "name" : {
+                "_def" : "Вылет"
+            },
+            "label" : {
+                "_def" : "L<sub>4</sub>"
+            },
+            "baloon" : {
+                "_def" : "Вылет инструмента"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "ap" : {
+            "code" : "ap",
+            "name" : {
+                "_def" : "Дл.реж.ч"
+            },
+            "label" : {
+                "_def" : "A<sub>p</sub>"
+            },
+            "baloon" : {
+                "_def" : "Длина режущей части"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "ar" : {
+            "code" : "ar",
+            "name" : {
+                "_def" : "Макс.гл. реза"
+            },
+            "label" : {
+                "_def" : "A<sub>r</sub>"
+            },
+            "baloon" : {
+                "_def" : "Максимальная глубина реза"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "z" : {
+            "code" : "z",
+            "name" : {
+                "_def" : "Кол-во зубьев"
+            },
+            "label" : {
+                "_def" : "Z"
+            },
+            "baloon" : {
+                "_def" : "Количество зубьев"
+            },
+            "type" : "integer",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "purpose" : {
+            "code" : "purpose",
+            "name" : {
+                "_def" : "Назн."
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Назначение инструмента"
+            },
+            "type" : "string",
+            "length" : 256,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "kind" : {
+            "code" : "kind",
+            "name" : {
+                "_def" : "Исп."
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Исполнение инструмента"
+            },
+            "type" : "string",
+            "length" : 64,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "angle" : {
+            "code" : "angle",
+            "name" : {
+                "_def" : "Угол"
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Угол"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "thread" : {
+            "code" : "thread",
+            "name" : {
+                "_def" : "Тип рез."
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Тип резьбы"
+            },
+            "type" : "string",
+            "length" : 16,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "pitch" : {
+            "code" : "pitch",
+            "name" : {
+                "_def" : "Шаг"
+            },
+            "label" : {
+                "_def" : "P"
+            },
+            "baloon" : {
+                "_def" : "Шаг резьбы"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "pmin" : {
+            "code" : "pmin",
+            "name" : {
+                "_def" : "Мин.ш.рез."
+            },
+            "label" : {
+                "_def" : "P<sub>min</sub>"
+            },
+            "baloon" : {
+                "_def" : "Минимальный шаг резьбы"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "pmax" : {
+            "code" : "pmax",
+            "name" : {
+                "_def" : "Макс.ш.рез."
+            },
+            "label" : {
+                "_def" : "P<sub>max</sub>"
+            },
+            "baloon" : {
+                "_def" : "Максимальный шаг резьбы"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "adin" : {
+            "code" : "adin",
+            "name" : {
+                "_def" : "Вх.ад."
+            },
+            "label" : {
+                "_def" : "Ad<sub>in</sub>"
+            },
+            "baloon" : {
+                "_def" : "Входящий адаптер"
+            },
+            "type" : "string",
+            "length" : 128,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "adimin" : {
+            "code" : "adimin",
+            "name" : {
+                "_def" : "Мин.вх.ад."
+            },
+            "label" : {
+                "_def" : "In<sub>min</sub>"
+            },
+            "baloon" : {
+                "_def" : "Минимальный размер входящего адаптера"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "adimax" : {
+            "code" : "adimax",
+            "name" : {
+                "_def" : "Макс.вх.ад."
+            },
+            "label" : {
+                "_def" : "In<sub>max</sub>"
+            },
+            "baloon" : {
+                "_def" : "Максимальный размер входящего адаптера"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "adout" : {
+            "code" : "adout",
+            "name" : {
+                "_def" : "Исх.ад."
+            },
+            "label" : {
+                "_def" : "Ad<sub>out</sub>"
+            },
+            "baloon" : {
+                "_def" : "Исходящий адаптер"
+            },
+            "type" : "string",
+            "length" : 128,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "tpl" : {
+            "code" : "tpl",
+            "name" : {
+                "_def" : "Тип пл."
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Тип пластины"
+            },
+            "type" : "string",
+            "length" : 128,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "spl" : {
+            "code" : "spl",
+            "name" : {
+                "_def" : "Размер пл."
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Размер пластины"
+            },
+            "type" : "string",
+            "length" : 128,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "fpl" : {
+            "code" : "fpl",
+            "name" : {
+                "_def" : "Форма пл."
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Форма пластины"
+            },
+            "type" : "string",
+            "length" : 128,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "coolin" : {
+            "code" : "coolin",
+            "name" : {
+                "_def" : "Вн.охл."
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Внутреннее охлаждение"
+            },
+            "type" : "bool",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "t" : {
+            "code" : "t",
+            "name" : {
+                "_def" : "Допуск"
+            },
+            "label" : {
+                "_def" : "T"
+            },
+
+            "baloon" : {
+                "_def" : "Допуск"
+            },
+            "type" : "string",
+            "length" : 16,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "kr" : {
+            "code" : "kr",
+            "name" : {
+                "_def" : "Гл.уг.в пл."
+            },
+            "label" : {
+                "_def" : "K<sub>r</sub>"
+            },
+
+            "baloon" : {
+                "_def" : "Главный угол в плане"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "f1" : {
+            "code" : "f1",
+            "name" : {
+                "_def" : "Смещение"
+            },
+            "label" : {
+                "_def" : "F<sub>1</sub>"
+            },
+
+            "baloon" : {
+                "_def" : "Смещение"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "dmin" : {
+            "code" : "dmin",
+            "name" : {
+                "_def" : "Мин.д.растачивания"
+            },
+            "label" : {
+                "_def" : "D<sub>min</sub>"
+            },
+
+            "baloon" : {
+                "_def" : "Минимальный диаметр растачивания"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "purpout" : {
+            "code" : "purpout",
+            "name" : {
+                "_def" : "Нар.обр."
+            },
+            "label" : {
+                "_def" : "Pr<sub>нар</sub>"
+            },
+
+            "baloon" : {
+                "_def" : "Наружняя обработка"
+            },
+            "type" : "bool",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "purpin" : {
+            "code" : "purpin",
+            "name" : {
+                "_def" : "Вн.обр."
+            },
+            "label" : {
+                "_def" : "Pr<sub>вн</sub>"
+            },
+
+            "baloon" : {
+                "_def" : "Внутренняя обработка"
+            },
+            "type" : "bool",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "purptok" : {
+            "code" : "purptok",
+            "name" : {
+                "_def" : "Вид обработки"
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Вид обработки"
+            },
+            "type" : "string",
+            "length" : 9,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "inserts" : {
+            "code" : "inserts",
+            "name" : {
+                "_def" : "Вх.элементы"
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Входящие элементы"
+            },
+            "type" : "text",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "icount" : {
+            "code" : "icount",
+            "name" : {
+                "_def" : "Кол-во эл."
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Количество входящих элементов"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "regmin" : {
+            "code" : "regmin",
+            "name" : {
+                "_def" : "Раб.область(min)"
+            },
+            "label" : {
+                "_def" : "Ро<sub>min</sub>"
+            },
+            "baloon" : {
+                "_def" : "Минимальная рабочая область"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "regmax" : {
+            "code" : "regmax",
+            "name" : {
+                "_def" : "Раб.область(max)"
+            },
+            "label" : {
+                "_def" : "Ро<sub>max</sub>"
+            },
+            "baloon" : {
+                "_def" : "Максимальная рабочая область"
+            },
+            "type" : "real",
+            "length" : null,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "tooltype" : {
+            "code" : "tooltype",
+            "name" : {
+                "_def" : "Тип"
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Тип инструмента"
+            },
+            "type" : "string",
+            "length" : 64,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "cooltype" : {
+            "code" : "cooltype",
+            "name" : {
+                "_def" : "СОЖ"
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Подвод СОЖ"
+            },
+            "type" : "string",
+            "length" : 64,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "m" : {
+            "code" : "m",
+            "name" : {
+                "_def" : "Пер.число"
+            },
+            "label" : {
+                "_def" : "M"
+            },
+            "baloon" : {
+                "_def" : "Передаточное число"
+            },
+            "type" : "string",
+            "length" : 8,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        },
+        "orient" : {
+            "code" : "orient",
+            "name" : {
+                "_def" : "Ориентация"
+            },
+            "label" : null,
+            "baloon" : {
+                "_def" : "Ориентация инструмента"
+            },
+            "type" : "string",
+            "length" : 64,
+            "pk" : null,
+            "nn" : null,
+            "index" : null,
+            "default" : null,
+            "registr" : null,
+            "info" : null,
+            "association": null
+        }
+    },
+    "init" : null
+}

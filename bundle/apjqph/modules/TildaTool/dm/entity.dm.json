@@ -1,5 +1,5 @@
 {
-    "code" : "/CmatrixCore/Entiy",
+    "code" : "/TildaTool/Entiy",
     "name" : {
         "_def" : "Сущность"
     },
@@ -243,11 +243,11 @@
             "pk" : null,
             "nn": true,
             "index": null,
-            "default": "/CmatrixCore/Entity",
+            "default": "/TildaTool/Entity",
             "registr" : null,
             "info": null,
             "association": null
         }
     },
-    "init" : null
+    "init" : []
 }

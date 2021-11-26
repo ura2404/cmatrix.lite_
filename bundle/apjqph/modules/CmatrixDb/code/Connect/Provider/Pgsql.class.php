@@ -24,7 +24,8 @@ class Pgsql extends db\Connect\Provider implements db\Connect\iProvider{
         elseif($Type === '::ip::')   return 'VARCHAR(45)'; // 15 - ipv4, 45 - ipv6
         elseif($Type === '::hid::')  return 'VARCHAR(32)';
         elseif($Type === '::pass::') return 'VARCHAR(255)';
-        elseif($Type === 'string')   return 'VARCHAR' .$Length;
+        elseif($Type === 'string')   return 'VARCHAR' . ($prop['length'] ? '('.$prop['length'].')' : null);
+        elseif($Type === 'real')     return 'NUMERIC' . ($prop['length'] ? '('.$prop['length'].')' : '(12,4)');
         else return strtoupper($Type);
     }
 

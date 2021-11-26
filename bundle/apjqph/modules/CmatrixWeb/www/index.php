@@ -60,8 +60,8 @@ require_once '../../../common.php';
 ]);
 
 \CmatrixWeb\Router::add('/^tilda\/toolSupervisor/',[
-    'template' => '/Tilda/toolSupervisor.twig',
-    'model' => '/Tilda/ToolSupervisor',
+    'template' => '/TildaTool/toolSupervisor.twig',
+    'model' => '/TildaTool/ToolSupervisor',
     'controller' => '/CmatrixWeb/Twig'
 ]);
 

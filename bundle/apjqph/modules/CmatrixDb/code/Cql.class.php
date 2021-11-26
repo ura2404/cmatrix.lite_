@@ -14,8 +14,11 @@ class Cql{
     private $Agg     = [];
     private $Rules   = [];
     private $Values  = [];
+    private $ValuesArr = [];
     private $Orders  = [];
     private $Limit   = [100,0];
+    
+    private $ValuesArr = [];
 
     // --- --- --- --- ---
     /**
@@ -224,6 +227,13 @@ class Cql{
             $this->value($code,$value);
         },array_keys($values),array_values($values));
         
+        return $this;
+    }
+
+    // --- --- --- --- ---
+    public function valuesArr(array $values=null){
+        if(!$values) return $this;
+        $this->ValuesArr($values);
         return $this;
     }
     

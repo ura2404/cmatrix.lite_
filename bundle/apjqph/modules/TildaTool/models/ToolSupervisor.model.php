@@ -1,14 +1,23 @@
 <?php
-namespace Tilda\Models;
+namespace TildaTool\Models;
 use \Cmatrix as cm;
 use \CmatrixWeb as web;
 
 class ToolSupervisor extends \CmatrixWeb\Models\CommonLogin implements web\iModel {
     public function getData(){
         try{
-            $Datamodel = web\Ide\Datamodel::instance('/CmatrixCore/Session');
+            $Datamodel = web\Ide\Datamodel::instance('/TildaTool/Tool');
             
-            return arrayMergeReplace(parent::getData(),[
+            $Rfilter = $Datamodel->Rfilter;
+            $Pfilter = $Datamodel->Pfilter;
+            
+            //dump(web\Page::instance()->getParam('f'));
+            //$clean = strtr( web\Page::instance()->getParam('f'), ' ', '+');
+            //dump($clean);
+            //dump(base64_decode( $clean ));
+            //dump(json_decode(base64_decode( $clean ),true));
+            
+            $Data = arrayMergeReplace(parent::getData(),[
                 'app' => [
                     'module' => 'Tilda • Режущий инструмент'
                 ],
@@ -17,12 +26,14 @@ class ToolSupervisor extends \CmatrixWeb\Models\CommonLogin implements web\iMode
                     'sorts' => $Datamodel->Sorts,
                     'props' => $Datamodel->Props,
                     'lines' => $Datamodel->Lines,
-                    //'total' => $Datamodel->Total,
                     'pager' => $Datamodel->Pager,
-                    'filter' => $Datamodel->Filter,
-                    'rfilter' => web\Page::instance()->getParam('r')
+                    'rfilter' => $Rfilter,
+                    'pfilter' => $Pfilter,
                 ]
             ]);
+            //dump($Data['table']['pfilter']);
+            
+            return $Data;
         }
         catch(\Exception1 $e){
             return arrayMergeReplace(parent::getData(),[
@@ -34,6 +45,13 @@ class ToolSupervisor extends \CmatrixWeb\Models\CommonLogin implements web\iMode
                 'error' => ['Ошибка',$e->getMessage()]
             ]);
         }
+    }
+    
+    // --- --- --- --- ---
+    private function getLines(){
+        
+        
+        return $Datamodel->Lines;
     }
 }
 ?>
